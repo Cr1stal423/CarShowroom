@@ -1,0 +1,40 @@
+package com.dealership.car.model;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
+
+import java.time.LocalDateTime;
+@Entity
+@Data
+public class OrderEntity extends BaseEntity{
+    @Id
+    @GeneratedValue(strategy =  GenerationType.IDENTITY)
+    private Integer orderId;
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
+    @ManyToOne
+    @JoinColumn(name = "person_id")
+    private Person person;
+    //TODO: need to remove because i have created at
+    private LocalDateTime orderTime;
+    @NotBlank(message = "delivery is required")
+    private boolean delivery;
+
+    @Enumerated(EnumType.STRING)
+    @NotBlank(message = "payment type is required")
+    private PaymentType paymentType;
+    @NotBlank(message = "payment method is required")
+    @Enumerated(EnumType.STRING)
+    private PaymentMethod paymentMethod;
+
+    public enum PaymentMethod {
+        CARD,
+        CASH
+    }
+    public enum PaymentType{
+        CREDIT,
+        BUY
+    }
+}

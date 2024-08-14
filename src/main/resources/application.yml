@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: CarDealership
+  jpa:
+    hibernate:
+    show-sql: true
+  #      ddl-auto: update
+  datasource:
+    url: jdbc:mysql://localhost:3308/database
+    username: root
+    password: Sqlwer
+
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+#  docker run --name CarDetails -p 3308:3306 -e MYSQL_ROOT_PASSWORD=Sqlwer -e MYSQL_DATABASE=database -d mysql
+
