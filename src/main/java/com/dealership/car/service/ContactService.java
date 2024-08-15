@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -41,5 +42,16 @@ public class ContactService {
         }
         contact.setStatus(Constants.NEW_USER);
         return isExist;
+    }
+
+    public void closeMsg(int id) {
+        Optional<Contact> contact = contactRepository.findById(id);
+        if (contact.isPresent()){
+            contact.get().setStatus(Constants.CLOSE_STATUS);
+            contactRepository.save(contact.get());
+        } else {
+            //TODO add exceptionHandler
+            System.out.println("Error");
+        }
     }
 }

@@ -1,16 +1,18 @@
 package com.dealership.car.controller;
 
+import com.dealership.car.constants.Constants;
 import com.dealership.car.model.Contact;
+import com.dealership.car.repository.ContactRepository;
 import com.dealership.car.service.ContactService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @Controller
 @AllArgsConstructor
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ContactController {
 
     private ContactService contactService;
+
+    private ContactRepository contactRepository;
 
     @GetMapping()
     public String showContactPage(Model model){
@@ -41,5 +45,16 @@ public class ContactController {
         }
         return returnResult;
     }
-
+    @GetMapping("/showMessages")
+    public ModelAndView showMsg(){
+        ModelAndView modelAndView = new ModelAndView("messages.html");
+        List<Contact> messages = contactRepository.findByStatusEqualsOrStatus(Constants.NEW_USER,Constants.USER_EXIST);
+        modelAndView.addObject("messages", messages);
+        return modelAndView;
+    }
+    @GetMapping("/closeMsg")
+    public String closeMsg(@RequestParam("id") int id){
+        contactService.closeMsg(id);
+        return "redirect:/contact/showMessages";
+    }
 }

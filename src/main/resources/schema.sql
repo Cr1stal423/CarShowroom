@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS `contact` (
     `last_name` varchar(50) NOT NULL,
     `mobile_number` varchar(12) NOT NULL,
     `message` varchar(250) NOT NULL,
-    `status` varchar(10) NOT NULL,
+    `status` varchar(20) NOT NULL,
     `updated_at` TIMESTAMP DEFAULT NULL,
     `updated_by` varchar(50) DEFAULT NULL
 );
