@@ -76,16 +76,16 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 			<h2>Contact Us</h2>
 			<div class="contact-form">
 				<h4>Get in Touch</h4>
-				<form action="#" method="post">
+				<form th:action="@{/contact/saveMsg}" method="post" th:object="${contact}">
 					<div class="col-md-6 form-left">
-						<input type="text" placeholder="Name" name="text" required="">
+						<input th:field="*{firstName}" type="text" placeholder="firstName" name="text" required="">
 					</div>
 					<div class="col-md-6 form-right">
-						<input class="email" type="email" name="email" placeholder="Email" required="">
+						<input th:field="*{lastName}" class="text" type="text" name="lastName" placeholder="lastName" required="">
 					</div>
 					<div class="clearfix"> </div>
-						<input class="" type="text" placeholder="Phone" name="phone" required="">
-						<textarea class="" placeholder="Message" name="message" required=""></textarea>
+						<input th:field="*{mobileNumber}" class="" type="text" placeholder="Phone" name="phone" required="">
+						<textarea th:field="*{message}" class="" placeholder="Message" name="message" required=""></textarea>
 						<input type="submit" value="SUBMIT" >
 				</form>
 			</div>

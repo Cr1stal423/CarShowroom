@@ -17,4 +17,5 @@ public interface PersonRepository extends JpaRepository<Person,Integer> {
     @Query("SELECT p FROM Person p JOIN p.roles r WHERE r.roleName = :roleName")
     public List<Person> findByRoles(String roleName);
 
+    public Person findByMobileNumber(String number);
 }
