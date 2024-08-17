@@ -46,7 +46,7 @@ public class AminController {
     public String updateAdmin(@RequestParam(value = "id", required = false)Integer id, @RequestParam("username")String username,
                               @RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName,
                               @RequestParam("address")String address, @RequestParam("mobileNumber") String mobileNumber){
-        boolean isUpdated = personService.updateUser(id, username, firstName, lastName, address, mobileNumber);
+        boolean isUpdated = personService.updateUser(username, firstName, lastName, address, mobileNumber);
         if (isUpdated){
             return "redirect:/staff/admins";
         } else {

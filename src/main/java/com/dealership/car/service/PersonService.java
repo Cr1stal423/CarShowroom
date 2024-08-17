@@ -9,12 +9,9 @@ import com.dealership.car.repository.PersonRepository;
 import com.dealership.car.repository.RolesRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
-import javax.management.relation.Role;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -85,14 +82,14 @@ public class PersonService {
         return isUpdated;
     }
 
-    public boolean updateUser(Integer id, String username, String firstName, String lastName, String address, String mobileNumber) {
+    public boolean updateUser(String username, String firstName, String lastName, String address, String mobileNumber) {
         boolean isSaved = false;
         Person optionalPerson = personRepository.findByUsername(username);
         if (optionalPerson != null){
             isSaved = true;
             Person person = optionalPerson;
-            String password = person.getPassword();
-            person.setPassword(password);
+//            String password = person.getPassword();
+//            person.setPassword(password);
             person.setUsername(username);
             person.setFirstName(firstName);
             person.setLastName(lastName);
@@ -100,8 +97,9 @@ public class PersonService {
             person.setMobileNumber(mobileNumber);
             personRepository.save(person);
         } else {
-            System.out.println(String.format("Can't find person with given id %s",id) );
+            System.out.println(String.format("Can't find person ") );
         }
         return isSaved;
     }
+
 }

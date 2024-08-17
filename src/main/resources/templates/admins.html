@@ -115,6 +115,7 @@
       </thead>
       <tbody>
       <tr th:each="admin: ${admins}">
+<!--TODO need in future change for work with id, now all fork with findByUsername                 -->
         <form th:action="@{/updateAdmin}" method="post">
 <!--          <input type="hidden" name="personId" th:value="${admin.personId}"/>-->
           <td><input type="text" name="username" th:value="${admin.username}"/></td>
