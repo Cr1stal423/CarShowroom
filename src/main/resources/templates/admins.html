@@ -114,17 +114,19 @@
       </thead>
       <tbody>
       <tr th:each="admin: ${admins}">
-        <td th:text="${admin.username}"></td>
-        <td th:text="${admin.firstName}"></td>
-        <td th:text="${admin.lastName}"></td>
-        <td th:text="${admin.address}"></td>
-        <td th:text="${admin.mobileNumber}"></td>
-        <td><a  th:href="@{/turnIntoOperator(id=${admin.personId})}"
-               class="btn btn-style btn-style-3">Turn into operator</a></td>
-        <td><a  th:href="@{/deleteAdmin(id=${admin.personId})}"
-               class="btn btn-style btn-style-3">Delete admin</a></td>
+        <form th:action="@{/updateAdmin}" method="post">
+          <input type="hidden" name="personId" th:value="${admin.personId}"/>
+          <td><input type="text" name="username" th:value="${admin.username}"/></td>
+          <td><input type="text" name="firstName" th:value="${admin.firstName}"/></td>
+          <td><input type="text" name="lastName" th:value="${admin.lastName}"/></td>
+          <td><input type="text" name="address" th:value="${admin.address}"/></td>
+          <td><input type="text" name="mobileNumber" th:value="${admin.mobileNumber}"/></td>
+          <td><button type="submit" class="btn btn-style btn-style-3">Save</button></td>
+        </form>
+        <td><a th:href="@{/deleteAdmin(id=${admin.personId})}" class="btn btn-style btn-style-3">Delete</a></td>
       </tr>
       </tbody>
+
     </table>
   </div>
 </div>

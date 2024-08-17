@@ -73,11 +73,11 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse nav-wil" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav cl-effect-14">
-                            <li ><a th:href="@{/home}">Home</a></li>
-                            <li ><a th:href="@{/about}">About Us</a></li>
-                            <li ><a th:href="@{/contact}" class="active">Contact Us</a></li>
+                            <li><a th:href="@{/home}">Home</a></li>
+                            <li><a th:href="@{/about}">About Us</a></li>
+                            <li><a th:href="@{/contact}" class="active">Contact Us</a></li>
                             <li sec:authorize="isAuthenticated()"><a th:href="@{/dashboard}">Dashboard</a></li>
-                            <li ><a th:href="@{/login}">LogIn</a></li>
+                            <li><a th:href="@{/login}">LogIn</a></li>
                             <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
                         </ul>
                     </div><!-- /.navbar-collapse -->
@@ -114,15 +114,17 @@
             </thead>
             <tbody>
             <tr th:each="operator: ${operators}">
-                <td th:text="${operator.username}"></td>
-                <td th:text="${operator.firstName}"></td>
-                <td th:text="${operator.lastName}"></td>
-                <td th:text="${operator.address}"></td>
-                <td th:text="${operator.mobileNumber}"></td>
-                <td><a  th:href="@{/turnIntoAdmin(id=${operator.personId})}"
-                        class="btn btn-style btn-style-3">Turn into admin</a></td>
-                <td><a  th:href="@{/deleteOperator(id=${operator.personId})}"
-                        class="btn btn-style btn-style-3">Delete operator</a></td>
+                <form th:action="@{/updateAdmin}" method="post"></form>
+                    <td th:text="${operator.username}"></td>
+                    <td th:text="${operator.firstName}"></td>
+                    <td th:text="${operator.lastName}"></td>
+                    <td th:text="${operator.address}"></td>
+                    <td th:text="${operator.mobileNumber}"></td>
+                </form>
+                <td><a th:href="@{/turnIntoAdmin(id=${operator.personId})}"
+                       class="btn btn-style btn-style-3">Turn into admin</a></td>
+                <td><a th:href="@{/deleteOperator(id=${operator.personId})}"
+                       class="btn btn-style btn-style-3">Delete operator</a></td>
             </tr>
             </tbody>
         </table>
