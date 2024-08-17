@@ -27,8 +27,9 @@ public class Person extends BaseEntity{
     @NotBlank(message = "username required")
     private String username;
     @Transient
-    @NotBlank(message = "password required")
-    @Size(min = 3, message = "password must be at list 3 char")
+    //TODO solve problem with validation?because i need this
+//    @NotBlank(message = "password required")
+//    @Size(min = 3, message = "password must be at list 3 char")
     private String password;
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "keys_id", referencedColumnName = "id")

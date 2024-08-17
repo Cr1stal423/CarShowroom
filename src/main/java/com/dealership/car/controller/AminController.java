@@ -6,6 +6,7 @@ import com.dealership.car.service.PersonService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -38,5 +39,18 @@ public class AminController {
             System.out.println("error");
         }
         return "redirect:/staff/admins";
+    }
+    //TODO maybe add dto to update form
+    //TODO add more scenarios if isUpdated = false
+    @PostMapping("/updateAdmin")
+    public String updateAdmin(@RequestParam(value = "id", required = false)Integer id, @RequestParam("username")String username,
+                              @RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName,
+                              @RequestParam("address")String address, @RequestParam("mobileNumber") String mobileNumber){
+        boolean isUpdated = personService.updateUser(id, username, firstName, lastName, address, mobileNumber);
+        if (isUpdated){
+            return "redirect:/staff/admins";
+        } else {
+            return "redirect:/dashboard";
+        }
     }
 }

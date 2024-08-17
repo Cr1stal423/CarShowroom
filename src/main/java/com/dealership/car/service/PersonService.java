@@ -85,4 +85,23 @@ public class PersonService {
         return isUpdated;
     }
 
+    public boolean updateUser(Integer id, String username, String firstName, String lastName, String address, String mobileNumber) {
+        boolean isSaved = false;
+        Person optionalPerson = personRepository.findByUsername(username);
+        if (optionalPerson != null){
+            isSaved = true;
+            Person person = optionalPerson;
+            String password = person.getPassword();
+            person.setPassword(password);
+            person.setUsername(username);
+            person.setFirstName(firstName);
+            person.setLastName(lastName);
+            person.setAddress(address);
+            person.setMobileNumber(mobileNumber);
+            personRepository.save(person);
+        } else {
+            System.out.println(String.format("Can't find person with given id %s",id) );
+        }
+        return isSaved;
+    }
 }

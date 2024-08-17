@@ -114,12 +114,14 @@
             </thead>
             <tbody>
             <tr th:each="operator: ${operators}">
-                <form th:action="@{/updateAdmin}" method="post"></form>
-                    <td th:text="${operator.username}"></td>
-                    <td th:text="${operator.firstName}"></td>
-                    <td th:text="${operator.lastName}"></td>
-                    <td th:text="${operator.address}"></td>
-                    <td th:text="${operator.mobileNumber}"></td>
+                <form th:action="@{/updateOperator}" method="post"></form>
+                    <input type="hidden" name="personId" th:value="${operator.personId}"/>
+                    <td><input type="text" name="username" th:value="${operator.username}"/> </td>
+                    <td><input type="text" name="firstName"th:value="${operator.firstName}"/></td>
+                    <td><input type="text" name="lastName" th:value="${operator.lastName}"/></td>
+                    <td><input type="text" name="address" th:value="${operator.address}"/></td>
+                    <td><input type="text" name="mobileNumber" th:value="${operator.mobileNumber}"/></td>
+                    <td><button type="submit" class="btn btn-style btn-style-3">Save</button></td>
                 </form>
                 <td><a th:href="@{/turnIntoAdmin(id=${operator.personId})}"
                        class="btn btn-style btn-style-3">Turn into admin</a></td>
