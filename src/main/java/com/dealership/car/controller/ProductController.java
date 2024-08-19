@@ -1,9 +1,12 @@
 package com.dealership.car.controller;
 
+import com.dealership.car.DTO.ProductDto;
+import com.dealership.car.constants.Constants;
 import com.dealership.car.model.Product;
 import com.dealership.car.model.TechnicalData;
 import com.dealership.car.repository.ProductRepository;
 import com.dealership.car.repository.TechnicalDataRepository;
+import com.dealership.car.service.ProductService;
 import com.fasterxml.jackson.annotation.OptBoolean;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
@@ -11,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -28,6 +32,8 @@ public class ProductController {
     private ProductRepository productRepository;
 
     private TechnicalDataRepository technicalDataRepository;
+
+    private ProductService productService;
 
     @GetMapping("/showAllProduct")
     public String showAllProduct(Model model){
@@ -50,10 +56,17 @@ public class ProductController {
         return "product.html";
     }
     @GetMapping(value = "/addProduct")
-    public ModelAndView showForm(){
-        ModelAndView modelAndView = new ModelAndView("addProduct.html");
-        modelAndView.addObject("product", new Product());
-        modelAndView.addObject("technicalData" , new TechnicalData());
-        return modelAndView;
+    public String showForm(Model model){
+        model.addAttribute("productDto",new ProductDto());
+        model.addAttribute("availabilityStatuses", Constants.AVAILABILITY_STATUSES);
+        model.addAttribute("bodyTypes", Constants.BODY_TYPES);
+        model.addAttribute("engineTypes", Constants.ENGINE_TYPES);
+        model.addAttribute("enginePlacements", Constants.ENGINE_PLACEMENTS);
+        return "addProduct.html";
+    }
+    @PostMapping(value = "/addProduct")
+    public String addProduct(@RequestParam("productDto") ProductDto productDto){
+        productService.saveProduct(productDto);
+        return "redirect:/product/addProduct";
     }
 }
