@@ -108,18 +108,22 @@
         <td scope="col">Last name</td>
         <td scope="col">Address</td>
         <td scope="col">Mobile number</td>
-        <td scope="col">Orders</td>
+        <td scope="col"></td>
+        <td scope="col"></td>
         <td scope="col"></td>
         <td scope="col"></td>
       </tr>
       </thead>
       <tbody>
       <tr th:each="user: ${users}">
-        <td th:text="${user.username}"></td>
-        <td th:text="${user.firstName}"></td>
-        <td th:text="${user.lastName}"></td>
-        <td th:text="${user.address}"></td>
-        <td th:text="${user.mobileNumber}"></td>
+        <form th:action="@{/updateUser}" method="post">
+          <td><input type="text" name="username" th:value="${user.username}"></td>
+          <td><input type="text" name="firstName" th:value="${user.firstName}"></td>
+          <td><input type="text" name="lastName" th:value="${user.lastName}"></td>
+          <td><input type="text" name="address" th:value="${user.address}"></td>
+          <td><input type="text" name="mobileNumber" th:value="${user.mobileNumber}"></td>
+          <td><button type="submit" class="btn btn-style btn-style-3">Save</button></td>
+        </form>
         <td><a th:href="@{/orders/ordersByUser(id=${user.personId})}"
                class="btn btn-style btn-style-3">User Orders</a></td>
         <td><a  th:href="@{/turnUserIntoOperator(id=${user.personId})}"

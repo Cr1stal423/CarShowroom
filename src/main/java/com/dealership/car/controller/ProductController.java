@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,5 +48,12 @@ public class ProductController {
         products.add(product);
         model.addAttribute("products", products);
         return "product.html";
+    }
+    @GetMapping(value = "/addProduct")
+    public ModelAndView showForm(){
+        ModelAndView modelAndView = new ModelAndView("addProduct.html");
+        modelAndView.addObject("product", new Product());
+        modelAndView.addObject("technicalData" , new TechnicalData());
+        return modelAndView;
     }
 }

@@ -3,9 +3,11 @@ package com.dealership.car.controller;
 import com.dealership.car.constants.Constants;
 import com.dealership.car.repository.PersonRepository;
 import com.dealership.car.service.PersonService;
+import jakarta.transaction.UserTransaction;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -36,5 +38,16 @@ public class UsersController {
             model.addAttribute("message", e.getMessage());
         }
         return "redirect:/staff/users";
+    }
+    @PostMapping(value = "updateUser")
+    public String updateUser(@RequestParam("username")String username, @RequestParam("firstName")String firstName,
+                             @RequestParam("lastName") String lastName, @RequestParam("address")String address,
+                             @RequestParam("mobileNumber")String mobileNumber,  Model model){
+        boolean isUpdated = personService.updateUser(username,firstName,lastName,address,mobileNumber);
+        if (isUpdated){
+            return "redirect:/staff/users";
+        } else {
+            return "redirect:/dashboard";
+        }
     }
 }

@@ -41,7 +41,7 @@ VALUES
 
 COMMIT;
 
-delete from roles where role_id = 5
+delete from roles where role_id = 5;
 
 delete from person where person_id = 1;
 
