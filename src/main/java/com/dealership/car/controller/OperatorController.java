@@ -58,7 +58,7 @@ public String updateOperator(@RequestParam(value = "id", required = false)Intege
 
     boolean isUpdated = personService.updateUser(username, firstName, lastName, address, mobileNumber);
     if (isUpdated){
-        return "redirect:/staff/admins";
+        return "redirect:/staff/operators";
     } else {
         return "redirect:/dashboard";
     }
