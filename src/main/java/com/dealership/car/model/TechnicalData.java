@@ -29,7 +29,7 @@ public class TechnicalData extends BaseEntity{
 //    @NotBlank(message = "engine placement is required")
     private EnginePlacement enginePlacement;
 //    @NotBlank(message = "engine capacity is required")
-    private Integer engineCapacity;
+    private Double engineCapacity;
 
 
 
