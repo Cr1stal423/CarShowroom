@@ -115,13 +115,15 @@
       </thead>
       <tbody>
       <tr th:each="product: ${products}">
-        <td th:text="${product.productId}"></td>
-        <td th:text="${product.originCountry}"></td>
-        <td th:text="${product.brand}"></td>
-        <td th:text="${product.model}"></td>
-        <td th:text="${product.color}"></td>
-        <td th:text="${product.availabilityStatus}"></td>
-        <td th:text="${product.price}"></td>
+        <form th:action="@{/updateProduct}" method="post">
+          <td ><input th:value="${product.productId}"></td>
+          <td ><input th:value="${product.originCountry}"></td>
+          <td ><input th:value="${product.brand}"></td>
+          <td ><input th:value="${product.model}"></td>
+          <td ><input th:value="${product.color}"></td>
+          <td><input th:value="${product.availabilityStatus}"></td>
+          <td ><input th:value="${product.price}"></td>
+        </form>
         <td><a  th:href="@{technicalData/forProduct(id=${product.productId})}"
                 class="btn btn-style btn-style-3">Technical Data</a></td>
         <td><a  th:href="@{/deleteProduct(id=${product.productId})}"

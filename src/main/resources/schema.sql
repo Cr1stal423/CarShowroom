@@ -29,8 +29,12 @@ CREATE TABLE IF NOT EXISTS `technical_data` (
     `created_at` TIMESTAMP NOT NULL,
     `created_by` varchar(50) NOT NULL,
     `updated_at` TIMESTAMP DEFAULT NULL,
-    `updated_by` varchar(50) DEFAULT NULL
+    `updated_by` varchar(50) DEFAULT NULL,
+    FOREIGN KEY (`product_id`) references product(`product_id`)
+
 );
+
+
 
 CREATE TABLE IF NOT EXISTS `product` (
     `product_id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,

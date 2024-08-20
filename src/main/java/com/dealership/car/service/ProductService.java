@@ -27,9 +27,11 @@ public class ProductService {
         Product product = productMapper.toProduct(productDto);
         TechnicalData technicalData = productMapper.toTechnicalData(productDto);
 
+
         product.setTechnicalData(technicalData);
+        technicalData.setProduct(product);
 
         productRepository.save(product);
-
     }
+
 }

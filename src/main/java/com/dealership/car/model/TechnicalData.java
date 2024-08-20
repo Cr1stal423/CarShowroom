@@ -13,22 +13,22 @@ public class TechnicalData extends BaseEntity{
     private Integer technicalId;
 
     @Enumerated(EnumType.STRING)
-    @NotBlank(message = "body type is required")
+//    @NotBlank(message = "body type is required")
     private BodyType bodyType;
-    @NotBlank(message = "doors is required")
+//    @NotBlank(message = "doors is required")
     private Integer doors;
 
-    @OneToOne(mappedBy = "technicalData")
+    @OneToOne(mappedBy = "technicalData", cascade = CascadeType.ALL)
     private Product product;
-    @NotBlank(message = "seats is required")
+//    @NotBlank(message = "seats is required")
     private Integer seats;
     @Enumerated(EnumType.STRING)
-    @NotBlank(message = "engine type is required")
+//    @NotBlank(message = "engine type is required")
     private EngineType engineType;
     @Enumerated(EnumType.STRING)
-    @NotBlank(message = "engine placement is required")
+//    @NotBlank(message = "engine placement is required")
     private EnginePlacement enginePlacement;
-    @NotBlank(message = "engine capacity is required")
+//    @NotBlank(message = "engine capacity is required")
     private Integer engineCapacity;
 
 

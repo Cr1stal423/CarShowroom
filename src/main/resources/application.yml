@@ -3,10 +3,10 @@ spring:
     name: CarDealership
   jpa:
     hibernate:
+      ddl-auto: update
     show-sql: true
-  #      ddl-auto: update
   datasource:
-    url: jdbc:mysql://localhost:3308/database
+    url: jdbc:mysql://localhost:3309/database
     username: root
     password: Sqlwer
 

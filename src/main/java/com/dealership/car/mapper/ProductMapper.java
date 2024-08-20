@@ -3,6 +3,7 @@ package com.dealership.car.mapper;
 import com.dealership.car.DTO.ProductDto;
 import com.dealership.car.model.Product;
 import com.dealership.car.model.TechnicalData;
+import com.dealership.car.repository.PersonRepository;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 @Component
 @Data
 public class ProductMapper {
+    private final PersonRepository personRepository;
 
     public Product toProduct(ProductDto productDto){
         Product product = new Product();
