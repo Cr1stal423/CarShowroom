@@ -71,4 +71,17 @@ public class ProductController {
         productService.saveProduct(productDto);
         return "redirect:/product/addProduct";
     }
+    @PostMapping(value = "/updateProduct")
+    public String updateProduct(@RequestParam(value = "productId") Integer productId,@RequestParam(value = "originCountry")String originCountry,
+                                @RequestParam(value = "brand")String brand,
+                                @RequestParam(value = "model")String model,@RequestParam(value = "color")String color,
+                                @RequestParam(value = "availabilityStatus")Product.AvailabilityStatus availabilityStatus,
+                                @RequestParam(value = "price")Long price){
+        boolean isUpdated = productService.updateProduct(productId,originCountry,brand,model,color, availabilityStatus,price);
+        if (isUpdated){
+            return "redirect:/product/showAllProduct";
+        } else {
+            return "redirect:/dashboard";
+        }
+    }
 }

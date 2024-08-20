@@ -18,5 +18,5 @@ public class BaseEntity {
     @Column(name = "updated_by")
     private String updatedBy;
     @Column(name = "updated_at")
-    private String updatedAt;
+    private LocalDateTime updatedAt;
 }

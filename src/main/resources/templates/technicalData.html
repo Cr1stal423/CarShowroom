@@ -114,17 +114,20 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="techData: ${technicalData}">
-                <td th:text="${techData.technicalId}"></td>
-                <td th:text="${techData.bodyType}"></td>
-                <td th:text="${techData.doors}"></td>
-                <td th:text="${techData.seats}"></td>
-                <td th:text="${techData.engineType}"></td>
-                <td th:text="${techData.enginePlacement}"></td>
-                <td th:text="${techData.engineCapacity}"></td>
-                <td><a  th:href="@{/product/showProductById(id=${techData.technicalId})}"
+            <tr th:object="${technicalData}">
+                <form th:action="@{/technicalData/updateTechnicalData}" method="post">
+                    <td ><input th:value="${technicalData.technicalId}" name="technicalId"></td>
+                    <td ><input th:value="${technicalData.bodyType}" name="bodyType"></td>
+                    <td ><input th:value="${technicalData.doors}" name="doors"></td>
+                    <td ><input th:value="${technicalData.seats}" name="seats"></td>
+                    <td ><input th:value="${technicalData.engineType}" name="engineType"></td>
+                    <td ><input th:value="${technicalData.enginePlacement}" name="enginePlacement"></td>
+                    <td ><input th:value="${technicalData.engineCapacity}" name="engineCapacity"></td>
+                    <td><button type="submit" class="btn btn-primary btn-style">Save</button></td>
+                </form>
+                <td><a  th:href="@{/product/showProductById(id=${technicalData.technicalId})}"
                         class="btn btn-style btn-style-3">Product</a></td>
-                <td><a  th:href="@{/deleteProduct(id=${techData.technicalId})}"
+                <td><a  th:href="@{/deleteProduct(id=${technicalData.technicalId})}"
                         class="btn btn-style btn-style-3">Delete Product</a></td>
             </tr>
             </tbody>

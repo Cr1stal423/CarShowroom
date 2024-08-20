@@ -11,6 +11,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.Optional;
+
 @Service
 @Data
 @AllArgsConstructor
@@ -34,4 +37,43 @@ public class ProductService {
         productRepository.save(product);
     }
 
+
+    public boolean updateProduct(Integer productId, String originCountry, String brand, String model, String color,Product.AvailabilityStatus availabilityStatus ,Long price) {
+       Optional<Product> optionalProduct = productRepository.findById(productId);
+       boolean isSaved = false;
+       if (optionalProduct.isPresent()){
+           Product product = optionalProduct.get();
+           product.setOriginCountry(originCountry);
+           product.setBrand(brand);
+           product.setModel(model);
+           product.setColor(color);
+           product.setAvailabilityStatus(availabilityStatus);
+           product.setPrice(price);
+           isSaved = true;
+
+           productRepository.save(product);
+       } else System.out.println(String.format("not found product with given id %s", productId));
+
+       return isSaved;
+    }
+
+    public boolean updateTechData(Integer technicalId, TechnicalData.BodyType bodyType, Integer doors, Integer seats, TechnicalData.EngineType engineType, TechnicalData.EnginePlacement enginePlacement, Double engineCapacity) {
+        boolean isSaved = false;
+        Optional<TechnicalData> optionalData = technicalDataRepository.findById(technicalId);
+        if (optionalData.isPresent()){
+            TechnicalData technicalData = optionalData.get();
+            technicalData.setBodyType(bodyType);
+            technicalData.setDoors(doors);
+            technicalData.setSeats(seats);
+            technicalData.setEngineType(engineType);
+            technicalData.setEnginePlacement(enginePlacement);
+            technicalData.setEngineCapacity(engineCapacity);
+            technicalData.setUpdatedAt(LocalDateTime.now());
+            technicalData.setUpdatedBy("Operator");
+            isSaved = true;
+
+            technicalDataRepository.save(technicalData);
+        } else System.out.println(String.format("not found technicalData with given id s", technicalId));
+        return isSaved;
+    }
 }

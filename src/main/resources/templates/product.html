@@ -111,23 +111,23 @@
         <td scope="col">Availability Status</td>
         <td scope="col">Price</td>
         <td scope="col"></td>
+        <td scope="col"></td>
       </tr>
       </thead>
       <tbody>
       <tr th:each="product: ${products}">
-        <form th:action="@{/updateProduct}" method="post">
-          <td ><input th:value="${product.productId}"></td>
-          <td ><input th:value="${product.originCountry}"></td>
-          <td ><input th:value="${product.brand}"></td>
-          <td ><input th:value="${product.model}"></td>
-          <td ><input th:value="${product.color}"></td>
-          <td><input th:value="${product.availabilityStatus}"></td>
-          <td ><input th:value="${product.price}"></td>
+        <form th:action="@{/product/updateProduct}" method="post">
+          <td><input type="hidden" th:value="${product.productId}" name="productId"></td>
+          <td><input th:value="${product.originCountry}" name="originCountry"></td>
+          <td><input th:value="${product.brand}" name="brand"></td>
+          <td><input th:value="${product.model}" name="model"></td>
+          <td><input th:value="${product.color}" name="color"></td>
+          <td><input th:value="${product.availabilityStatus}" name="availabilityStatus"></td>
+          <td><input th:value="${product.price}" name="price"></td>
+          <td><button class="btn btn-primary btn-style">Save</button></td>
         </form>
-        <td><a  th:href="@{technicalData/forProduct(id=${product.productId})}"
-                class="btn btn-style btn-style-3">Technical Data</a></td>
-        <td><a  th:href="@{/deleteProduct(id=${product.productId})}"
-                class="btn btn-style btn-style-3">Delete Product</a></td>
+        <td><a th:href="@{technicalData/forProduct(id=${product.productId})}" class="btn btn-style btn-style-3">Technical Data</a></td>
+        <td><a th:href="@{/deleteProduct(id=${product.productId})}" class="btn btn-style btn-style-3">Delete Product</a></td>
       </tr>
       </tbody>
     </table>
