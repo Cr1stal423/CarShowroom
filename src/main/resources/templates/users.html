@@ -97,7 +97,7 @@
   <div class="table-responsive-md">
     <div class="row mb-4">
       <div class="col-md-4">
-        <h3 class="heading-21921">User Persons</h3>
+        <h3 class="heading-21921">User Persons1</h3>
       </div>
     </div>
     <table class="table table-striped table-hover">
@@ -124,7 +124,7 @@
           <td><input type="text" name="mobileNumber" th:value="${user.mobileNumber}"></td>
           <td><button type="submit" class="btn btn-style btn-style-3">Save</button></td>
         </form>
-        <td><a th:href="@{/orders/ordersByUser(id=${user.personId})}"
+        <td><a sec:authorize="hasRole('ROLE_OWNER') or hasRole('ROLE_ADMIN')" th:href="@{/orders/ordersByUser(id=${user.personId})}"
                class="btn btn-style btn-style-3">User Orders</a></td>
         <td><a  th:href="@{/turnUserIntoOperator(id=${user.personId})}"
                 class="btn btn-style btn-style-3">Turn into operator</a></td>

@@ -18,7 +18,7 @@ public class TechnicalData extends BaseEntity{
 //    @NotBlank(message = "doors is required")
     private Integer doors;
 
-    @OneToOne(mappedBy = "technicalData", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "technicalData")
     private Product product;
 //    @NotBlank(message = "seats is required")
     private Integer seats;

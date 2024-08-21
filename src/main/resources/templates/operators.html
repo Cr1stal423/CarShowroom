@@ -125,7 +125,7 @@
                     <td><input type="text" name="mobileNumber" th:value="${operator.mobileNumber}"/></td>
                     <td><button type="submit" class="btn btn-style btn-style-3">Save</button></td>
                 </form>
-                <td><a th:href="@{/turnIntoAdmin(id=${operator.personId})}"
+                <td><a sec:authorize="hasRole('ROLE_OWNER')" th:href="@{/turnIntoAdmin(id=${operator.personId})}"
                        class="btn btn-style btn-style-3">Turn into admin</a></td>
                 <td><a th:href="@{/deleteOperator(id=${operator.personId})}"
                        class="btn btn-style btn-style-3">Delete</a></td>
