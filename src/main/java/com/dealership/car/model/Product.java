@@ -1,5 +1,6 @@
     package com.dealership.car.model;
 
+    import com.dealership.car.dynamic.IdentifiableEntity;
     import jakarta.persistence.*;
     import jakarta.validation.constraints.NotBlank;
     import jakarta.validation.constraints.Size;
@@ -10,7 +11,7 @@
 
     @Data
     @Entity
-    public class Product {
+    public class Product extends BaseEntity implements IdentifiableEntity {
         @Id
         @GeneratedValue(strategy =  GenerationType.IDENTITY)
         private Integer productId;
@@ -37,6 +38,12 @@
         private TechnicalData technicalData;
         @OneToMany(mappedBy = "product")
         private Set<OrderEntity> orders = new HashSet<>();
+
+        @Override
+        public Integer getId() {
+            return productId;
+        }
+
         public enum AvailabilityStatus{
             AVAILABLE,
             NOT_AVAILABLE,

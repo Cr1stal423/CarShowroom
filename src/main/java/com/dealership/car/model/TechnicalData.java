@@ -1,5 +1,6 @@
 package com.dealership.car.model;
 
+import com.dealership.car.dynamic.IdentifiableEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -7,7 +8,7 @@ import lombok.Data;
 
 @Data
 @Entity
-public class TechnicalData extends BaseEntity{
+public class TechnicalData extends BaseEntity implements IdentifiableEntity {
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private Integer technicalId;
@@ -31,6 +32,10 @@ public class TechnicalData extends BaseEntity{
 //    @NotBlank(message = "engine capacity is required")
     private Double engineCapacity;
 
+    @Override
+    public Integer getId() {
+        return technicalId;
+    }
 
 
     public enum BodyType {

@@ -1,5 +1,6 @@
 package com.dealership.car.model;
 
+import com.dealership.car.dynamic.IdentifiableEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -9,10 +10,15 @@ import lombok.Data;
 
 @Entity
 @Data
-public class Roles extends BaseEntity {
+public class Roles extends BaseEntity implements IdentifiableEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer roleId;
     @NotBlank(message = "role name is required")
     private String roleName;
+
+    @Override
+    public Integer getId() {
+        return roleId;
+    }
 }

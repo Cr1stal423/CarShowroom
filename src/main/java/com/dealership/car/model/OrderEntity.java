@@ -1,5 +1,6 @@
 package com.dealership.car.model;
 
+import com.dealership.car.dynamic.IdentifiableEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -8,7 +9,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 @Entity
 @Data
-public class OrderEntity extends BaseEntity{
+public class OrderEntity extends BaseEntity implements IdentifiableEntity {
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private Integer orderId;
@@ -28,6 +29,11 @@ public class OrderEntity extends BaseEntity{
 //    @NotBlank(message = "payment method is required")
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
+
+    @Override
+    public Integer getId() {
+        return orderId;
+    }
 
     public enum PaymentMethod {
         CARD,

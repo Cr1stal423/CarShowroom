@@ -1,5 +1,6 @@
 package com.dealership.car.model;
 
+import com.dealership.car.dynamic.IdentifiableEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -17,7 +18,7 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString(exclude = {"orders", "keys"})
-public class Person extends BaseEntity{
+public class Person extends BaseEntity implements IdentifiableEntity {
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private Integer personId;
@@ -58,4 +59,8 @@ public class Person extends BaseEntity{
     @JsonIgnore // Ігнорує це поле при серіалізації в JSON
     private Roles roles;
 
+    @Override
+    public Integer getId() {
+        return personId;
+    }
 }
