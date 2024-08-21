@@ -12,6 +12,7 @@ import lombok.Data;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -75,5 +76,8 @@ public class ProductService {
             technicalDataRepository.save(technicalData);
         } else System.out.println(String.format("not found technicalData with given id s", technicalId));
         return isSaved;
+    }
+    public List<Product> findAll(){
+        return productRepository.findAll();
     }
 }

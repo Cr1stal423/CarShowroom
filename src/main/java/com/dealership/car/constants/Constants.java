@@ -1,5 +1,6 @@
 package com.dealership.car.constants;
 
+import com.dealership.car.model.OrderEntity;
 import com.dealership.car.model.Product;
 import com.dealership.car.model.TechnicalData;
 
@@ -43,5 +44,13 @@ public interface Constants {
             TechnicalData.EnginePlacement.FRONT,
             TechnicalData.EnginePlacement.REAR,
             TechnicalData.EnginePlacement.MID
+    );
+    public static final List<OrderEntity.PaymentType> PAYMENT_TYPES = Arrays.asList(
+            OrderEntity.PaymentType.BUY,
+            OrderEntity.PaymentType.CREDIT
+    );
+    public static final List<OrderEntity.PaymentMethod> PAYMENT_METHODS = Arrays.asList(
+            OrderEntity.PaymentMethod.CARD,
+            OrderEntity.PaymentMethod.CASH
     );
 }

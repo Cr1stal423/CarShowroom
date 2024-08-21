@@ -2,6 +2,7 @@ package com.dealership.car.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -19,13 +20,12 @@ public class OrderEntity extends BaseEntity{
     private Person person;
     //TODO: need to remove because i have created at
     private LocalDateTime orderTime;
-    @NotBlank(message = "delivery is required")
+    @NotNull(message = "delivery is required")
     private boolean delivery;
-
     @Enumerated(EnumType.STRING)
-    @NotBlank(message = "payment type is required")
+//    @NotBlank(message = "payment type is required")
     private PaymentType paymentType;
-    @NotBlank(message = "payment method is required")
+//    @NotBlank(message = "payment method is required")
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
 

@@ -1,16 +1,22 @@
 package com.dealership.car.controller;
 
+import com.dealership.car.DTO.OrderDto;
+import com.dealership.car.constants.Constants;
 import com.dealership.car.model.OrderEntity;
 import com.dealership.car.model.Person;
+import com.dealership.car.model.Product;
 import com.dealership.car.repository.OrderEntityRepository;
 import com.dealership.car.repository.PersonRepository;
+import com.dealership.car.repository.ProductRepository;
+import com.dealership.car.service.PersonService;
+import com.dealership.car.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +29,12 @@ public class OrderController {
     private OrderEntityRepository orderEntityRepository;
 
     private PersonRepository personRepository;
+
+    private ProductRepository productRepository;
+
+    private ProductService productService;
+
+    private PersonService personService;
 
     @GetMapping(value = "/showAll")
     public String showAllOrders(Model model){
@@ -38,4 +50,39 @@ public class OrderController {
         model.addAttribute("orders", orders);
         return "orders.html";
     }
+    @GetMapping(value = "/addOrder")
+    public String showForm(Model model){
+        model.addAttribute("orderDto", new OrderDto());
+        model.addAttribute("persons", personService.findAll());
+        model.addAttribute("products", productService.findAll());
+        model.addAttribute("paymentTypes", Constants.PAYMENT_TYPES);
+        model.addAttribute("paymentMethods", Constants.PAYMENT_METHODS);
+        return "order-form.html";
+    }
+
+    @PostMapping(value = "/makeOrder")
+    public String makeOrder(@Valid@ModelAttribute("orderDto")OrderDto orderDto, Model model, Errors errors){
+        if (errors.hasErrors()){
+            return "order-form.html";
+        } else {
+            Optional<Product> optionalProduct = productRepository.findById(orderDto.getProductId());
+            Optional<Person> optionalPerson = personRepository.findById(orderDto.getPersonId());
+            if (optionalProduct.isPresent() && optionalPerson.isPresent()) {
+                Product product = optionalProduct.get();
+                Person person = optionalPerson.get();
+
+                OrderEntity order = new OrderEntity();
+                order.setPerson(person);
+                order.setProduct(product);
+                order.setDelivery(orderDto.getDelivery());
+                order.setPaymentMethod(orderDto.getPaymentMethod());
+                order.setPaymentType(orderDto.getPaymentType());
+
+                orderEntityRepository.save(order);
+            }
+
+            return "redirect:/orders/addOrder";
+        }
+    }
+
 }
