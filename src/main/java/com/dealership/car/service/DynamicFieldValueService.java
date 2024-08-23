@@ -1,7 +1,9 @@
 package com.dealership.car.service;
 
+import com.dealership.car.DTO.DynamicFieldDto;
 import com.dealership.car.dynamic.DynamicFieldValue;
 import com.dealership.car.dynamic.FieldsMetadata;
+import com.dealership.car.mapper.DynamicFieldMapper;
 import com.dealership.car.model.*;
 import com.dealership.car.repository.*;
 import lombok.AllArgsConstructor;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -19,23 +22,15 @@ public class DynamicFieldValueService {
 
     private FieldMetadataRepository fieldMetadataRepository;
 
-    private ContactRepository contactRepository;
-
-    private KeysRepository keysRepository;
-
-    private OrderEntityRepository orderEntityRepository;
-
-    private PersonRepository personRepository;
-
     private ProductRepository productRepository;
 
-    private RolesRepository rolesRepository;
+    private DynamicFieldMapper dynamicFieldMapper;
 
-    private TechnicalDataRepository technicalDataRepository;
+
     public List<DynamicFieldValue> getAllDynamicValueForEntity(Integer entityId, String entityType){
         return dynamicFieldValueRepository.findAllByEntityIdAndEntityType(entityId,entityType);
     }
-    // Метод для додавання нового динамічного поля
+
     public FieldsMetadata addFieldMetadata(FieldsMetadata fieldMetadata) {
         return fieldMetadataRepository.save(fieldMetadata);
     }
@@ -55,29 +50,95 @@ public class DynamicFieldValueService {
     public List<FieldsMetadata> getAllFields() {
         return fieldMetadataRepository.findAll();
     }
+    //TODO make that with wildcard
+    public String getEntityType(Integer entityId){
+        String className = "";
+        Optional<Product> product = productRepository.findById(entityId);
+            if (product.isPresent()) {
+                Product product1 = product.get();
+                Class<?> entityClass = product1.getClass();
+                className = entityClass.getSimpleName();
+            }
+        return className;
+    }
+    public DynamicFieldValue optionalFindById(Integer id){
+        Optional<DynamicFieldValue> optionalDynamicFieldValue = dynamicFieldValueRepository.findById(id);
+        DynamicFieldValue dynamicFieldValue = new DynamicFieldValue();
+        if (optionalDynamicFieldValue.isPresent()){
+             dynamicFieldValue = optionalDynamicFieldValue.get();
+        } else {
+            System.out.println("error, not found dynamic field ith given id");
+        }
+        return dynamicFieldValue;
+    }
+    public Integer findEntityIdByDynamicValueId(Integer dynamicFieldId){
+        Optional<DynamicFieldValue> dynamicFieldValue = dynamicFieldValueRepository.findById(dynamicFieldId);
+        Integer entityId = 0;
+        if (dynamicFieldValue.isPresent()){
+            entityId = dynamicFieldValue.get().getEntityId();
+        }
+        return entityId;
+    }
+    public DynamicFieldDto setDataToDto(Integer dynamicFieldValueId){
+        DynamicFieldValue dynamicFieldValue = optionalFindById(dynamicFieldValueId);
+        FieldsMetadata fieldsMetadata = dynamicFieldValue.getField();
+        DynamicFieldDto dynamicFieldDto = new DynamicFieldDto();
+        dynamicFieldDto.setEntityId(dynamicFieldValue.getEntityId());
+        dynamicFieldDto.setEntityType(dynamicFieldValue.getEntityType());
+        dynamicFieldDto.setFieldId(fieldsMetadata.getId());
+        dynamicFieldDto.setFieldName(fieldsMetadata.getFieldName());
+        dynamicFieldDto.setFieldType(fieldsMetadata.getFieldType());
+        dynamicFieldDto.setValue(dynamicFieldValue.getValue());
 
-
-    public Contact getContactById(Integer entityId) {
-        return contactRepository.findById(entityId).orElse(null);
+        return dynamicFieldDto;
     }
 
-    public Keys getKeysById(Integer entityId) {
-        return keysRepository.findById(entityId).orElse(null);
+    public Boolean saveDynamicFieldsValueFromDto(DynamicFieldDto dynamicFieldDto){
+        Boolean isSaved = false;
+        try {
+            FieldsMetadata fieldsMetadata = dynamicFieldMapper.toSetFieldsMetadata(dynamicFieldDto);
+            DynamicFieldValue dynamicFieldValue = dynamicFieldMapper.toSetDynamicValue(dynamicFieldDto);
+            FieldsMetadata f = fieldMetadataRepository.save(fieldsMetadata);
+            dynamicFieldValueRepository.save(dynamicFieldValue);
+            isSaved = true;
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return isSaved;
     }
-    public OrderEntity getOrderById(Integer entityId){
-        return orderEntityRepository.findById(entityId).orElse(null);
+    public Boolean deleteDynamicValue(Integer dynamicValueId){
+        Boolean isDeleted = false;
+        try {
+            DynamicFieldValue dynamicFieldValue = optionalFindById(dynamicValueId);
+            dynamicFieldValueRepository.delete(dynamicFieldValue);
+            isDeleted = true;
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return isDeleted;
     }
-    public Person getPersonById(Integer entityId){
-        return personRepository.findById(entityId).orElse(null);
-    }
-    public Product getProductById(Integer entityId) {
-        return productRepository.findById(entityId).orElse(null);
-    }
-    public Roles getRoleById(Integer entityId){
-        return rolesRepository.findById(entityId).orElse(null);
-    }
-    public TechnicalData getTechnicalDataById(Integer entityId){
-        return technicalDataRepository.findById(entityId).orElse(null);
-    }
+
+//    public Contact getContactById(Integer entityId) {
+//        return contactRepository.findById(entityId).orElse(null);
+//    }
+//
+//    public Keys getKeysById(Integer entityId) {
+//        return keysRepository.findById(entityId).orElse(null);
+//    }
+//    public OrderEntity getOrderById(Integer entityId){
+//        return orderEntityRepository.findById(entityId).orElse(null);
+//    }
+//    public Person getPersonById(Integer entityId){
+//        return personRepository.findById(entityId).orElse(null);
+//    }
+//    public Product getProductById(Integer entityId) {
+//        return productRepository.findById(entityId).orElse(null);
+//    }
+//    public Roles getRoleById(Integer entityId){
+//        return rolesRepository.findById(entityId).orElse(null);
+//    }
+//    public TechnicalData getTechnicalDataById(Integer entityId){
+//        return technicalDataRepository.findById(entityId).orElse(null);
+//    }
 
 }

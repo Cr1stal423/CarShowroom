@@ -2,10 +2,15 @@ package com.dealership.car.controller;
 
 import com.dealership.car.DTO.ProductDto;
 import com.dealership.car.constants.Constants;
+import com.dealership.car.dynamic.DynamicFieldValue;
+import com.dealership.car.dynamic.FieldsMetadata;
+import com.dealership.car.model.Person;
 import com.dealership.car.model.Product;
 import com.dealership.car.model.TechnicalData;
+import com.dealership.car.repository.DynamicFieldValueRepository;
 import com.dealership.car.repository.ProductRepository;
 import com.dealership.car.repository.TechnicalDataRepository;
+import com.dealership.car.service.DynamicFieldValueService;
 import com.dealership.car.service.ProductService;
 import com.fasterxml.jackson.annotation.OptBoolean;
 import jakarta.servlet.http.HttpSession;
@@ -20,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -34,10 +40,14 @@ public class ProductController {
 
     private ProductService productService;
 
+    private DynamicFieldValueService dynamicFieldValueService;
+
     @GetMapping("/showAllProduct")
     public String showAllProduct(Model model){
         List<Product> products = productRepository.findAll();
-        model.addAttribute("products", products);
+        Map<Product,List<DynamicFieldValue>> personAndDynamicFields = productService.getDynamicFieldsForAllProduct(products);
+        model.addAttribute("map", personAndDynamicFields);
+        model.addAttribute("products");
         return "product.html";
     }
     @GetMapping(value = "/technicalData/forProduct")
@@ -48,10 +58,14 @@ public class ProductController {
     @GetMapping("/showProductById")
     public String showProduct(Model model,@RequestParam("id") int id, HttpSession httpSession){
         List<Product> products = new ArrayList<>();
-        Optional<TechnicalData> technicalData = technicalDataRepository.findById(id);
-        Product product = technicalData.get().getProduct();
-        products.add(product);
-        model.addAttribute("products", products);
+        Optional<Product> product = productRepository.findById(id);
+        if (product.isPresent()){
+            products.add(product.get());
+        }
+        Map<Product,List<DynamicFieldValue>> personAndDynamicFields = productService.getDynamicFieldsForAllProduct(products);
+        model.addAttribute("map", personAndDynamicFields);
+        model.addAttribute("products");
+
         return "product.html";
     }
     @GetMapping(value = "/addProduct")

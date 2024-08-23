@@ -30,9 +30,9 @@ delete from person where person_id = 2;
 START TRANSACTION;
 
 INSERT INTO `technical_data`
-(product_id,seats, body_type, doors, engine_type, engine_placement, engine_capacity, created_at, created_by, updated_at, updated_by)
+(seats, body_type, doors, engine_type, engine_placement, engine_capacity, created_at, created_by, updated_at, updated_by)
 VALUES
-    (1,2, 'SEDAN', 4, 'HYBRID', 'FRONT', 12, CURDATE(), 'OWNER', NULL, NULL);
+    (2, 'SEDAN', 4, 'HYBRID', 'FRONT', 12, CURDATE(), 'OWNER', NULL, NULL);
 
 INSERT INTO `product`
 (origin_country, brand, model, color, availability_status, price, technical_id, created_at, created_by, updated_at, updated_by)

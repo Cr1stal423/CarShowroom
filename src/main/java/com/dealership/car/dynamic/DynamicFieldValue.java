@@ -11,7 +11,7 @@ public class DynamicFieldValue {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "field_id")
     private FieldsMetadata field;
 

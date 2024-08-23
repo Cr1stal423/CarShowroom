@@ -4,12 +4,15 @@
     import jakarta.persistence.*;
     import jakarta.validation.constraints.NotBlank;
     import jakarta.validation.constraints.Size;
-    import lombok.Data;
+    import lombok.*;
 
     import java.util.HashSet;
     import java.util.Set;
 
-    @Data
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
     @Entity
     public class Product extends BaseEntity implements IdentifiableEntity {
         @Id

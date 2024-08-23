@@ -4,9 +4,13 @@ import com.dealership.car.dynamic.IdentifiableEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.*;
 
 @Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class TechnicalData extends BaseEntity implements IdentifiableEntity {
     @Id

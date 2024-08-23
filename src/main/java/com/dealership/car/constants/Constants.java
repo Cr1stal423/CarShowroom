@@ -56,4 +56,5 @@ public interface Constants {
     public static final  List<String> ENTITY_TYPES = Arrays.asList(
             "Contact", "Keys", "OrderEntity", "Person", "Product", "Roles", "TechnicalData"
     );
+
 }

@@ -1,6 +1,7 @@
 package com.dealership.car.service;
 
 import com.dealership.car.DTO.ProductDto;
+import com.dealership.car.dynamic.DynamicFieldValue;
 import com.dealership.car.mapper.ProductMapper;
 import com.dealership.car.model.Product;
 import com.dealership.car.model.TechnicalData;
@@ -12,8 +13,7 @@ import lombok.Data;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Data
@@ -26,6 +26,8 @@ public class ProductService {
 
     private final ProductMapper productMapper;
 
+    private final DynamicFieldValueService dynamicFieldValueService;
+
     @Transactional
     public void saveProduct(ProductDto productDto) {
         Product product = productMapper.toProduct(productDto);
@@ -33,6 +35,7 @@ public class ProductService {
 
 
         product.setTechnicalData(technicalData);
+        product.setCreatedAt(LocalDateTime.now());
         technicalData.setProduct(product);
 
         productRepository.save(product);
@@ -79,5 +82,16 @@ public class ProductService {
     }
     public List<Product> findAll(){
         return productRepository.findAll();
+    }
+
+    public Map<Product,List<DynamicFieldValue>> getDynamicFieldsForAllProduct(List<Product> products){
+        Map<Product,List<DynamicFieldValue>> productDynamicFieldMap = new HashMap<>();
+        for (Product product : products){
+            List<DynamicFieldValue> dynamicFieldValueList = dynamicFieldValueService.getAllDynamicValueForEntity(product.getProductId(),"Product");
+            if (!dynamicFieldValueList.isEmpty()){
+                productDynamicFieldMap.put(product,dynamicFieldValueList);
+            }
+        }
+        return productDynamicFieldMap;
     }
 }
