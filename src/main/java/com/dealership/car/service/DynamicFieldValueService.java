@@ -4,8 +4,10 @@ import com.dealership.car.DTO.DynamicFieldDto;
 import com.dealership.car.dynamic.DynamicFieldValue;
 import com.dealership.car.dynamic.FieldsMetadata;
 import com.dealership.car.mapper.DynamicFieldMapper;
-import com.dealership.car.model.*;
-import com.dealership.car.repository.*;
+import com.dealership.car.model.Product;
+import com.dealership.car.repository.DynamicFieldValueRepository;
+import com.dealership.car.repository.FieldMetadataRepository;
+import com.dealership.car.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,16 +29,18 @@ public class DynamicFieldValueService {
     private DynamicFieldMapper dynamicFieldMapper;
 
 
-    public List<DynamicFieldValue> getAllDynamicValueForEntity(Integer entityId, String entityType){
-        return dynamicFieldValueRepository.findAllByEntityIdAndEntityType(entityId,entityType);
+    public List<DynamicFieldValue> getAllDynamicValueForEntity(Integer entityId, String entityType) {
+        return dynamicFieldValueRepository.findAllByEntityIdAndEntityType(entityId, entityType);
     }
 
     public FieldsMetadata addFieldMetadata(FieldsMetadata fieldMetadata) {
         return fieldMetadataRepository.save(fieldMetadata);
     }
-    public void saveDynamicFieldValue(DynamicFieldValue dynamicFieldValue){
+
+    public void saveDynamicFieldValue(DynamicFieldValue dynamicFieldValue) {
         dynamicFieldValueRepository.save(dynamicFieldValue);
     }
+
     public Map<Integer, String> getDynamicValuesForEntity(Integer entityId, String entityType) {
         List<DynamicFieldValue> dynamicFieldValues = dynamicFieldValueRepository.findAllByEntityIdAndEntityType(entityId, entityType);
         Map<Integer, String> valuesMap = new HashMap<>();
@@ -47,39 +51,44 @@ public class DynamicFieldValueService {
 
         return valuesMap;
     }
+
     public List<FieldsMetadata> getAllFields() {
         return fieldMetadataRepository.findAll();
     }
+
     //TODO make that with wildcard
-    public String getEntityType(Integer entityId){
+    public String getEntityType(Integer entityId) {
         String className = "";
         Optional<Product> product = productRepository.findById(entityId);
-            if (product.isPresent()) {
-                Product product1 = product.get();
-                Class<?> entityClass = product1.getClass();
-                className = entityClass.getSimpleName();
-            }
+        if (product.isPresent()) {
+            Product product1 = product.get();
+            Class<?> entityClass = product1.getClass();
+            className = entityClass.getSimpleName();
+        }
         return className;
     }
-    public DynamicFieldValue optionalFindById(Integer id){
+
+    public DynamicFieldValue optionalFindById(Integer id) {
         Optional<DynamicFieldValue> optionalDynamicFieldValue = dynamicFieldValueRepository.findById(id);
         DynamicFieldValue dynamicFieldValue = new DynamicFieldValue();
-        if (optionalDynamicFieldValue.isPresent()){
-             dynamicFieldValue = optionalDynamicFieldValue.get();
+        if (optionalDynamicFieldValue.isPresent()) {
+            dynamicFieldValue = optionalDynamicFieldValue.get();
         } else {
             System.out.println("error, not found dynamic field ith given id");
         }
         return dynamicFieldValue;
     }
-    public Integer findEntityIdByDynamicValueId(Integer dynamicFieldId){
+
+    public Integer findEntityIdByDynamicValueId(Integer dynamicFieldId) {
         Optional<DynamicFieldValue> dynamicFieldValue = dynamicFieldValueRepository.findById(dynamicFieldId);
         Integer entityId = 0;
-        if (dynamicFieldValue.isPresent()){
+        if (dynamicFieldValue.isPresent()) {
             entityId = dynamicFieldValue.get().getEntityId();
         }
         return entityId;
     }
-    public DynamicFieldDto setDataToDto(Integer dynamicFieldValueId){
+
+    public DynamicFieldDto setDataToDto(Integer dynamicFieldValueId) {
         DynamicFieldValue dynamicFieldValue = optionalFindById(dynamicFieldValueId);
         FieldsMetadata fieldsMetadata = dynamicFieldValue.getField();
         DynamicFieldDto dynamicFieldDto = new DynamicFieldDto();
@@ -93,7 +102,7 @@ public class DynamicFieldValueService {
         return dynamicFieldDto;
     }
 
-    public Boolean saveDynamicFieldsValueFromDto(DynamicFieldDto dynamicFieldDto){
+    public Boolean saveDynamicFieldsValueFromDto(DynamicFieldDto dynamicFieldDto) {
         Boolean isSaved = false;
         try {
             FieldsMetadata fieldsMetadata = dynamicFieldMapper.toSetFieldsMetadata(dynamicFieldDto);
@@ -101,21 +110,27 @@ public class DynamicFieldValueService {
             FieldsMetadata f = fieldMetadataRepository.save(fieldsMetadata);
             dynamicFieldValueRepository.save(dynamicFieldValue);
             isSaved = true;
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return isSaved;
     }
-    public Boolean deleteDynamicValue(Integer dynamicValueId){
+
+    public Boolean deleteDynamicValue(Integer dynamicValueId) {
         Boolean isDeleted = false;
         try {
             DynamicFieldValue dynamicFieldValue = optionalFindById(dynamicValueId);
             dynamicFieldValueRepository.delete(dynamicFieldValue);
             isDeleted = true;
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return isDeleted;
+    }
+
+    public void deleteAllByList(List<DynamicFieldValue> dynamicFieldValueList) {
+        dynamicFieldValueRepository.deleteAll(dynamicFieldValueList);
+
     }
 
 //    public Contact getContactById(Integer entityId) {

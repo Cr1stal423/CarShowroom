@@ -98,4 +98,13 @@ public class ProductController {
             return "redirect:/dashboard";
         }
     }
+    @GetMapping("/deleteProduct")
+    public String deleteProduct(@RequestParam("id") Integer id, Model model){
+        Boolean isDeleted = productService.deleteProductById(id);
+        String redirect = "redirect:/product/showAllProduct";
+        if (!isDeleted){
+            redirect = "redirect:/dashboard";
+        }
+        return redirect;
+    }
 }

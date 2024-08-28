@@ -172,7 +172,13 @@
         <h2>Add Field Value</h2>
         <form th:action="@{/dynamic-fields/addValue}" method="post">
             <label for="fieldId">Field ID:</label>
-            <input type="text" id="fieldId" name="fieldId" required/>
+            <select class="form-select" id="fieldId" name="fieldId">
+                <option value="" disabled selected>Select field</option>
+                <option th:each="field: ${fields}"
+                        th:value="${field.id}"
+                        th:text="${field.id + '-' + field.fieldName + '-' + field.fieldType}">
+                </option>
+            </select>
 
             <label for="entityId">Entity ID:</label>
             <input type="text" id="entityId" name="entityId"

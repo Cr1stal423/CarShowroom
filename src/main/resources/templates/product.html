@@ -117,27 +117,43 @@
       </tr>
       </thead>
       <tbody>
-      <tr th:each="item: ${map}">
-          <form th:action="@{/product/updateProduct}" method="post">
-            <td><input th:value="${item.key.productId}" name="productId"></td>
-            <td><input th:value="${item.key.originCountry}" name="originCountry"></td>
-            <td><input th:value="${item.key.brand}" name="brand"></td>
-            <td><input th:value="${item.key.model}" name="model"></td>
-            <td><input th:value="${item.key.color}" name="color"></td>
-            <td><input th:value="${item.key.availabilityStatus}" name="availabilityStatus"></td>
-            <td><input th:value="${item.key.price}" name="price"></td>
+      <tr th:each="entry : ${map}">
+        <form th:action="@{/product/updateProduct}" method="post">
+          <td><input th:value="${entry.key.productId}" name="productId"></td>
+          <td><input th:value="${entry.key.originCountry}" name="originCountry"></td>
+          <td><input th:value="${entry.key.brand}" name="brand"></td>
+          <td><input th:value="${entry.key.model}" name="model"></td>
+          <td><input th:value="${entry.key.color}" name="color"></td>
+          <td><input th:value="${entry.key.availabilityStatus}" name="availabilityStatus"></td>
+          <td><input th:value="${entry.key.price}" name="price"></td>
+
+          <!-- Перевірка наявності динамічних полів -->
           <td>
-            <div th:each="field : ${item.value}">
-              <div><strong th:text="${field.field.fieldName}">Field Name</strong>: <a th:href="@{/dynamic-fields/edit(id=${field.id})}"> <span th:text="${field.value}">Field Value</span></a></div>
+            <div th:if="${entry.value != null and !entry.value.isEmpty()}">
+              <div th:each="field : ${entry.value}">
+                <div>
+                  <strong th:text="${field.field.fieldName}">Field Name</strong>:
+                  <a th:href="@{/dynamic-fields/edit(id=${field.id})}">
+                    <span th:text="${field.value}">Field Value</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Якщо динамічні поля відсутні -->
+            <div th:if="${entry.value == null or entry.value.isEmpty()}">
+              <span>No dynamic fields available</span>
             </div>
           </td>
+
           <td><button class="btn btn-primary btn-style">Save</button></td>
-         </form>
-        <td><a th:href="@{technicalData/forProduct(id=${item.key.productId})}" class="btn btn-style btn-style-3">Technical Data</a></td>
-        <td><a th:href="@{/deleteProduct(id=${item.key.productId})}" class="btn btn-style btn-style-3">Delete Product</a></td>
-        <td><a th:href="@{/dynamic-fields/showForm(id=${item.key.productId})}">Add fields</a></td>
+        </form>
+        <td><a th:href="@{technicalData/forProduct(id=${entry.key.productId})}" class="btn btn-style btn-style-3">Technical Data</a></td>
+        <td><a th:href="@{/product/deleteProduct(id=${entry.key.productId})}" class="btn btn-style btn-style-3">Delete Product</a></td>
+        <td><a th:href="@{/dynamic-fields/showForm(id=${entry.key.productId})}">Add fields</a></td>
       </tr>
       </tbody>
+
     </table>
   </div>
 </div>

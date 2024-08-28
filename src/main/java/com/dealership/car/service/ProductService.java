@@ -36,6 +36,7 @@ public class ProductService {
 
         product.setTechnicalData(technicalData);
         product.setCreatedAt(LocalDateTime.now());
+        product.setCreatedBy("User");
         technicalData.setProduct(product);
 
         productRepository.save(product);
@@ -90,8 +91,23 @@ public class ProductService {
             List<DynamicFieldValue> dynamicFieldValueList = dynamicFieldValueService.getAllDynamicValueForEntity(product.getProductId(),"Product");
             if (!dynamicFieldValueList.isEmpty()){
                 productDynamicFieldMap.put(product,dynamicFieldValueList);
+            } else {
+                productDynamicFieldMap.put(product,new ArrayList<>());
             }
         }
         return productDynamicFieldMap;
+    }
+
+    public Boolean deleteProductById(Integer id) {
+        boolean isDeleted = false;
+        Optional<Product> optionalProduct = productRepository.findById(id);
+        List<DynamicFieldValue> dynamicFieldValueList =
+                dynamicFieldValueService.getAllDynamicValueForEntity(id,dynamicFieldValueService.getEntityType(id));
+        if (optionalProduct.isPresent()){
+            productRepository.delete(optionalProduct.get());
+            dynamicFieldValueService.deleteAllByList(dynamicFieldValueList);
+            isDeleted = true;
+        }
+        return isDeleted;
     }
 }

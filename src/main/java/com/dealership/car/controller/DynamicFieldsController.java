@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -30,6 +31,7 @@ public class DynamicFieldsController {
     @GetMapping("/showForm")
     public String showForm(Model model, @RequestParam(value = "id")Integer id,HttpSession httpSession) {
         String entityType = dynamicFieldValueService.getEntityType(id);
+        List<FieldsMetadata> fields = fieldMetadataRepository.findAll();
         if (id !=null && (entityType != null && !entityType.equals(""))){
             model.addAttribute("entityId", id);
             model.addAttribute("entityType", entityType);
@@ -37,6 +39,7 @@ public class DynamicFieldsController {
         httpSession.setAttribute("id",id);
         model.addAttribute("field", new FieldsMetadata());
         model.addAttribute("value", new DynamicFieldValue());
+        model.addAttribute("fields", fields);
         return "dynamic-fields-form.html";
     }
 
@@ -96,7 +99,7 @@ public class DynamicFieldsController {
         Boolean isDeleted = dynamicFieldValueService.deleteDynamicValue(dynamicValueId);
         String redirect = "";
         if (isDeleted){
-            redirect = String.format("redirect:/dynamic-fields/edit?id=%s",dynamicValueId);
+            redirect = String.format("redirect:/product/showAllProduct");
         } else {
             redirect = String.format("redirect:/dynamic-fields/edit?id=%s&error=1",dynamicValueId);
         }
