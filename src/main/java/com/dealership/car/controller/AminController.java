@@ -20,12 +20,12 @@ public class AminController {
 
     @RequestMapping(value = "/deleteAdmin")
     public String deleteAdmin(@RequestParam("id") int id, Model model){
-        try {
-            personRepository.deleteById(id);
+        Boolean isDeleted = personService.deleteUserById(id);
+        if (isDeleted){
             model.addAttribute("message", "Admin deleted");
-        }catch (Exception e){
-            model.addAttribute("message", "error deleting admin " + e.getMessage());
         }
+        model.addAttribute("message", "error while deleting admin ");
+
         return "redirect:/staff/admins";
     }
     @RequestMapping(value = "/turnIntoOperator")

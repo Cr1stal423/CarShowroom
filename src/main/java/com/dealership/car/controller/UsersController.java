@@ -21,12 +21,12 @@ public class UsersController {
 
     @RequestMapping(value = "/deleteUser")
     public String deleteUser(@RequestParam("id")int id, Model model){
-        try{
-            personRepository.deleteById(id);
+        Boolean isDeleted = personService.deleteUserById(id);
+        if (isDeleted){
             model.addAttribute("message", "User deleted");
-        } catch (Exception e){
-            model.addAttribute("message", "error deleting user " + e.getMessage());
         }
+        model.addAttribute("message", "error while deleting user ");
+
         return "redirect:/staff/users";
     }
     @RequestMapping(value = "/turnUserIntoOperator")

@@ -20,12 +20,12 @@ public class OperatorController {
 
     @RequestMapping(value = "/deleteOperator")
     public String deleteOperator(@RequestParam("id")int id, Model model){
-        try {
-            personRepository.deleteById(id);
+        Boolean isDeleted = personService.deleteUserById(id);
+        if (isDeleted){
             model.addAttribute("message", "Operator deleted");
-        } catch (Exception e){
-            model.addAttribute("message", "Error deleting operator" + e.getMessage());
         }
+        model.addAttribute("message", "error while deleting operator ");
+
         return "redirect:/staff/operators";
     }
     @RequestMapping(value = "/turnIntoAdmin")

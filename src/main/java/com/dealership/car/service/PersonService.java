@@ -1,6 +1,7 @@
 package com.dealership.car.service;
 
 import com.dealership.car.constants.Constants;
+import com.dealership.car.dynamic.DynamicFieldValue;
 import com.dealership.car.model.Keys;
 import com.dealership.car.model.Person;
 import com.dealership.car.model.Roles;
@@ -10,10 +11,10 @@ import com.dealership.car.repository.RolesRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.w3c.dom.ls.LSInput;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class PersonService {
@@ -23,6 +24,8 @@ public class PersonService {
     private RolesRepository rolesRepository;
     @Autowired
     private KeysRepository keysRepository;
+    @Autowired
+    private DynamicFieldValueService dynamicFieldValueService;
 
     public boolean createNewUser(Person person) {
         Keys password = createPassword(person.getPassword());
@@ -105,5 +108,27 @@ public class PersonService {
 
     public List<Person> findAll(){
         return personRepository.findAll();
+    }
+
+    public Boolean deleteUserById(Integer id){
+        Boolean isDeleted = false;
+        Optional<Person> optionalPerson = personRepository.findById(id);
+        if (optionalPerson.isPresent()){
+            personRepository.delete(optionalPerson.get());
+            isDeleted = true;
+        }
+        return isDeleted;
+    }
+    public Map<Person,List<DynamicFieldValue>> getDynamicFieldsForAllPerson(List<Person> personList){
+        Map<Person, List<DynamicFieldValue>> personDynamicFieldMap = new HashMap<>();
+        for (Person person : personList){
+            List<DynamicFieldValue> dynamicFieldValueList = dynamicFieldValueService.getAllDynamicValueForEntity(person.getPersonId(),"Person");
+            if (!dynamicFieldValueList.isEmpty()){
+                personDynamicFieldMap.put(person,dynamicFieldValueList);
+            } else {
+                personDynamicFieldMap.put(person,new ArrayList<>());
+            }
+        }
+        return personDynamicFieldMap;
     }
 }

@@ -4,9 +4,11 @@ import com.dealership.car.DTO.DynamicFieldDto;
 import com.dealership.car.dynamic.DynamicFieldValue;
 import com.dealership.car.dynamic.FieldsMetadata;
 import com.dealership.car.mapper.DynamicFieldMapper;
+import com.dealership.car.model.Person;
 import com.dealership.car.model.Product;
 import com.dealership.car.repository.DynamicFieldValueRepository;
 import com.dealership.car.repository.FieldMetadataRepository;
+import com.dealership.car.repository.PersonRepository;
 import com.dealership.car.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,8 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class DynamicFieldValueService {
+
+    private final PersonRepository personRepository;
 
     private DynamicFieldValueRepository dynamicFieldValueRepository;
 
@@ -63,6 +67,16 @@ public class DynamicFieldValueService {
         if (product.isPresent()) {
             Product product1 = product.get();
             Class<?> entityClass = product1.getClass();
+            className = entityClass.getSimpleName();
+        }
+        return className;
+    }
+    public String getType(Integer entityId){
+        String className= "";
+        Optional<Person> optionalPerson = personRepository.findById(entityId);
+        if (optionalPerson.isPresent()){
+            Person person = optionalPerson.get();
+            Class<?> entityClass = person.getClass();
             className = entityClass.getSimpleName();
         }
         return className;

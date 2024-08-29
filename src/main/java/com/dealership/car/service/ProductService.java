@@ -3,6 +3,7 @@ package com.dealership.car.service;
 import com.dealership.car.DTO.ProductDto;
 import com.dealership.car.dynamic.DynamicFieldValue;
 import com.dealership.car.mapper.ProductMapper;
+import com.dealership.car.model.Person;
 import com.dealership.car.model.Product;
 import com.dealership.car.model.TechnicalData;
 import com.dealership.car.repository.ProductRepository;
@@ -110,4 +111,5 @@ public class ProductService {
         }
         return isDeleted;
     }
+
 }

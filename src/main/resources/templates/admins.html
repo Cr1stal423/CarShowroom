@@ -108,27 +108,47 @@
         <td scope="col">Last name</td>
         <td scope="col">Address</td>
         <td scope="col">Mobile number</td>
+        <td scope="col">Dynamic Fields</td>
         <td scope="col"></td>
         <td scope="col"></td>
         <td scope="col"></td>
       </tr>
       </thead>
       <tbody>
-      <tr th:each="admin: ${admins}">
+      <tr th:each="entry: ${adminsMap}">
 <!--TODO need in future change for work with id, now all fork with findByUsername                 -->
         <form th:action="@{/updateAdmin}" method="post">
 <!--          <input type="hidden" name="personId" th:value="${admin.personId}"/>-->
-          <td><input type="text" name="username" th:value="${admin.username}"/></td>
-          <td><input type="text" name="firstName" th:value="${admin.firstName}"/></td>
-          <td><input type="text" name="lastName" th:value="${admin.lastName}"/></td>
-          <td><input type="text" name="address" th:value="${admin.address}"/></td>
-          <td><input type="text" name="mobileNumber" th:value="${admin.mobileNumber}"/></td>
+          <td><input type="text" name="username" th:value="${entry.key.username}"/></td>
+          <td><input type="text" name="firstName" th:value="${entry.key.firstName}"/></td>
+          <td><input type="text" name="lastName" th:value="${entry.key.lastName}"/></td>
+          <td><input type="text" name="address" th:value="${entry.key.address}"/></td>
+          <td><input type="text" name="mobileNumber" th:value="${entry.key.mobileNumber}"/></td>
+          <!-- Перевірка наявності динамічних полів -->
+          <td>
+            <div th:if="${entry.value != null and !entry.value.isEmpty()}">
+              <div th:each="field : ${entry.value}">
+                <div>
+                  <strong th:text="${field.field.fieldName}">Field Name</strong>:
+                  <a th:href="@{/dynamic-fields/edit(id=${field.id})}">
+                    <span th:text="${field.value}">Field Value</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Якщо динамічні поля відсутні -->
+            <div th:if="${entry.value == null or entry.value.isEmpty()}">
+              <span>No dynamic fields available</span>
+            </div>
+          </td>
           <td><button type="submit" class="btn btn-style btn-style-3">Save</button></td>
         </form>
-        <td><a th:href="@{/turnIntoOperator(id=${admin.personId})}"
+        <td><a th:href="@{/turnIntoOperator(id=${entry.key.personId})}"
                class="btn btn-style btn-style-3">Turn into Operator</a></td>
-        <td><a th:href="@{/deleteAdmin(id=${admin.personId})}"
+        <td><a th:href="@{/deleteAdmin(id=${entry.key.personId})}"
                class="btn btn-style btn-style-3">Delete</a></td>
+        <td><a th:href="@{/dynamic-fields/showForm(id=${entry.key.personId})}">Add fields</a></td>
       </tr>
       </tbody>
 
