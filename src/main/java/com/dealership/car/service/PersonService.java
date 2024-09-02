@@ -8,6 +8,7 @@ import com.dealership.car.model.Roles;
 import com.dealership.car.repository.KeysRepository;
 import com.dealership.car.repository.PersonRepository;
 import com.dealership.car.repository.RolesRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -76,12 +77,18 @@ public class PersonService {
                 System.out.println("Updated role for person with ID " + id + " to " + newRoles);
                 isUpdated = true;
             } else {
-                System.out.println("Person not found or Role not available");
+                if (!optionalPerson.isPresent()) {
+                    System.out.println("Person with ID " + id + " not found");
+                }
+                if (role == null) {
+                    System.out.println("Role with name " + newRoles + " not available");
+                }
             }
+        } catch (EntityNotFoundException e) {
+            System.out.println("Entity not found: " + e.getMessage());
         } catch (Exception e) {
             System.out.println("Error occurred: " + e.getMessage());
-//            e.printStackTrace();
-
+            e.printStackTrace(System.err);
         }
         return isUpdated;
     }
