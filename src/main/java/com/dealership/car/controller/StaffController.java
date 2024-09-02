@@ -30,6 +30,7 @@ public class StaffController {
         List<Person> admins = personRepository.findByRoles(Constants.ADMIN_ROLE);
         Map<Person,List<DynamicFieldValue>> adminsMap = personService.getDynamicFieldsForAllPerson(admins);
         modelAndView.addObject("adminsMap", adminsMap);
+        httpSession.setAttribute("entityType","Person");
         return modelAndView;
     }
     @GetMapping(value = "/operators")
@@ -38,6 +39,7 @@ public class StaffController {
         List<Person> operators = personRepository.findByRoles(Constants.OPERATOR_ROLE);
         Map<Person,List<DynamicFieldValue>> operatorsMap = personService.getDynamicFieldsForAllPerson(operators);
         modelAndView.addObject("operatorsMap",operatorsMap);
+        httpSession.setAttribute("entityType","Person");
         return modelAndView;
     }
     @GetMapping(value = "/users")
@@ -45,8 +47,8 @@ public class StaffController {
         ModelAndView modelAndView = new ModelAndView("users.html");
         List<Person> users = personRepository.findByRoles(Constants.USER_ROLE);
         Map<Person,List<DynamicFieldValue>> usersMap = personService.getDynamicFieldsForAllPerson(users);
-        modelAndView.addObject("usersMap", usersMap
-        );
+        modelAndView.addObject("usersMap", usersMap);
+        httpSession.setAttribute("entityType","Person");
         return modelAndView;
     }
 }

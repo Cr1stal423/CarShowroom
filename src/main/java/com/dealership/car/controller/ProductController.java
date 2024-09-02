@@ -43,9 +43,10 @@ public class ProductController {
     private DynamicFieldValueService dynamicFieldValueService;
 
     @GetMapping("/showAllProduct")
-    public String showAllProduct(Model model){
+    public String showAllProduct(Model model, HttpSession httpSession){
         List<Product> products = productRepository.findAll();
         Map<Product,List<DynamicFieldValue>> personAndDynamicFields = productService.getDynamicFieldsForAllProduct(products);
+        httpSession.setAttribute("entityType", "Product");
         model.addAttribute("map", personAndDynamicFields);
         model.addAttribute("products");
         return "product.html";

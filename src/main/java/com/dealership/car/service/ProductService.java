@@ -8,6 +8,7 @@ import com.dealership.car.model.Product;
 import com.dealership.car.model.TechnicalData;
 import com.dealership.car.repository.ProductRepository;
 import com.dealership.car.repository.TechnicalDataRepository;
+import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,6 +29,7 @@ public class ProductService {
     private final ProductMapper productMapper;
 
     private final DynamicFieldValueService dynamicFieldValueService;
+    private final HttpSession httpSession;
 
     @Transactional
     public void saveProduct(ProductDto productDto) {
@@ -103,7 +105,7 @@ public class ProductService {
         boolean isDeleted = false;
         Optional<Product> optionalProduct = productRepository.findById(id);
         List<DynamicFieldValue> dynamicFieldValueList =
-                dynamicFieldValueService.getAllDynamicValueForEntity(id,dynamicFieldValueService.getEntityType(id));
+                dynamicFieldValueService.getAllDynamicValueForEntity(id,dynamicFieldValueService.getEntityType(id, (String) httpSession.getAttribute("entityType")));
         if (optionalProduct.isPresent()){
             productRepository.delete(optionalProduct.get());
             dynamicFieldValueService.deleteAllByList(dynamicFieldValueList);

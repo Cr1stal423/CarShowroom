@@ -29,8 +29,8 @@ public class DynamicFieldsController {
 
 
     @GetMapping("/showForm")
-    public String showForm(Model model, @RequestParam(value = "id")Integer id,HttpSession httpSession) {
-        String entityType = dynamicFieldValueService.getEntityType(id);
+    public String showForm(@RequestParam(value = "id")Integer id,HttpSession httpSession,Model model) {
+        String entityType = dynamicFieldValueService.getEntityType(id, (String) httpSession.getAttribute("entityType"));
         List<FieldsMetadata> fields = fieldMetadataRepository.findAll();
         if (id !=null && (entityType != null && !entityType.equals(""))){
             model.addAttribute("entityId", id);

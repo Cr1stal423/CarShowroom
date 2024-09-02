@@ -10,7 +10,12 @@ import com.dealership.car.repository.DynamicFieldValueRepository;
 import com.dealership.car.repository.FieldMetadataRepository;
 import com.dealership.car.repository.PersonRepository;
 import com.dealership.car.repository.ProductRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.metamodel.EntityType;
 import lombok.AllArgsConstructor;
+import org.springframework.context.ApplicationContext;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -31,6 +36,11 @@ public class DynamicFieldValueService {
     private ProductRepository productRepository;
 
     private DynamicFieldMapper dynamicFieldMapper;
+
+    private final ApplicationContext context;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
 
     public List<DynamicFieldValue> getAllDynamicValueForEntity(Integer entityId, String entityType) {
@@ -71,15 +81,28 @@ public class DynamicFieldValueService {
         }
         return className;
     }
-    public String getType(Integer entityId){
-        String className= "";
-        Optional<Person> optionalPerson = personRepository.findById(entityId);
-        if (optionalPerson.isPresent()){
-            Person person = optionalPerson.get();
-            Class<?> entityClass = person.getClass();
-            className = entityClass.getSimpleName();
+    public String getEntityType(Integer entityId, String entityType) {
+        String className = "";
+        try {
+            // Динамічно завантажуємо клас сутності
+            Class<?> entityClass = Class.forName("com.dealership.car.model." + entityType);
+
+            // Виконуємо запит через EntityManager
+            Object entity = entityManager.find(entityClass, entityId);
+
+            if (entity != null) {
+                className = entity.getClass().getSimpleName();
+            }
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
         return className;
+    }
+
+    private String getRepositoryBeanName(Class<?> entityClass) {
+        String entityName = entityClass.getSimpleName();
+        return entityName + "Repository";
     }
 
     public DynamicFieldValue optionalFindById(Integer id) {
