@@ -108,18 +108,40 @@
                 <td scope="col">Mobile Number</td>
                 <td scope="col">Message</td>
                 <td scope="col">Status</td>
+                <td scope="col">Dynamic Fields</td>
+                <td scope="col"></td>
                 <td scope="col"></td>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="message: ${messages}">
-                <td th:text="${message.firstName}"></td>
-                <td th:text="${message.lastName}"></td>
-                <td th:text="${message.mobileNumber}"></td>
-                <td th:text="${message.message}"></td>
-                <td th:text="${message.status}"></td>
-                <td><a  th:href="@{/contact/closeMsg(id=${message.id})}"
+            <tr th:each="entry: ${messagesMap}">
+                <td th:text="${entry.key.firstName}"></td>
+                <td th:text="${entry.key.lastName}"></td>
+                <td th:text="${entry.key.mobileNumber}"></td>
+                <td th:text="${entry.key.message}"></td>
+                <td th:text="${entry.key.status}"></td>
+                <!-- Перевірка наявності динамічних полів -->
+                <td>
+                    <div th:if="${entry.value != null and !entry.value.isEmpty()}">
+                        <div th:each="field : ${entry.value}">
+                            <div>
+                                <strong th:text="${field.field.fieldName}">Field Name</strong>:
+                                <a th:href="@{/dynamic-fields/edit(id=${field.id})}">
+                                    <span th:text="${field.value}">Field Value</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Якщо динамічні поля відсутні -->
+                    <div th:if="${entry.value == null or entry.value.isEmpty()}">
+                        <span>No dynamic fields available</span>
+                    </div>
+                </td>
+                <td><a  th:href="@{/contact/closeMsg(id=${entry.key.id})}"
                         class="btn btn-style btn-style-3">Close Message</a></td>
+                <td><a th:href="@{/dynamic-fields/showForm(id=${entry.key.Id})}">Add fields</a></td>
+
             </tr>
             </tbody>
         </table>

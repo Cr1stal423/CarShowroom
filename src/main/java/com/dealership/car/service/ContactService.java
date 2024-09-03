@@ -1,6 +1,7 @@
 package com.dealership.car.service;
 
 import com.dealership.car.constants.Constants;
+import com.dealership.car.dynamic.DynamicFieldValue;
 import com.dealership.car.model.Contact;
 import com.dealership.car.model.Person;
 import com.dealership.car.repository.ContactRepository;
@@ -9,12 +10,13 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
 public class ContactService {
 
+    private final DynamicFieldValueService dynamicFieldValueService;
     private ContactRepository contactRepository;
 
     private PersonRepository personRepository;
@@ -25,6 +27,9 @@ public class ContactService {
         try {
             contact.setCreatedAt(LocalDateTime.now());
             contact.setCreatedBy("User");
+            if (isUserAlreadyExist(contact)){
+                contact.setStatus(Constants.USER_EXIST);
+            }
             contactRepository.save(contact);
             isSaved = true;
         } catch (Exception e){
@@ -53,5 +58,18 @@ public class ContactService {
             //TODO add exceptionHandler
             System.out.println("Error");
         }
+    }
+    public Map<Contact, List<DynamicFieldValue>> getAllDynamicFieldsForContact(List<Contact> contactList){
+        Map<Contact,List<DynamicFieldValue>> contactDynamicFieldMap = new HashMap<>();
+        for (Contact contact : contactList){
+            List<DynamicFieldValue> dynamicFieldValueList =
+                    dynamicFieldValueService.getAllDynamicValueForEntity(contact.getId(),"Contact");
+            if (!dynamicFieldValueList.isEmpty()){
+                contactDynamicFieldMap.put(contact,dynamicFieldValueList);
+            } else {
+                contactDynamicFieldMap.put(contact,new ArrayList<>());
+            }
+        }
+        return contactDynamicFieldMap;
     }
 }
