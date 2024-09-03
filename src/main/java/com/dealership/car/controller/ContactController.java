@@ -1,9 +1,11 @@
 package com.dealership.car.controller;
 
 import com.dealership.car.constants.Constants;
+import com.dealership.car.dynamic.DynamicFieldValue;
 import com.dealership.car.model.Contact;
 import com.dealership.car.repository.ContactRepository;
 import com.dealership.car.service.ContactService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @AllArgsConstructor
@@ -46,10 +49,12 @@ public class ContactController {
         return returnResult;
     }
     @GetMapping("/showMessages")
-    public ModelAndView showMsg(){
+    public ModelAndView showMsg(HttpSession httpSession){
         ModelAndView modelAndView = new ModelAndView("messages.html");
         List<Contact> messages = contactRepository.findByStatusEqualsOrStatus(Constants.NEW_USER,Constants.USER_EXIST);
-        modelAndView.addObject("messages", messages);
+        Map<Contact,List<DynamicFieldValue>> messagesMap = contactService.getAllDynamicFieldsForContact(messages);
+        modelAndView.addObject("messagesMap", messagesMap);
+        httpSession.setAttribute("entityType", "Contact");
         return modelAndView;
     }
     @GetMapping("/closeMsg")
