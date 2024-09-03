@@ -110,25 +110,46 @@
                     <td scope="col">Delivery</td>
                     <td scope="col">Payment Type</td>
                     <td scope="col">Payment Method</td>
+                    <td scope="col">Dynamic Fields</td>
                     <td scope="col"></td>
                     <td scope="col"></td>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="order: ${orders}">
-                    <td th:text="${order.orderId}"></td>
-                    <td th:text="${order.product.productId}"></td>
-                    <td th:text="${order.person.personId}"></td>
-                    <td th:text="${order.createdAt}"></td>
-                    <td th:text="${order.delivery}"></td>
-                    <td></td>
-                    <td></td>
-                    <td><a th:href="@{/deleteOder(id=${order.orderId})}"
-                           class="btn btn-style btn-style-3">Delete Order</a></td>
+                <tr th:each="entry: ${orderMap}">
+                    <td th:text="${entry.key.orderId}"></td>
                     <td>
-                        <input type="hidden" name="orderId" th:value="${order.orderId}">
-                        <button type="submit">Save</button>
+                        <a th:href="@{/product/showProductById(id=${entry.key.product.productId})}" th:text="${entry.key.product.productId}"></a>
                     </td>
+                    <td>
+                        <a th:href="@{/staff/findById(id=${entry.key.person.personId})}" th:text="${entry.key.person.personId}">123</a>
+                    </td>
+                    <td th:text="${entry.key.createdAt}"></td>
+                    <td th:text="${entry.key.delivery}"></td>
+                    <td th:text="${entry.key.paymentType}"></td>
+                    <td th:text="${entry.key.paymentMethod}"></td>
+                    <!-- Перевірка наявності динамічних полів -->
+                    <td>
+                        <div th:if="${entry.value != null and !entry.value.isEmpty()}">
+                            <div th:each="field : ${entry.value}">
+                                <div>
+                                    <strong th:text="${field.field.fieldName}">Field Name</strong>:
+                                    <a th:href="@{/dynamic-fields/edit(id=${field.id})}">
+                                        <span th:text="${field.value}">Field Value</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Якщо динамічні поля відсутні -->
+                        <div th:if="${entry.value == null or entry.value.isEmpty()}">
+                            <span>No dynamic fields available</span>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td><a th:href="@{/deleteOder(id=${entry.key.orderId})}"
+                           class="btn btn-style btn-style-3">Delete Order</a></td>
+                    <td><a th:href="@{/dynamic-fields/showForm(id=${entry.key.orderId})}">Add fields</a></td>
                 </tr>
                 </tbody>
             </table>

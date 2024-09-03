@@ -62,7 +62,7 @@ public class PersonService {
         return rolesRepository.findByRoleName(Constants.USER_ROLE);
     }
 
-    public String forgotPassword(String username){
+    public String forgotPassword(String username) {
         String response = null;
         Person person = personRepository.findByUsername(username);
         if (person != null && person.getPersonId() > 0) {
@@ -70,6 +70,7 @@ public class PersonService {
         }
         return response;
     }
+
     //TODO need to fix(can not commit jpa transaction)
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public boolean changeUserRole(int id, String newRoles) {
@@ -103,7 +104,7 @@ public class PersonService {
     public boolean updateUser(String username, String firstName, String lastName, String address, String mobileNumber) {
         boolean isSaved = false;
         Person optionalPerson = personRepository.findByUsername(username);
-        if (optionalPerson != null){
+        if (optionalPerson != null) {
             isSaved = true;
             Person person = optionalPerson;
 //            String password = person.getPassword();
@@ -115,32 +116,33 @@ public class PersonService {
             person.setMobileNumber(mobileNumber);
             personRepository.save(person);
         } else {
-            System.out.println(String.format("Can't find person ") );
+            System.out.println(String.format("Can't find person "));
         }
         return isSaved;
     }
 
-    public List<Person> findAll(){
+    public List<Person> findAll() {
         return personRepository.findAll();
     }
 
-    public Boolean deleteUserById(Integer id){
+    public Boolean deleteUserById(Integer id) {
         Boolean isDeleted = false;
         Optional<Person> optionalPerson = personRepository.findById(id);
-        if (optionalPerson.isPresent()){
+        if (optionalPerson.isPresent()) {
             personRepository.delete(optionalPerson.get());
             isDeleted = true;
         }
         return isDeleted;
     }
-    public Map<Person,List<DynamicFieldValue>> getDynamicFieldsForAllPerson(List<Person> personList){
+
+    public Map<Person, List<DynamicFieldValue>> getDynamicFieldsForAllPerson(List<Person> personList) {
         Map<Person, List<DynamicFieldValue>> personDynamicFieldMap = new HashMap<>();
-        for (Person person : personList){
-            List<DynamicFieldValue> dynamicFieldValueList = dynamicFieldValueService.getAllDynamicValueForEntity(person.getPersonId(),"Person");
-            if (!dynamicFieldValueList.isEmpty()){
-                personDynamicFieldMap.put(person,dynamicFieldValueList);
+        for (Person person : personList) {
+            List<DynamicFieldValue> dynamicFieldValueList = dynamicFieldValueService.getAllDynamicValueForEntity(person.getPersonId(), "Person");
+            if (!dynamicFieldValueList.isEmpty()) {
+                personDynamicFieldMap.put(person, dynamicFieldValueList);
             } else {
-                personDynamicFieldMap.put(person,new ArrayList<>());
+                personDynamicFieldMap.put(person, new ArrayList<>());
             }
         }
         return personDynamicFieldMap;

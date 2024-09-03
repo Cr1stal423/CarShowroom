@@ -99,7 +99,7 @@ public class DynamicFieldsController {
         Boolean isDeleted = dynamicFieldValueService.deleteDynamicValue(dynamicValueId);
         String redirect = "";
         if (isDeleted){
-            redirect = String.format("redirect:/product/showAllProduct");
+            redirect = String.format("redirect:/dashboard");
         } else {
             redirect = String.format("redirect:/dynamic-fields/edit?id=%s&error=1",dynamicValueId);
         }

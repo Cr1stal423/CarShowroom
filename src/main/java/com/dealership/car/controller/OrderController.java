@@ -2,14 +2,17 @@ package com.dealership.car.controller;
 
 import com.dealership.car.DTO.OrderDto;
 import com.dealership.car.constants.Constants;
+import com.dealership.car.dynamic.DynamicFieldValue;
 import com.dealership.car.model.OrderEntity;
 import com.dealership.car.model.Person;
 import com.dealership.car.model.Product;
 import com.dealership.car.repository.OrderEntityRepository;
 import com.dealership.car.repository.PersonRepository;
 import com.dealership.car.repository.ProductRepository;
+import com.dealership.car.service.OrderService;
 import com.dealership.car.service.PersonService;
 import com.dealership.car.service.ProductService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -26,6 +30,7 @@ import java.util.Optional;
 @RequestMapping(value = "/orders")
 public class OrderController {
 
+    private final OrderService orderService;
     private OrderEntityRepository orderEntityRepository;
 
     private PersonRepository personRepository;
@@ -37,9 +42,11 @@ public class OrderController {
     private PersonService personService;
 
     @GetMapping(value = "/showAll")
-    public String showAllOrders(Model model){
+    public String showAllOrders(Model model, HttpSession httpSession){
         List<OrderEntity> orders = orderEntityRepository.findAll();
-        model.addAttribute("orders", orders);
+        Map<OrderEntity,List<DynamicFieldValue>> orderMap = orderService.getDynamicFieldsForAllOrder(orders);
+        model.addAttribute("orderMap", orderMap);
+        httpSession.setAttribute("entityType", "OrderEntity");
         return "orders.html";
     }
 
