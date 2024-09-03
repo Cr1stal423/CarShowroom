@@ -53,7 +53,8 @@ public class ProductController {
     }
     @GetMapping(value = "/technicalData/forProduct")
     public String showTechData(Model model, @RequestParam("id")
-    int id){
+    int id, HttpSession httpSession){
+        httpSession.setAttribute("entityType","TechnicalData");
         return "redirect:/technicalData/forProduct?id=" + id;
     }
     @GetMapping("/showProductById")

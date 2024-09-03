@@ -11,12 +11,11 @@ import com.dealership.car.repository.KeysRepository;
 import com.dealership.car.repository.PersonRepository;
 import com.dealership.car.repository.RolesRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Propagation;
-
 import org.w3c.dom.ls.LSInput;
 
 import java.time.LocalDateTime;
@@ -37,7 +36,7 @@ public class PersonService {
 
     public boolean createNewUser(PersonDto personDto) {
         Person person = personMapper.toPerson(personDto);
-        Keys password = createPassword(personDto.getPassword());
+        Keys password = createPassword(person.getPassword());
         password.setCreatedAt(LocalDateTime.now());
         password.setCreatedBy(Constants.USER_ROLE);
 
@@ -72,7 +71,7 @@ public class PersonService {
         return response;
     }
     //TODO need to fix(can not commit jpa transaction)
-    @Transactional(propagation = Propagation.NEVER)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public boolean changeUserRole(int id, String newRoles) {
         boolean isUpdated = false;
         try {

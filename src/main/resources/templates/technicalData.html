@@ -110,25 +110,44 @@
                 <td scope="col">Engine type</td>
                 <td scope="col">Engine placement</td>
                 <td scope="col">Engine capacity</td>
+                <td scope="col">Dynamic Fields</td>
                 <td scope="col"></td>
             </tr>
             </thead>
             <tbody>
-            <tr th:object="${technicalData}">
+            <tr th:each="entry: ${technicalDataMap}">
                 <form th:action="@{/technicalData/updateTechnicalData}" method="post">
-                    <td ><input th:value="${technicalData.technicalId}" name="technicalId"></td>
-                    <td ><input th:value="${technicalData.bodyType}" name="bodyType"></td>
-                    <td ><input th:value="${technicalData.doors}" name="doors"></td>
-                    <td ><input th:value="${technicalData.seats}" name="seats"></td>
-                    <td ><input th:value="${technicalData.engineType}" name="engineType"></td>
-                    <td ><input th:value="${technicalData.enginePlacement}" name="enginePlacement"></td>
-                    <td ><input th:value="${technicalData.engineCapacity}" name="engineCapacity"></td>
+                    <td ><input th:value="${entry.key.technicalId}" name="technicalId"></td>
+                    <td ><input th:value="${entry.key.bodyType}" name="bodyType"></td>
+                    <td ><input th:value="${entry.key.doors}" name="doors"></td>
+                    <td ><input th:value="${entry.key.seats}" name="seats"></td>
+                    <td ><input th:value="${entry.key.engineType}" name="engineType"></td>
+                    <td ><input th:value="${entry.key.enginePlacement}" name="enginePlacement"></td>
+                    <td ><input th:value="${entry.key.engineCapacity}" name="engineCapacity"></td>
+                    <td>
+                        <div th:if="${entry.value != null and !entry.value.isEmpty()}">
+                            <div th:each="field : ${entry.value}">
+                                <div>
+                                    <strong th:text="${field.field.fieldName}">Field Name</strong>:
+                                    <a th:href="@{/dynamic-fields/edit(id=${field.id})}">
+                                        <span th:text="${field.value}">Field Value</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Якщо динамічні поля відсутні -->
+                        <div th:if="${entry.value == null or entry.value.isEmpty()}">
+                            <span>No dynamic fields available</span>
+                        </div>
+                    </td>
                     <td><button type="submit" class="btn btn-primary btn-style">Save</button></td>
                 </form>
-                <td><a  th:href="@{/product/showProductById(id=${technicalData.technicalId})}"
+                <td><a  th:href="@{/product/showProductById(id=${entry.key.technicalId})}"
                         class="btn btn-style btn-style-3">Product</a></td>
-                <td><a  th:href="@{/deleteProduct(id=${technicalData.technicalId})}"
+                <td><a  th:href="@{/deleteProduct(id=${entry.key.technicalId})}"
                         class="btn btn-style btn-style-3">Delete Product</a></td>
+                <td><a th:href="@{/dynamic-fields/showForm(id=${entry.key.technicalId})}">Add fields</a></td>
             </tr>
             </tbody>
         </table>

@@ -1,10 +1,13 @@
 package com.dealership.car.controller;
 
+import com.dealership.car.dynamic.DynamicFieldValue;
 import com.dealership.car.model.Product;
 import com.dealership.car.model.TechnicalData;
 import com.dealership.car.repository.ProductRepository;
 import com.dealership.car.repository.TechnicalDataRepository;
+import com.dealership.car.service.DynamicFieldValueService;
 import com.dealership.car.service.ProductService;
+import com.dealership.car.service.TechnicalDataService;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -24,6 +28,8 @@ import java.util.Optional;
 @RequestMapping(value = "/technicalData")
 public class TechnicalController {
 
+    private final DynamicFieldValueService dynamicFieldValueService;
+    private final TechnicalDataService technicalDataService;
     private ProductService productService;
 
     private ProductRepository productRepository;
@@ -35,10 +41,11 @@ public class TechnicalController {
                                           Model model, HttpSession httpSession){
         Optional<Product> product = productRepository.findById(id);
         if (product.isPresent()){
-//            List<TechnicalData> technicalData =  new ArrayList<>();
-//            technicalData.add(product.get().getTechnicalData());
             TechnicalData technicalData = product.get().getTechnicalData();
-            model.addAttribute("technicalData", technicalData);
+            List<TechnicalData> technicalDataList =  new ArrayList<>();
+            technicalDataList.add(technicalData);
+            Map<TechnicalData,List<DynamicFieldValue>> technicalMap = technicalDataService.getDynamicFieldsForAllTechnicalData(technicalDataList);
+            model.addAttribute("technicalDataMap", technicalMap);
             httpSession.setAttribute("technicalData", technicalData);
 
         } else {
