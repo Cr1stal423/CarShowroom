@@ -13,10 +13,9 @@ public class PersonDto {
     @Size(min = 2, message = "Username must be at list 2 char")
     @NotBlank(message = "username required")
     private String username;
-    @Transient
     //TODO solve problem with validation?because i need this
-//    @NotBlank(message = "password required")
-//    @Size(min = 3, message = "password must be at list 3 char")
+    @NotBlank(message = "password required")
+    @Size(min = 3, message = "password must be at list 3 char")
     private String password;
     @Size(min = 2, message = "first name must be at list 2 char")
     @NotBlank(message = "first name required")

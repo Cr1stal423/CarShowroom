@@ -77,8 +77,10 @@ public class OrderController {
                 order.setDelivery(orderDto.getDelivery());
                 order.setPaymentMethod(orderDto.getPaymentMethod());
                 order.setPaymentType(orderDto.getPaymentType());
+                product.setAvailabilityStatus(Constants.AVAILABILITY_STATUSES.get(1));
 
                 orderEntityRepository.save(order);
+                productRepository.save(product);
             }
 
             return "redirect:/orders/addOrder";

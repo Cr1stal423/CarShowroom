@@ -1,5 +1,6 @@
 package com.dealership.car.controller;
 
+import com.dealership.car.DTO.PersonDto;
 import com.dealership.car.model.Person;
 import com.dealership.car.service.PersonService;
 import jakarta.servlet.http.HttpSession;
@@ -21,11 +22,11 @@ public class PublicController {
     private PersonService personService;
     @GetMapping(value = "/register")
     public String displayRegisterPage(Model model){
-        model.addAttribute("person", new Person());
+        model.addAttribute("person", new PersonDto());
         return "register.html";
     }
     @PostMapping(value = "createUser")
-    public String createUser(@Valid @ModelAttribute("person")Person person, Errors errors){
+    public String createUser(@Valid @ModelAttribute("person")PersonDto person, Errors errors){
         if (errors.hasErrors()){
             return "register.html";
         }

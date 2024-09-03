@@ -119,11 +119,11 @@
                 <!--TODO need in future change for work with id, now all fork with findByUsername                 -->
                 <form th:action="@{/updateOperator}" method="post">
                     <!--          <input type="hidden" name="personId" th:value="${admin.personId}"/>-->
-                    <td><input type="text" name="username" th:value="${entry.username}"/></td>
-                    <td><input type="text" name="firstName" th:value="${entry.firstName}"/></td>
-                    <td><input type="text" name="lastName" th:value="${entry.lastName}"/></td>
-                    <td><input type="text" name="address" th:value="${entry.address}"/></td>
-                    <td><input type="text" name="mobileNumber" th:value="${entry.mobileNumber}"/></td>
+                    <td><input type="text" name="username" th:value="${entry.key.username}"/></td>
+                    <td><input type="text" name="firstName" th:value="${entry.key.firstName}"/></td>
+                    <td><input type="text" name="lastName" th:value="${entry.key.lastName}"/></td>
+                    <td><input type="text" name="address" th:value="${entry.key.address}"/></td>
+                    <td><input type="text" name="mobileNumber" th:value="${entry.key.mobileNumber}"/></td>
                     <!-- Перевірка наявності динамічних полів -->
                     <td>
                         <div th:if="${entry.value != null and !entry.value.isEmpty()}">
@@ -144,9 +144,9 @@
                     </td>
                     <td><button type="submit" class="btn btn-style btn-style-3">Save</button></td>
                 </form>
-                <td><a sec:authorize="hasRole('ROLE_OWNER')" th:href="@{/turnIntoAdmin(id=${operator.personId})}"
+                <td><a sec:authorize="hasRole('ROLE_OWNER')" th:href="@{/turnIntoAdmin(id=${entry.key.personId})}"
                        class="btn btn-style btn-style-3">Turn into admin</a></td>
-                <td><a th:href="@{/deleteOperator(id=${operator.personId})}"
+                <td><a th:href="@{/deleteOperator(id=${entry.key.personId})}"
                        class="btn btn-style btn-style-3">Delete</a></td>
                 <td><a th:href="@{/dynamic-fields/showForm(id=${entry.key.personId})}">Add fields</a></td>
             </tr>

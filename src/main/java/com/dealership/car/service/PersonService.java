@@ -1,7 +1,9 @@
 package com.dealership.car.service;
 
+import com.dealership.car.DTO.PersonDto;
 import com.dealership.car.constants.Constants;
 import com.dealership.car.dynamic.DynamicFieldValue;
+import com.dealership.car.mapper.PersonMapper;
 import com.dealership.car.model.Keys;
 import com.dealership.car.model.Person;
 import com.dealership.car.model.Roles;
@@ -9,9 +11,12 @@ import com.dealership.car.repository.KeysRepository;
 import com.dealership.car.repository.PersonRepository;
 import com.dealership.car.repository.RolesRepository;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Propagation;
+
 import org.w3c.dom.ls.LSInput;
 
 import java.time.LocalDateTime;
@@ -27,9 +32,12 @@ public class PersonService {
     private KeysRepository keysRepository;
     @Autowired
     private DynamicFieldValueService dynamicFieldValueService;
+    @Autowired
+    private PersonMapper personMapper;
 
-    public boolean createNewUser(Person person) {
-        Keys password = createPassword(person.getPassword());
+    public boolean createNewUser(PersonDto personDto) {
+        Person person = personMapper.toPerson(personDto);
+        Keys password = createPassword(personDto.getPassword());
         password.setCreatedAt(LocalDateTime.now());
         password.setCreatedBy(Constants.USER_ROLE);
 
@@ -64,7 +72,7 @@ public class PersonService {
         return response;
     }
     //TODO need to fix(can not commit jpa transaction)
-    @Transactional
+    @Transactional(propagation = Propagation.NEVER)
     public boolean changeUserRole(int id, String newRoles) {
         boolean isUpdated = false;
         try {
