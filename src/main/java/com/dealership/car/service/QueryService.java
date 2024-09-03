@@ -26,10 +26,9 @@ public class QueryService {
             Query query = entityManager.createNativeQuery(queryStr);
             List<Object[]> queryResults = query.getResultList();
             for (Object[] row : queryResults) {
-                // Перетворюємо масив об'єктів в рядок, з'єднуючи значення через кому або інший роздільник
                 String result = Arrays.stream(row)
-                        .map(obj -> obj != null ? obj.toString() : "null") // Перевірка на null і заміна на порожній рядок
-                        .collect(Collectors.joining(", ")); // З'єднуємо через кому
+                        .map(obj -> obj != null ? obj.toString() : "null") 
+                        .collect(Collectors.joining(", ")); /
                 results.add(result);
             }
             return results;
