@@ -21,13 +21,15 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 @Controller
 @AllArgsConstructor
-@RequestMapping(value = "/orders")
+@RequestMapping(value = "orders")
 public class OrderController {
 
     private final OrderService orderService;
@@ -85,6 +87,7 @@ public class OrderController {
                 order.setPaymentMethod(orderDto.getPaymentMethod());
                 order.setPaymentType(orderDto.getPaymentType());
                 product.setAvailabilityStatus(Constants.AVAILABILITY_STATUSES.get(1));
+                order.setCreatedAt(LocalDateTime.now());
 
                 orderEntityRepository.save(order);
                 productRepository.save(product);
@@ -93,5 +96,23 @@ public class OrderController {
             return "redirect:/orders/addOrder";
         }
     }
-
+    @GetMapping("/searchById")
+    public String showOrderById(@RequestParam("id")Integer id,Model model){
+        List<OrderEntity> orderEntityList = new ArrayList<>();
+        Optional<OrderEntity> optionalOrder = orderEntityRepository.findById(id);
+        if (optionalOrder.isPresent()){
+            orderEntityList.add(optionalOrder.get());
+        }
+        Map<OrderEntity,List<DynamicFieldValue>> orderMap = orderService.getDynamicFieldsForAllOrder(orderEntityList);
+        model.addAttribute("orderMap",orderMap);
+        return "orders.html";
+    }
+    @GetMapping("/deleteOrder")
+    public String deleteOrder(@RequestParam("id")Integer id){
+        Boolean isDeleted = orderService.deleteOrder(id);
+        if (isDeleted){
+            return "redirect:/orders/showAll";
+        }
+        return "dashboard.html";
+    }
 }

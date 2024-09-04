@@ -28,7 +28,7 @@ public class QueryService {
             for (Object[] row : queryResults) {
                 String result = Arrays.stream(row)
                         .map(obj -> obj != null ? obj.toString() : "null") 
-                        .collect(Collectors.joining(", ")); /
+                        .collect(Collectors.joining(", "));
                 results.add(result);
             }
             return results;

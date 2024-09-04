@@ -126,8 +126,7 @@
 <section class="w3l-contact py-1" id="contact1">
     <div class="container py-md-1 py-1 d-flex justify-content-center align-items-center">
         <div class="title-main text-center mx-auto mb-md-1 mb-1" style="max-width:500px;">
-            <h1 class="title-style" th:text="${'Welcome - ' + username}"></h1>
-            <p class="" th:text="${'You logged in as - ' + roles}"></p>
+            <h1><bolt>AnalyticsPage</bolt></h1>
         </div>
     </div>
 </section>
@@ -139,12 +138,12 @@
         <div class="container-fluid">
             <div class="row m-t-25 justify-content-center">
                 <div class="col-auto mx-3" sec:authorize="hasRole('ROLE_OWNER')">
-                    <a th:href="@{/staff/admins}">
+                    <a th:href="@{/analytics/sales}">
                         <div class="overview-item overview-item--c4">
                             <div class="overview__inner">
                                 <div class="overview-box clearfix">
                                     <div class="text font-large">
-                                        <h2>Admins</h2>
+                                        <h2>Sales</h2>
                                     </div>
                                 </div>
                             </div>

@@ -13,6 +13,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.stereotype.Service;
+import org.w3c.dom.ls.LSInput;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -112,6 +113,10 @@ public class ProductService {
             isDeleted = true;
         }
         return isDeleted;
+    }
+    public List<Product> findProductByBrand(String brand){
+        List<Product> productByBrandList = productRepository.findByBrand(brand);
+        return productByBrandList;
     }
 
 }
