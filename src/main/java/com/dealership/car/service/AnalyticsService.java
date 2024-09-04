@@ -21,34 +21,41 @@ public class AnalyticsService {
         this.orderService = orderService;
     }
 
-    public List<String> findAllUniqueBrand(){
+    public List<String> findAllUniqueBrand() {
         List<String> brands = productRepository.findAllUniqueBrands();
         return brands;
     }
-    public List<OrderEntity> findAllOrderByBrand(List<Product> productByBrand){
+
+    public List<OrderEntity> findAllOrderByBrand(List<Product> productByBrand) {
         List<OrderEntity> orderEntityList = new ArrayList<>();
-        for (Product product : productByBrand){
+        for (Product product : productByBrand) {
             Optional<OrderEntity> tempProduct = orderEntityRepository.findByProduct(product);
-            if (!tempProduct.isEmpty()){
+            if (!tempProduct.isEmpty()) {
                 orderEntityList.add(tempProduct.get());
             }
         }
         return orderEntityList;
     }
-    public Map<String, Long> getSalesCountByBrand(List<String> brands){
-        Map<String,Long> resultMap = new HashMap<>();
+
+    public Map<String, Long> getSalesCountByBrand(List<String> brands) {
+        Map<String, Long> resultMap = new HashMap<>();
         Long amount;
-        for (String brand : brands){
+        for (String brand : brands) {
             amount = orderService.getSalesAmountForBrand(brand);
-            resultMap.put(brand,amount);
+            resultMap.put(brand, amount);
         }
         return resultMap;
     }
-        public Long getTotalSales(Map<String,Long> map){
-            Long totalSalesAmount = 0L;
-            for (Long sales : map.values()){
-                totalSalesAmount += sales;
-            }
-            return totalSalesAmount;
+
+    public Long getTotalSales(Map<String, Long> map) {
+        Long totalSalesAmount = 0L;
+        for (Long sales : map.values()) {
+            totalSalesAmount += sales;
         }
+        return totalSalesAmount;
+    }
+    public List<String> getAllUniqueModel(){
+        List<String> models = productRepository.findAllUniqueModels();
+        return models;
+    }
 }
