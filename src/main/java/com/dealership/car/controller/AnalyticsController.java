@@ -53,9 +53,11 @@ public class AnalyticsController {
         List<String> brands = analyticsService.findAllUniqueBrand();
         Map<String,Long> salesCountByBrandMap = analyticsService.getSalesCountByBrand(brands);
         Map<OrderEntity, List<DynamicFieldValue>> orderMap = orderService.getDynamicFieldsForAllOrder(orderEntityList);
+        Long totalSales = analyticsService.getTotalSales(salesCountByBrandMap);
         modelAndView.addObject("orderMap",orderMap);
         modelAndView.addObject("brands",brands);
         modelAndView.addObject("salesCountByBrandMap", salesCountByBrandMap);
+        modelAndView.addObject("totalSales",totalSales);
         httpSession.setAttribute("entityType","OrderEntity");
         return modelAndView;
     }

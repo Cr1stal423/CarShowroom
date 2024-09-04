@@ -44,4 +44,11 @@ public class AnalyticsService {
         }
         return resultMap;
     }
+        public Long getTotalSales(Map<String,Long> map){
+            Long totalSalesAmount = 0L;
+            for (Long sales : map.values()){
+                totalSalesAmount += sales;
+            }
+            return totalSalesAmount;
+        }
 }
