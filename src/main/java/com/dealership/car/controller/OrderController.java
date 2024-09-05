@@ -56,7 +56,8 @@ public class OrderController {
     public String findOrdersByUser(@RequestParam("id")int id, Model model){
         Optional<Person> person = personRepository.findById(id);
         List<OrderEntity> orders = orderEntityRepository.findByPerson(person.get());
-        model.addAttribute("orders", orders);
+        Map<OrderEntity,List<DynamicFieldValue>> orderMap = orderService.getDynamicFieldsForAllOrder(orders);
+        model.addAttribute("orderMap", orderMap);
         return "orders.html";
     }
     @GetMapping(value = "/addOrder")

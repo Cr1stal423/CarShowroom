@@ -45,6 +45,11 @@
       padding: 20px 0;
       text-align: center;
     }  </style>
+  <script>
+    function goBack(){
+      window.history.back();
+    }
+  </script>
 </head>
 
 <body>
@@ -97,8 +102,11 @@
   <div class="table-responsive-md">
     <div class="row mb-4">
       <div class="col-md-4">
-        <h3 class="heading-21921">Operator Persons</h3>
+        <h3 class="heading-21921">Cars</h3>
       </div>
+    </div>
+    <div class="back-button">
+      <button class="btn btn-secondary" onclick="goBack()">Back</button>
     </div>
     <table class="table table-striped table-hover">
       <thead class="table-dark">
@@ -110,7 +118,7 @@
         <td scope="col">Color</td>
         <td scope="col">Availability Status</td>
         <td scope="col">Price</td>
-        <td scope="col">Dynamic Fields</td>
+        <td scope="col" th:text="${#authorization.expression('hasRole(''ROLE_USER'')') ? 'Extra Options' : 'Dynamic Fields'}">Dynamic Fields</td>
         <td scope="col"></td>
         <td scope="col"></td>
         <td scope="col"></td>
@@ -119,7 +127,7 @@
       <tbody>
       <tr th:each="entry : ${map}">
         <form th:action="@{/product/updateProduct}" method="post">
-          <td><input th:value="${entry.key.productId}" name="productId"></td>
+          <td><input th:value="${entry.key.productId}" name="productId" readonly></td>
           <td><input th:value="${entry.key.originCountry}" name="originCountry"></td>
           <td><input th:value="${entry.key.brand}" name="brand"></td>
           <td><input th:value="${entry.key.model}" name="model"></td>
@@ -146,11 +154,11 @@
             </div>
           </td>
 
-          <td><button class="btn btn-primary btn-style">Save</button></td>
+          <td sec:authorize="hasRole('ROLE_OWNER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_OPERATOR')"><button class="btn btn-primary btn-style">Save</button></td>
         </form>
         <td><a th:href="@{technicalData/forProduct(id=${entry.key.productId})}" class="btn btn-style btn-style-3">Technical Data</a></td>
-        <td><a th:href="@{/product/deleteProduct(id=${entry.key.productId})}" class="btn btn-style btn-style-3">Delete Product</a></td>
-        <td><a th:href="@{/dynamic-fields/showForm(id=${entry.key.productId})}">Add fields</a></td>
+        <td><a sec:authorize="hasRole('ROLE_OWNER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_OPERATOR')" th:href="@{/product/deleteProduct(id=${entry.key.productId})}" class="btn btn-style btn-style-3">Delete Product</a></td>
+        <td><a sec:authorize="hasRole('ROLE_OWNER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_OPERATOR')" th:href="@{/dynamic-fields/showForm(id=${entry.key.productId})}">Add fields</a></td>
       </tr>
       </tbody>
 

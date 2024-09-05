@@ -102,7 +102,7 @@
     <div class="table-responsive-md">
         <div class="row mb-4">
             <div class="col-md-4">
-                <h3 class="heading-21921">Operator Persons</h3>
+                <h3 class="heading-21921">Technical Data</h3>
             </div>
         </div>
         <div class="back-button">
@@ -118,14 +118,14 @@
                 <td scope="col">Engine type</td>
                 <td scope="col">Engine placement</td>
                 <td scope="col">Engine capacity</td>
-                <td scope="col">Dynamic Fields</td>
+                <td th:text="${#authorization.expression('hasRole(''ROLE_USER'')') ? 'Extra Options' : 'Dynamic Fields'}" scope="col">Dynamic Fields</td>
                 <td scope="col"></td>
             </tr>
             </thead>
             <tbody>
             <tr th:each="entry: ${technicalDataMap}">
                 <form th:action="@{/technicalData/updateTechnicalData}" method="post">
-                    <td ><input th:value="${entry.key.technicalId}" name="technicalId"></td>
+                    <td ><input th:value="${entry.key.technicalId}" name="technicalId" readonly></td>
                     <td ><input th:value="${entry.key.bodyType}" name="bodyType"></td>
                     <td ><input th:value="${entry.key.doors}" name="doors"></td>
                     <td ><input th:value="${entry.key.seats}" name="seats"></td>
@@ -149,13 +149,13 @@
                             <span>No dynamic fields available</span>
                         </div>
                     </td>
-                    <td><button type="submit" class="btn btn-primary btn-style">Save</button></td>
+                    <td sec:authorize="hasRole('ROLE_OWNER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_OPERATOR')"><button type="submit" class="btn btn-primary btn-style">Save</button></td>
                 </form>
                 <td><a  th:href="@{/product/showProductById(id=${entry.key.technicalId})}"
                         class="btn btn-style btn-style-3">Product</a></td>
-                <td><a  th:href="@{/deleteProduct(id=${entry.key.technicalId})}"
+                <td sec:authorize="hasRole('ROLE_OWNER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_OPERATOR')"><a  th:href="@{/deleteProduct(id=${entry.key.technicalId})}"
                         class="btn btn-style btn-style-3">Delete Product</a></td>
-                <td><a th:href="@{/dynamic-fields/showForm(id=${entry.key.technicalId})}">Add fields</a></td>
+                <td sec:authorize="hasRole('ROLE_OWNER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_OPERATOR')"> <a th:href="@{/dynamic-fields/showForm(id=${entry.key.technicalId})}">Add fields</a></td>
             </tr>
             </tbody>
         </table>

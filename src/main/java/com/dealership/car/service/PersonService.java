@@ -10,7 +10,11 @@ import com.dealership.car.model.Roles;
 import com.dealership.car.repository.KeysRepository;
 import com.dealership.car.repository.PersonRepository;
 import com.dealership.car.repository.RolesRepository;
+import com.dealership.car.security.AuthentictionProvider;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -146,5 +150,17 @@ public class PersonService {
             }
         }
         return personDynamicFieldMap;
+    }
+    public String getCurrentUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()){
+            Object principal = authentication.getPrincipal();
+            if (principal instanceof UserDetails){
+                return ((UserDetails) principal).getUsername();
+            } else {
+                return principal.toString();
+            }
+        }
+        return null;
     }
 }

@@ -115,4 +115,17 @@ public class ProductController {
         }
         return redirect;
     }
+    @GetMapping("showProductById/forUser")
+    public String showProductForUser(Model model, @RequestParam("id") int id, HttpSession httpSession) {
+        List<Product> products = new ArrayList<>();
+        Optional<Product> product = productRepository.findById(id);
+        if (product.isPresent()) {
+            products.add(product.get());
+        }
+        Map<Product, List<DynamicFieldValue>> personAndDynamicFields = productService.getDynamicFieldsForAllProduct(products);
+        model.addAttribute("map", personAndDynamicFields);
+        model.addAttribute("products");
+
+        return "product.html";
+    }
 }

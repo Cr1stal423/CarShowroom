@@ -5,6 +5,7 @@ import com.dealership.car.model.OrderEntity;
 import com.dealership.car.model.Product;
 import com.dealership.car.repository.OrderEntityRepository;
 import org.springframework.stereotype.Service;
+import org.w3c.dom.ls.LSInput;
 
 import java.util.*;
 
@@ -59,6 +60,10 @@ public class OrderService {
             isDeleted = true;
         }
         return isDeleted;
+    }
+    public List<OrderEntity> userOrders(String username){
+        List<OrderEntity> orders = orderEntityRepository.findByPerson_Username(username);
+        return orders;
     }
 
 }

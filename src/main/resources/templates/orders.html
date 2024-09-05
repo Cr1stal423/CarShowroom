@@ -100,59 +100,83 @@
                 <h3 class="heading-21921">Orders</h3>
             </div>
         </div>
-            <table class="table table-striped table-hover">
-                <thead class="table-dark">
-                <tr>
-                    <td scope="col">Order Id</td>
-                    <td scope="col">Product</td>
-                    <td scope="col">Person</td>
-                    <td scope="col">Order Time</td>
-                    <td scope="col">Delivery</td>
-                    <td scope="col">Payment Type</td>
-                    <td scope="col">Payment Method</td>
-                    <td scope="col">Dynamic Fields</td>
-                    <td scope="col"></td>
-                    <td scope="col"></td>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="entry: ${orderMap}">
-                    <td th:text="${entry.key.orderId}"></td>
-                    <td>
-                        <a th:href="@{/product/showProductById(id=${entry.key.product.productId})}" th:text="${entry.key.product.productId}"></a>
-                    </td>
-                    <td>
-                        <a th:href="@{/staff/findById(id=${entry.key.person.personId})}" th:text="${entry.key.person.personId}">123</a>
-                    </td>
-                    <td th:text="${entry.key.createdAt}"></td>
-                    <td th:text="${entry.key.delivery}"></td>
-                    <td th:text="${entry.key.paymentType}"></td>
-                    <td th:text="${entry.key.paymentMethod}"></td>
-                    <!-- Перевірка наявності динамічних полів -->
-                    <td>
-                        <div th:if="${entry.value != null and !entry.value.isEmpty()}">
-                            <div th:each="field : ${entry.value}">
-                                <div>
-                                    <strong th:text="${field.field.fieldName}">Field Name</strong>:
-                                    <a th:href="@{/dynamic-fields/edit(id=${field.id})}">
-                                        <span th:text="${field.value}">Field Value</span>
-                                    </a>
-                                </div>
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+            <tr>
+                <td scope="col">Order Id</td>
+                <td scope="col">Product</td>
+
+                <td sec:authorize="hasRole('ROLE_OWNER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_OPERATOR')"
+                    scope="col">Person
+                </td>
+                <td scope="col"
+                    th:text="${#authorization.expression('hasRole(''ROLE_USER'')') ? '' : 'Order Time'}"></td>
+                <td sec:authorize="hasRole('ROLE_OWNER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_OPERATOR')"
+                    scope="col">Delivery
+                </td>
+                <td th:text="${#authorization.expression('hasRole(''ROLE_USER'')') ? 'Order Time' : 'Payment Type'}"
+                    scope="col"></td>
+                <td scope="col"
+                    th:text="${#authorization.expression('hasRole(''ROLE_USER'')') ? 'Delivery' : 'Paymeny Method'}"></td>
+                <td sec:authorize="hasRole('ROLE_USER')" scope="col">Payment Method</td>
+                <td th:text="${#authorization.expression('hasRole(''ROLE_USER'')') ? 'Payment Type' : 'Dynamic Fields'}"
+                    scope="col"></td>
+                <td scope="col"></td>
+                <td scope="col"></td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="entry: ${orderMap}">
+                <td th:text="${entry.key.orderId}"></td>
+                <td>
+                    <a th:href="@{/product/showProductById(id=${entry.key.product.productId})}"
+                       th:text="${entry.key.product.productId}"></a>
+                </td>
+
+                <!-- Перевірка наявності ролі і додавання порожньої клітинки, якщо ролі немає -->
+                <td sec:authorize="hasRole('ROLE_OWNER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_OPERATOR')">
+                    <a th:href="@{/staff/findById(id=${entry.key.person.personId})}"
+                       th:text="${entry.key.person.personId}">123</a>
+                </td>
+                <td sec:authorize="hasRole('ROLE_USER')"></td> <!-- Порожня клітинка, якщо користувач не має ролі -->
+
+                <td th:text="${entry.key.createdAt}"></td>
+                <td th:text="${entry.key.delivery}"></td>
+                <td th:text="${entry.key.paymentType}"></td>
+                <td th:text="${entry.key.paymentMethod}"></td>
+
+                <!-- Перевірка наявності динамічних полів -->
+                <td sec:authorize="hasRole('ROLE_OWNER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_OPERATOR')">
+                    <div th:if="${entry.value != null and !entry.value.isEmpty()}">
+                        <div th:each="field : ${entry.value}">
+                            <div>
+                                <strong th:text="${field.field.fieldName}">Field Name</strong>:
+                                <a th:href="@{/dynamic-fields/edit(id=${field.id})}">
+                                    <span th:text="${field.value}">Field Value</span>
+                                </a>
                             </div>
                         </div>
+                    </div>
+                    <div th:if="${entry.value == null or entry.value.isEmpty()}">
+                        <span>No dynamic fields available</span>
+                    </div>
+                </td>
+                <td sec:authorize="hasRole('ROLE_USER')"></td> <!-- Порожня клітинка, якщо користувач не має ролі -->
 
-                        <!-- Якщо динамічні поля відсутні -->
-                        <div th:if="${entry.value == null or entry.value.isEmpty()}">
-                            <span>No dynamic fields available</span>
-                        </div>
-                    </td>
-                    <td></td>
-                    <td><a th:href="@{deleteOrder(id=${entry.key.orderId})}"
-                           class="btn btn-style btn-style-3">Delete Order</a></td>
-                    <td><a th:href="@{/dynamic-fields/showForm(id=${entry.key.orderId})}">Add fields</a></td>
-                </tr>
-                </tbody>
-            </table>
+                <td></td>
+                <td>
+                    <a sec:authorize="hasRole('ROLE_OWNER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_OPERATOR')"
+                       th:href="@{deleteOrder(id=${entry.key.orderId})}"
+                       class="btn btn-style btn-style-3">Delete Order</a>
+                </td>
+                <td>
+                    <a sec:authorize="hasRole('ROLE_OWNER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_OPERATOR')"
+                       th:href="@{/dynamic-fields/showForm(id=${entry.key.orderId})}">Add fields</a>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
     </div>
 </div>
 <!-- //Main -->
