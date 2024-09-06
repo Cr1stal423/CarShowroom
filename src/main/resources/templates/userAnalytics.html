@@ -120,15 +120,15 @@
             </thead>
             <tbody>
             <tr th:each="entry: ${usersMap}">
-                <form th:action="@{/updateUserA}" method="post" th:object="${personDto}">
-                    <td><input readonly type="text" name="username" th:value="${entry.key.personId}"></td>
-                    <td><input type="text" name="username" th:value="${entry.key.username}" ><span th:field="${personDto.username}"></span></td>
-                    <td><input type="text" name="firstName" th:value="${entry.key.firstName}" ><span th:field="${personDto.firstName}"></span></td>
-                    <td><input type="text" name="lastName" th:value="${entry.key.lastName}" ><span th:field="${personDto.lastName}"></span></td>
-                    <td><input type="text" name="address" th:value="${entry.key.address}" ><span th:field="${personDto.address}"></span></td>
-                    <td><input type="text" name="mobileNumber" th:value="${entry.key.mobileNumber}"  ><span th:field="${personDto.mobileNumber}"></span></td>
-                    <td><input type="text" name="passportSeries" th:value="${entry.key.passportSeries}" ><span th:field="${personDto.passportSeries}"></span></td>
-                    <td><input type="text" name="passportNumber" th:value="${entry.key.passportNumber}" ><span th:field="${personDto.passportNumber}"></span></td>
+                <form th:action="@{/updateUserA}" method="post">
+                    <td><input readonly type="text" name="id" th:value="${entry.key.personId}"></td>
+                    <td><input type="text" name="username" th:value="${entry.key.username}" ></td>
+                    <td><input type="text" name="firstName" th:value="${entry.key.firstName}" ></td>
+                    <td><input type="text" name="lastName" th:value="${entry.key.lastName}" ></td>
+                    <td><input type="text" name="address" th:value="${entry.key.address}" ></td>
+                    <td><input type="text" name="mobileNumber" th:value="${entry.key.mobileNumber}"></td>
+                    <td><input type="text" name="passportSeries" th:value="${entry.key.passportSeries}" ></td>
+                    <td><input type="text" name="passportNumber" th:value="${entry.key.passportNumber}" ></td>
                     <td>
                         <a th:href="@{/orders/ordersByUser(id=${entry.key.personId})}">User Orders</a>
                     </td>

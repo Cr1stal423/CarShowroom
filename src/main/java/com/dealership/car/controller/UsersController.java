@@ -70,16 +70,27 @@ public class UsersController {
             return "redirect:/dashboard";
         }
     }
+//    @PostMapping(value = "updateUserA")
+//    public String updateUser(@ModelAttribute("personDto") PersonDto personDto, Model model) {
+//        Person person = personRepository.findByUsername(personDto.getUsername());
+//        if (person != null){
+//            personMapper.updatePersonFromDto(personDto, person);
+//            personRepository.save(person);
+//        }
+//        return "redirect:/staff/users";
+//    }
     @PostMapping(value = "updateUserA")
-    public String updateUser(@ModelAttribute("personDto") PersonDto personDto, Model model) {
-        Person person = personRepository.findByUsername(personDto.getUsername());
-        if (person != null){
-            personMapper.updatePersonFromDto(personDto, person);
-            personRepository.save(person);
+    public String updateUserA(@RequestParam("id")Integer id, @RequestParam("username")String username,
+                              @RequestParam("firstName")String firstName,@RequestParam("lastName")String lastName,
+                              @RequestParam("address")String address, @RequestParam("mobileNumber")String mobileNumber,
+                              @RequestParam("passportSeries")String passportSeries, @RequestParam("passportNumber")String passportNumber){
+        boolean isUpdated = personService.updateroleA(id,username,firstName,lastName,address,mobileNumber,passportSeries,passportNumber);
+        if (isUpdated) {
+            return "redirect:/analytics/users";
+        } else {
+            return "redirect:/analytics";
         }
-        return "redirect:/staff/users";
     }
-
     @GetMapping("/user/displayOrders")
     public String userOrders(){
         String currentUser= personService.getCurrentUser();

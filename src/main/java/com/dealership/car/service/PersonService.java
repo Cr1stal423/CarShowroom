@@ -163,4 +163,24 @@ public class PersonService {
         }
         return null;
     }
+
+    public boolean updateroleA(Integer id, String username, String firstName, String lastName, String address, String mobileNumber, String passportSeries, String passportNumber) {
+        Boolean isUpdated = false;
+        Optional<Person> optionalPerson = personRepository.findById(id);
+        if (optionalPerson.isPresent()) {
+            isUpdated = true;
+            Person person = optionalPerson.get();
+            person.setUsername(username);
+            person.setFirstName(firstName);
+            person.setLastName(lastName);
+            person.setAddress(address);
+            person.setMobileNumber(mobileNumber);
+            person.setPassportSeries(passportSeries);
+            person.setPassportNumber(passportNumber);
+            personRepository.save(person);
+        } else {
+            System.out.printf("Can't find person \n");
+        }
+        return isUpdated;
+    }
 }
