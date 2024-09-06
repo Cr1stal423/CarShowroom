@@ -164,12 +164,12 @@
                     </a>
                 </div>
                 <div class="col-auto mx-3" sec:authorize="hasRole('ROLE_OWNER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_OPERATOR')">
-                    <a th:href="@{/staff/users}">
+                    <a th:href="@{/analytics/users}">
                         <div class="overview-item overview-item--c1">
                             <div class="overview__inner">
                                 <div class="overview-box clearfix">
                                     <div class="text font-large">
-                                        <h2>Users</h2>
+                                        <h2>User Analytics</h2>
                                     </div>
                                 </div>
                             </div>
@@ -177,12 +177,12 @@
                     </a>
                 </div>
                 <div class="col-auto mx-3" sec:authorize="hasRole('ROLE_OWNER')">
-                    <a th:href="@{/product/showAllProduct}">
+                    <a th:href="@{/analytics/technicalModel}">
                         <div class="overview-item overview-item--c2">
                             <div class="overview__inner">
                                 <div class="overview-box clearfix">
                                     <div class="text font-large">
-                                        <h2>Products</h2>
+                                        <h2>Technical Analytics</h2>
                                     </div>
                                 </div>
                             </div>

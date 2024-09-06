@@ -1,15 +1,15 @@
 package com.dealership.car.controller;
 
+import com.dealership.car.DTO.PersonDto;
 import com.dealership.car.constants.Constants;
 import com.dealership.car.dynamic.DynamicFieldValue;
 import com.dealership.car.model.OrderEntity;
+import com.dealership.car.model.Person;
 import com.dealership.car.model.Product;
 import com.dealership.car.repository.OrderEntityRepository;
+import com.dealership.car.repository.PersonRepository;
 import com.dealership.car.repository.ProductRepository;
-import com.dealership.car.service.AnalyticsService;
-import com.dealership.car.service.DynamicFieldValueService;
-import com.dealership.car.service.OrderService;
-import com.dealership.car.service.ProductService;
+import com.dealership.car.service.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,8 +35,10 @@ public class AnalyticsController {
     private final ProductService productService;
     private final HttpSession httpSession;
     private final DynamicFieldValueService dynamicFieldValueService;
+    private final PersonRepository personRepository;
+    private final PersonService personService;
 
-    public AnalyticsController(AnalyticsService analyticsService, OrderService orderService, OrderEntityRepository orderEntityRepository, ProductRepository productRepository, ProductService productService, HttpSession httpSession, DynamicFieldValueService dynamicFieldValueService) {
+    public AnalyticsController(AnalyticsService analyticsService, OrderService orderService, OrderEntityRepository orderEntityRepository, ProductRepository productRepository, ProductService productService, HttpSession httpSession, DynamicFieldValueService dynamicFieldValueService, PersonRepository personRepository, PersonService personService) {
         this.analyticsService = analyticsService;
         this.orderService = orderService;
         this.orderEntityRepository = orderEntityRepository;
@@ -44,6 +46,8 @@ public class AnalyticsController {
         this.productService = productService;
         this.httpSession = httpSession;
         this.dynamicFieldValueService = dynamicFieldValueService;
+        this.personRepository = personRepository;
+        this.personService = personService;
     }
 
     @GetMapping("/mainPage")
@@ -126,5 +130,15 @@ public class AnalyticsController {
         model.addAttribute("map", carsMap);
         return "availableCar.html";
     }
+    @GetMapping("/users")
+    public String showUserAnalytics(Model model) {
+        List<Person> users = personRepository.findByRoles(Constants.USER_ROLE);
+        Map<Person,List<DynamicFieldValue>> userMap = personService.getDynamicFieldsForAllPerson(users);
+        model.addAttribute("usersMap", userMap);
+        httpSession.setAttribute("entityType", "Person");
+        model.addAttribute("personDto", new PersonDto());
+        return "userAnalytics.html";
+    }
+
 
 }

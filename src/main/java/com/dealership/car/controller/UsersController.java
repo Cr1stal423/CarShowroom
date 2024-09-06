@@ -1,7 +1,9 @@
 package com.dealership.car.controller;
 
+import com.dealership.car.DTO.PersonDto;
 import com.dealership.car.constants.Constants;
 import com.dealership.car.dynamic.DynamicFieldValue;
+import com.dealership.car.mapper.PersonMapper;
 import com.dealership.car.model.OrderEntity;
 import com.dealership.car.model.Person;
 import com.dealership.car.repository.PersonRepository;
@@ -16,10 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
@@ -31,6 +30,7 @@ import java.util.Map;
 public class UsersController {
 
     private final OrderService orderService;
+    private final PersonMapper personMapper;
 
     private PersonRepository personRepository;
 
@@ -69,6 +69,15 @@ public class UsersController {
         } else {
             return "redirect:/dashboard";
         }
+    }
+    @PostMapping(value = "updateUserA")
+    public String updateUser(@ModelAttribute("personDto") PersonDto personDto, Model model) {
+        Person person = personRepository.findByUsername(personDto.getUsername());
+        if (person != null){
+            personMapper.updatePersonFromDto(personDto, person);
+            personRepository.save(person);
+        }
+        return "redirect:/staff/users";
     }
 
     @GetMapping("/user/displayOrders")
