@@ -4,6 +4,7 @@ import com.dealership.car.model.OrderEntity;
 import com.dealership.car.model.Person;
 import com.dealership.car.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,4 +18,8 @@ public interface OrderEntityRepository extends JpaRepository<OrderEntity, Intege
     public Optional<OrderEntity> findByProduct(Product product);
 
     public List<OrderEntity> findByPerson_Username(String username);
+
+    public List<OrderEntity> findByPaymentType(String paymentType);
+    @Query("SELECT DISTINCT o.paymentType FROM OrderEntity o")
+    public List<String> findAllUniquePaymentTypes();
 }

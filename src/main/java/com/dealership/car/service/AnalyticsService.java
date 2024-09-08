@@ -1,6 +1,7 @@
 package com.dealership.car.service;
 
 import com.dealership.car.model.OrderEntity;
+import com.dealership.car.model.Person;
 import com.dealership.car.model.Product;
 import com.dealership.car.repository.OrderEntityRepository;
 import com.dealership.car.repository.ProductRepository;
@@ -95,5 +96,41 @@ public class AnalyticsService {
     public List<String> getAllUniqueModel(){
         List<String> models = productRepository.findAllUniqueModels();
         return models;
+    }
+
+    public List<Product> findProductByPaymentType(String paymentType){
+        List<Product> products = new ArrayList<>();
+        List<OrderEntity> orderEntityList = orderEntityRepository.findByPaymentType(paymentType);
+        for (OrderEntity orderEntity : orderEntityList){
+            products.add(orderEntity.getProduct());
+        }
+        return products;
+    }
+    public List<Person> findUserByPaymentType(String paymentType){
+        List<Person> persons = new ArrayList<>();
+        List<OrderEntity> orderEntityList = orderEntityRepository.findByPaymentType(paymentType);
+        for (OrderEntity orderEntity : orderEntityList){
+            persons.add(orderEntity.getPerson());
+        }
+        return persons;
+    }
+    public Map<Integer, Integer> personAndProductByPaymentType(String paymentType) {
+        Map<Integer, Integer> personAndProductMap = new HashMap<>();
+        List<Person> personList = findUserByPaymentType(paymentType);
+        List<Product> productList = findProductByPaymentType(paymentType);
+
+        if (personList == null || productList == null) {
+            throw new IllegalStateException("Person list or product list is null");
+        }
+
+        int i = 0;
+        while (productList.size() > i && personList.size() > i) {
+            int personId = personList.get(i).getId();
+            int productId = productList.get(i).getId();
+            personAndProductMap.put(personId, productId);
+            i++;
+        }
+
+        return personAndProductMap;
     }
 }

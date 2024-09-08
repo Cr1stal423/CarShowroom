@@ -205,5 +205,20 @@ public class AnalyticsController {
             model.addAttribute("technicalDataMap", technicalDataMap);
         return "technicalModel.html";
     }
+    @GetMapping("/paymentAnalytics")
+    public ModelAndView showPaymentAnalytics() {
+        ModelAndView modelAndView = new ModelAndView("paymentAnalytics.html");
+        Map<Integer,Integer> personandProductMap = analyticsService.personAndProductByPaymentType(String.valueOf(Constants.PAYMENT_TYPES.get(0)));
+        List<String> paymentTypes = orderEntityRepository.findAllUniquePaymentTypes();
+        modelAndView.addObject("personAndProductMap", personandProductMap);
+        modelAndView.addObject("paymentTypes", paymentTypes);
+        return modelAndView;
+    }
+    @PostMapping("/filterByPaymentType")
+    public String findByPaymentType(@RequestParam("paymentType") String paymentType, Model model) {
+        Map<Integer,Integer> persnoAndProductMap = analyticsService.personAndProductByPaymentType(String.valueOf(OrderEntity.PaymentType.valueOf(paymentType)));
+        model.addAttribute("personAndProductMap", persnoAndProductMap);
+        return "paymentAnalytics.html";
+    }
 
 }
