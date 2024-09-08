@@ -8,6 +8,29 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+/**
+ * Data Transfer Object for representing person details.
+ *
+ * Fields:
+ * - username: the username of the person
+ * - password: the password of the person
+ * - firstName: the first name of the person
+ * - lastName: the last name of the person
+ * - passportSeries: the series of the person's passport
+ * - passportNumber: the number of the person's passport
+ * - address: the address of the person
+ * - mobileNumber: the mobile number of the person
+ *
+ * Constraints:
+ * - Username must be at least 2 characters and not blank.
+ * - Password must be at least 3 characters and not blank.
+ * - First name must be at least 2 characters and not blank.
+ * - Last name must be at least 2 characters and not blank.
+ * - Passport series must be at least 5 characters and not blank.
+ * - Passport number must be at least 10 characters and not blank.
+ * - Address must be at least 5 characters and not blank.
+ * - Mobile number must be exactly 10 digits and not blank.
+ */
 @Data
 public class PersonDto {
     @Size(min = 2, message = "Username must be at list 2 char")

@@ -4,6 +4,14 @@ import com.dealership.car.DTO.PersonDto;
 import com.dealership.car.model.Person;
 import org.springframework.stereotype.Component;
 
+/**
+ * PersonMapper is a component responsible for mapping between PersonDto and Person entities.
+ *
+ * Methods:
+ * - toPerson(PersonDto personDto): Converts a PersonDto to a Person entity.
+ * - updatePersonFromDto(PersonDto personDto, Person person): Updates an existing Person entity
+ *   with the details from a PersonDto.
+ */
 @Component
 public class PersonMapper {
     public Person toPerson(PersonDto personDto){

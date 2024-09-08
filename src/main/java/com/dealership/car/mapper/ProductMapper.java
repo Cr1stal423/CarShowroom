@@ -9,6 +9,10 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
+/**
+ * Component responsible for mapping between Product and ProductDto objects.
+ * Provides methods to convert ProductDto to Product and TechnicalData entities.
+ */
 @Component
 @Data
 public class ProductMapper {

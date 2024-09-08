@@ -7,6 +7,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/**
+ * Controller for handling password-related operations.
+ * This class handles requests related to password management such as showing a forgotten password.
+ */
 @Controller
 public class PasswordController {
     @Autowired

@@ -25,6 +25,9 @@ import org.w3c.dom.ls.LSInput;
 import java.time.LocalDateTime;
 import java.util.*;
 
+/**
+ * Service class for handling operations related to Person entities.
+ */
 @Service
 public class PersonService {
     @Autowired
@@ -38,6 +41,12 @@ public class PersonService {
     @Autowired
     private PersonMapper personMapper;
 
+    /**
+     * Creates a new user in the system with the given person details.
+     *
+     * @param personDto the Data Transfer Object containing the person's details
+     * @return true if the user was successfully created, false otherwise
+     */
     public boolean createNewUser(PersonDto personDto) {
         Person person = personMapper.toPerson(personDto);
         Keys password = createPassword(person.getPassword());
@@ -56,16 +65,33 @@ public class PersonService {
         return savedPerson != null && savedPerson.getPersonId() > 0;
     }
 
+    /**
+     * Creates a Keys object and sets its password.
+     *
+     * @param password the password to set in the Keys object.
+     * @return a Keys object with the specified password set.
+     */
     private Keys createPassword(String password) {
         Keys keys = new Keys();
         keys.setPassword(password);
         return keys;
     }
 
+    /**
+     * Finds the default user role by querying the roles repository using a predefined constant role name.
+     *
+     * @return the default user role as a {@link Roles} object
+     */
     private Roles findDefaultUserRole() {
         return rolesRepository.findByRoleName(Constants.USER_ROLE);
     }
 
+    /**
+     * Method to retrieve the forgotten password for a user based on their username.
+     *
+     * @param username the username of the user who forgot their password
+     * @return the password of the user if found, otherwise null
+     */
     public String forgotPassword(String username) {
         String response = null;
         Person person = personRepository.findByUsername(username);
@@ -75,6 +101,14 @@ public class PersonService {
         return response;
     }
 
+    /**
+     * Changes the role of a user specified by their ID to the new role provided.
+     * The method ensures a new transaction is initiated for this operation.
+     *
+     * @param id the ID of the user whose role is to be changed
+     * @param newRoles the new role to be assigned to the user
+     * @return true if the user's role was successfully changed, false otherwise
+     */
     //TODO need to fix(can not commit jpa transaction)
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public boolean changeUserRole(int id, String newRoles) {
@@ -105,6 +139,17 @@ public class PersonService {
         return isUpdated;
     }
 
+    /**
+     * Updates the details of an existing user identified by their username.
+     * If the user is found, the user's details are updated with the provided information.
+     *
+     * @param username the username of the user to be updated
+     * @param firstName the updated first name of the user
+     * @param lastName the updated last name of the user
+     * @param address the updated address of the user
+     * @param mobileNumber the updated mobile number of the user
+     * @return true if the user was found and updated successfully, false otherwise
+     */
     public boolean updateUser(String username, String firstName, String lastName, String address, String mobileNumber) {
         boolean isSaved = false;
         Person optionalPerson = personRepository.findByUsername(username);
@@ -125,10 +170,21 @@ public class PersonService {
         return isSaved;
     }
 
+    /**
+     * Retrieves a list of all Person entities from the repository.
+     *
+     * @return a list of all Person entities.
+     */
     public List<Person> findAll() {
         return personRepository.findAll();
     }
 
+    /**
+     * Deletes a user identified by the given ID from the repository.
+     *
+     * @param id the ID of the user to be deleted
+     * @return true if the user was successfully deleted, false otherwise
+     */
     public Boolean deleteUserById(Integer id) {
         Boolean isDeleted = false;
         Optional<Person> optionalPerson = personRepository.findById(id);
@@ -139,6 +195,12 @@ public class PersonService {
         return isDeleted;
     }
 
+    /**
+     * Retrieves dynamic field values for a list of persons.
+     *
+     * @param personList the list of persons for whom to retrieve dynamic field values
+     * @return a map where each key is a Person and the corresponding value is a list of DynamicFieldValue objects associated with that Person
+     */
     public Map<Person, List<DynamicFieldValue>> getDynamicFieldsForAllPerson(List<Person> personList) {
         Map<Person, List<DynamicFieldValue>> personDynamicFieldMap = new HashMap<>();
         for (Person person : personList) {
@@ -151,6 +213,11 @@ public class PersonService {
         }
         return personDynamicFieldMap;
     }
+    /**
+     * Retrieves the username of the currently authenticated user from the security context.
+     *
+     * @return the username of the currently authenticated user, or null if no user is authenticated
+     */
     public String getCurrentUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()){
@@ -164,6 +231,19 @@ public class PersonService {
         return null;
     }
 
+    /**
+     * Updates the details of a user based on the provided parameters.
+     *
+     * @param id the unique identifier of the person to update
+     * @param username the new username of the person
+     * @param firstName the new first name of the person
+     * @param lastName the new last name of the person
+     * @param address the new address of the person
+     * @param mobileNumber the new mobile number of the person
+     * @param passportSeries the new passport series of the person
+     * @param passportNumber the new passport number of the person
+     * @return true if the user's details were successfully updated; false otherwise
+     */
     public boolean updateroleA(Integer id, String username, String firstName, String lastName, String address, String mobileNumber, String passportSeries, String passportNumber) {
         Boolean isUpdated = false;
         Optional<Person> optionalPerson = personRepository.findById(id);

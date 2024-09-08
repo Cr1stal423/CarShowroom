@@ -10,6 +10,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
+/**
+ * Configuration class responsible for setting up project-specific security settings.
+ * It defines the security filter chain, including CSRF protection, request authorization,
+ * form login configurations, and HTTP basic authentication.
+ */
 @Configuration
 public class ProjectSecurityConfig {
 

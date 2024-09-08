@@ -27,6 +27,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * OrderController is a Spring MVC controller that handles HTTP requests related to orders.
+ * It provides endpoints to view, create, search, and delete orders.
+ */
 @Controller
 @AllArgsConstructor
 @RequestMapping(value = "orders")
@@ -43,6 +47,13 @@ public class OrderController {
 
     private PersonService personService;
 
+    /**
+     * Handles requests to show all orders.
+     *
+     * @param model the model to hold order data attributes
+     * @param httpSession the HTTP session to set session attributes
+     * @return the name of the view to be rendered, "orders.html"
+     */
     @GetMapping(value = "/showAll")
     public String showAllOrders(Model model, HttpSession httpSession){
         List<OrderEntity> orders = orderEntityRepository.findAll();
@@ -52,6 +63,13 @@ public class OrderController {
         return "orders.html";
     }
 
+    /**
+     * Retrieves the orders for a specific user by their ID and adds the orders along with their dynamic fields to the model.
+     *
+     * @param id   the ID of the user whose orders are to be retrieved
+     * @param model the model to which the order data will be added
+     * @return the view name "orders.html"
+     */
     @GetMapping("/ordersByUser")
     public String findOrdersByUser(@RequestParam("id")int id, Model model){
         Optional<Person> person = personRepository.findById(id);
@@ -60,6 +78,12 @@ public class OrderController {
         model.addAttribute("orderMap", orderMap);
         return "orders.html";
     }
+    /**
+     * Displays the form for adding a new order.
+     *
+     * @param model the model to which attributes for the form are added
+     * @return the name of the view to be rendered
+     */
     @GetMapping(value = "/addOrder")
     public String showForm(Model model){
         model.addAttribute("orderDto", new OrderDto());
@@ -70,6 +94,15 @@ public class OrderController {
         return "order-form.html";
     }
 
+    /**
+     * Processes an order request to create and persist an OrderEntity.
+     * If there are validation errors, the user is redirected back to the order form.
+     *
+     * @param orderDto The data transfer object containing order details.
+     * @param model The model object for passing data to the view.
+     * @param errors The Errors object containing any validation errors.
+     * @return A string representing the view name to be returned.
+     */
     @PostMapping(value = "/makeOrder")
     public String makeOrder(@Valid@ModelAttribute("orderDto")OrderDto orderDto, Model model, Errors errors){
         if (errors.hasErrors()){
@@ -97,6 +130,13 @@ public class OrderController {
             return "redirect:/orders/addOrder";
         }
     }
+    /**
+     * Displays order details by order ID.
+     *
+     * @param id the identifier of the order to be displayed
+     * @param model the model object to pass attributes to the view
+     * @return the name of the view to render, in this case "orders.html"
+     */
     @GetMapping("/searchById")
     public String showOrderById(@RequestParam("id")Integer id,Model model){
         List<OrderEntity> orderEntityList = new ArrayList<>();
@@ -108,6 +148,12 @@ public class OrderController {
         model.addAttribute("orderMap",orderMap);
         return "orders.html";
     }
+    /**
+     * Deletes an order by its ID and redirects to the appropriate page based on the outcome.
+     *
+     * @param id the ID of the order to delete
+     * @return a redirection string to the appropriate view
+     */
     @GetMapping("/deleteOrder")
     public String deleteOrder(@RequestParam("id")Integer id){
         Boolean isDeleted = orderService.deleteOrder(id);

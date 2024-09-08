@@ -9,6 +9,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * The {@code Constants} interface holds a collection of constant values used
+ * throughout the application. These constants include user roles, messages,
+ * availability statuses, body types, engine types, engine placements, payment types,
+ * payment methods, and entity types.
+ */
 public interface Constants {
     public static final String USER_ROLE = "USER";
     public static final String OPERATOR_ROLE = "OPERATOR";

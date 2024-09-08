@@ -4,6 +4,10 @@ import com.dealership.car.repository.PersonRepository;
 import jakarta.persistence.*;
 import lombok.Data;
 
+/**
+ * Represents the value of a dynamic field associated with an entity.
+ * This class is used to store the dynamic field values in the database.
+ */
 @Entity
 @Table(name = "dynamic_fields_value")
 @Data

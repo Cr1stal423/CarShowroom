@@ -26,6 +26,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+/**
+ * Controller for handling analytics-related requests.
+ * This class contains methods for displaying analytics pages and filtering
+ * various entities such as sales, cars, users, and technical data.
+ */
 @Controller
 @RequestMapping("/analytics")
 public class AnalyticsController {
@@ -117,6 +123,17 @@ public class AnalyticsController {
         return modelAndView;
     }
 
+    /**
+     * Handles the POST request to filter cars by their brand and model.
+     * Based on the provided brand and model parameters, it retrieves the
+     * relevant cars from the repository, fetches their dynamic fields,
+     * and adds them to the model for rendering.
+     *
+     * @param brand the brand of the car to filter by, can be null
+     * @param carModel the model of the car to filter by, can be null
+     * @param model the model object used for adding attributes required for rendering the view
+     * @return the name of the view template to be rendered, "availableCar.html"
+     */
     @PostMapping("/filterByBrandAndModel")
     public String filterByBrandAndModel(@RequestParam(value = "brand", required = false) String brand,
                                         @RequestParam(value = "carModel", required = false) String carModel, Model model) {
@@ -136,6 +153,14 @@ public class AnalyticsController {
         model.addAttribute("map", carsMap);
         return "availableCar.html";
     }
+    /**
+     * Handles the GET request for the user analytics page.
+     * It retrieves users with the role of "USER" from the repository,
+     * fetches their dynamic fields, and adds necessary attributes to the model.
+     *
+     * @param model the model object used for adding attributes for rendering the view
+     * @return the name of the view template to be rendered, "userAnalytics.html"
+     */
     @GetMapping("/users")
     public String showUserAnalytics(Model model) {
         List<Person> users = personRepository.findByRoles(Constants.USER_ROLE);
@@ -145,6 +170,15 @@ public class AnalyticsController {
         model.addAttribute("personDto", new PersonDto());
         return "userAnalytics.html";
     }
+    /**
+     * Handles the GET request for the technical model page.
+     * It retrieves all the technical data along with their dynamic field values, fetches all unique models,
+     * and adds these to the provided model for rendering the view.
+     *
+     * @param model the model object used for adding attributes required for rendering the view
+     * @param http the HTTP session to set session attributes
+     * @return the name of the view template to be rendered, "technicalModel.html"
+     */
     @GetMapping("/technicalModel")
     public String showTechDataByModel(Model model, HttpSession http) {
         List<TechnicalData> technicalDataList = technicalDataRepository.findAll();
@@ -155,6 +189,15 @@ public class AnalyticsController {
         model.addAttribute("technicalDataMap", technicalDataMap);
         return "technicalModel.html";
     }
+    /**
+     * Handles the POST request to find technical data by a specific car model.
+     * It retrieves technical data for the specified model along with their dynamic field values,
+     * and adds these to the provided model for rendering.
+     *
+     * @param carModel the name of the car model to filter and retrieve the technical data
+     * @param model the model object used for adding attributes required for rendering the view
+     * @return the name of the view template to be rendered, "technicalModel.html"
+     */
     @PostMapping("/filterByModel")
     public String findTechDataByModel(@RequestParam("model") String carModel,Model model){
         List<TechnicalData> technicalDataList = technicalDataService.getTechnicalDataByModel(carModel);

@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/**
+ * Controller class for managing operator-related operations.
+ */
 @Controller
 @AllArgsConstructor
 public class OperatorController {
@@ -18,50 +21,64 @@ public class OperatorController {
 
     private PersonService personService;
 
+    /**
+     * Deletes an operator based on the given ID.
+     *
+     * @param id the ID of the operator to be deleted.
+     * @param model the model to which attributes are added to be sent to the view.
+     * @return a redirect URL to the list of operators.
+     */
     @RequestMapping(value = "/deleteOperator")
-    public String deleteOperator(@RequestParam("id")int id, Model model){
+    public String deleteOperator(@RequestParam("id") int id, Model model) {
         Boolean isDeleted = personService.deleteUserById(id);
-        if (isDeleted){
+        if (isDeleted) {
             model.addAttribute("message", "Operator deleted");
         }
         model.addAttribute("message", "error while deleting operator ");
 
         return "redirect:/staff/operators";
     }
+
+    /**
+     * Changes the role of a user identified by their ID to an admin role.
+     *
+     * @param id the ID of the user whose role is to be changed
+     * @param model the model to which success or error messages will be added
+     * @return a redirection URL to the operators page
+     */
     @RequestMapping(value = "/turnIntoAdmin")
-    public String turnIntoAdmin(@RequestParam("id")int id, Model model){
-        try{
+    public String turnIntoAdmin(@RequestParam("id") int id, Model model) {
+        try {
             personService.changeUserRole(id, Constants.ADMIN_ROLE);
             model.addAttribute("message", "Role changed");
-        } catch (Exception e){
-            model.addAttribute("message",e.getMessage());
+        } catch (Exception e) {
+            model.addAttribute("message", e.getMessage());
         }
         return "redirect:/staff/operators";
     }
-//    @PostMapping(value = "/updateOperator")
-//    public ModelAndView updateOperator(@RequestParam(value = "id", required = false)Integer id, @RequestParam("username") String username,
-//                                       @RequestParam("firstName")String firstName, @RequestParam("lastName")String lastName,
-//                                       @RequestParam("address") String address, @RequestParam("mobileNumber") String mobileNumber){
-//        String viewName = "redirect:/staff/operators";
-//        ModelAndView modelAndView = new ModelAndView(viewName);
-//        boolean isUpdated = personService.updateUser(id, username, firstName, lastName, address, mobileNumber);
-//        if (!isUpdated){
-//            viewName = "redirect:/dashboard";
-//            modelAndView.setViewName(viewName);
-//        }
-//        return modelAndView;
-//    }
-@PostMapping(value = "/updateOperator")
-public String updateOperator(@RequestParam(value = "id", required = false)Integer id, @RequestParam("username")String username,
-                             @RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName,
-                             @RequestParam("address")String address, @RequestParam("mobileNumber") String mobileNumber) {
 
-    boolean isUpdated = personService.updateUser(username, firstName, lastName, address, mobileNumber);
-    if (isUpdated){
-        return "redirect:/staff/operators";
-    } else {
-        return "redirect:/dashboard";
+    /**
+     * Updates the details of an existing operator.
+     *
+     * @param id the ID of the operator to update; can be null
+     * @param username the updated username of the operator
+     * @param firstName the updated first name of the operator
+     * @param lastName the updated last name of the operator
+     * @param address the updated address of the operator
+     * @param mobileNumber the updated mobile number of the operator
+     * @return a redirect URL to the operators list page if the update is successful, or to the dashboard if the update fails
+     */
+    @PostMapping(value = "/updateOperator")
+    public String updateOperator(@RequestParam(value = "id", required = false) Integer id, @RequestParam("username") String username,
+                                 @RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName,
+                                 @RequestParam("address") String address, @RequestParam("mobileNumber") String mobileNumber) {
+
+        boolean isUpdated = personService.updateUser(username, firstName, lastName, address, mobileNumber);
+        if (isUpdated) {
+            return "redirect:/staff/operators";
+        } else {
+            return "redirect:/dashboard";
+        }
     }
-}
 
 }

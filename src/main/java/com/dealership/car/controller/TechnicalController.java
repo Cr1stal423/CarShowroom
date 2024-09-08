@@ -23,6 +23,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * A Spring MVC controller that handles requests related to technical data of products.
+ * This controller provides endpoints to view and update technical data associated with products.
+ */
 @Controller
 @AllArgsConstructor
 @RequestMapping(value = "/technicalData")
@@ -36,6 +40,15 @@ public class TechnicalController {
 
     private TechnicalDataRepository technicalDataRepository;
 
+    /**
+     * Retrieves the technical data for a specific product, including dynamic fields,
+     * and adds it to the model and HTTP session.
+     *
+     * @param id The ID of the product to retrieve technical data for.
+     * @param model The Spring model to which the technical data map is added.
+     * @param httpSession The HTTP session in which the technical data is stored.
+     * @return The name of the view to render, in this case "technicalData.html".
+     */
     @GetMapping("/forProduct")
     public String technicalDataForProduct(@RequestParam int id ,
                                           Model model, HttpSession httpSession){
@@ -54,12 +67,33 @@ public class TechnicalController {
         }
         return "technicalData.html";
     }
+    /**
+     * Displays the product by its technical data id.
+     *
+     * @param id The id of the technical data.
+     * @param model The model to hold the technical data.
+     * @return The URL to redirect to the product's detailed page.
+     */
     @GetMapping("/showProduct")
     public String showProduct(@RequestParam("id") int id, Model model){
         Optional<TechnicalData> technicalData = technicalDataRepository.findById(id);
         return "redirect:/product/showProductById";
     }
 
+    /**
+     * Updates the technical data of a product based on the provided parameters.
+     *
+     * @param technicalId The ID of the technical data to update.
+     * @param bodyType The body type of the technical data.
+     * @param doors The number of doors of the technical data.
+     * @param seats The number of seats of the technical data.
+     * @param engineType The engine type of the technical data.
+     * @param enginePlacement The placement of the engine in the technical data.
+     * @param engineCapacity The capacity of the engine in the technical data.
+     * @param model The Spring Model object.
+     * @param httpSession The HTTP session object.
+     * @return A redirect string to the updated technical data view if successful, otherwise to the dashboard.
+     */
     @PostMapping(value = "/updateTechnicalData")
     public String updateData(@RequestParam(value = "technicalId") Integer technicalId,
                              @RequestParam(value = "bodyType")TechnicalData.BodyType bodyType,

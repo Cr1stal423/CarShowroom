@@ -16,6 +16,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Controller for managing dynamic fields in an entity.
+ * It allows displaying forms for dynamic fields, editing, adding, updating, and deleting dynamic fields and their values.
+ */
 @Controller
 @RequestMapping("/dynamic-fields")
 @AllArgsConstructor
@@ -28,6 +32,14 @@ public class DynamicFieldsController {
 
 
 
+    /**
+     * Displays the form for dynamic fields.
+     *
+     * @param id the ID of the entity
+     * @param httpSession the current HTTP session
+     * @param model the model to add attributes to
+     * @return the name of the HTML template to render
+     */
     @GetMapping("/showForm")
     public String showForm(@RequestParam(value = "id")Integer id,HttpSession httpSession,Model model) {
         String entityType = dynamicFieldValueService.getEntityType(id, (String) httpSession.getAttribute("entityType"));
@@ -43,6 +55,14 @@ public class DynamicFieldsController {
         return "dynamic-fields-form.html";
     }
 
+    /**
+     * Handles the request to show the edit form for a dynamic field.
+     *
+     * @param model the model to which the dynamicFieldDto attribute will be added
+     * @param id the ID of the dynamic field to be edited
+     * @param httpSession the HTTP session to store the dynamic value ID
+     * @return the name of the view for editing the dynamic field
+     */
     @GetMapping("/edit")
     public String editForm(Model model, @RequestParam("id")Integer id, HttpSession httpSession){
         DynamicFieldDto dynamicFieldDto = dynamicFieldValueService.setDataToDto(id);
@@ -51,6 +71,14 @@ public class DynamicFieldsController {
         return "dynamic-field-edit-form.html";
     }
 
+    /**
+     * Handles HTTP POST requests to add a new dynamic field to the system.
+     *
+     * @param fieldName the name of the field to be added
+     * @param fieldType the type of the field to be added
+     * @param httpSession the current HTTP session to retrieve the session attributes
+     * @return the redirect URL to the form showing the dynamic fields
+     */
     @PostMapping("/addField")
     public String addFields(@RequestParam String fieldName, @RequestParam String fieldType,HttpSession httpSession) {
         FieldsMetadata fieldsMetadata = new FieldsMetadata();
@@ -61,6 +89,16 @@ public class DynamicFieldsController {
         return "redirect:/dynamic-fields/showForm?id="+id;
     }
 
+    /**
+     * Adds a dynamic field value to the entity specified by the parameters.
+     *
+     * @param entityId ID of the entity to which the dynamic field value is to be added.
+     * @param entityType Type of the entity to which the dynamic field value is to be added.
+     * @param fieldId ID of the field metadata for the dynamic field value.
+     * @param value The value to be added for the dynamic field.
+     * @param httpSession HTTP session object to retrieve session attributes.
+     * @return A redirection URL to the form displaying the dynamic fields of the entity.
+     */
     @PostMapping("/addValue")
     public String addValue(@RequestParam Integer entityId,
                            @RequestParam String entityType,
@@ -81,6 +119,13 @@ public class DynamicFieldsController {
         var id = httpSession.getAttribute("id");
         return "redirect:/dynamic-fields/showForm?id=" + id;
     }
+    /**
+     * Handles the update of dynamic fields based on the provided DTO and current session information.
+     *
+     * @param dynamicFieldDto The data transfer object containing dynamic field data to be updated.
+     * @param httpSession The current HTTP session containing user-specific data.
+     * @return A redirection string to the edit page, with or without an error query parameter based on the success of the update.
+     */
     @PostMapping("/update")
     public String updateDynamicField(@ModelAttribute("dynamicFieldDto") DynamicFieldDto dynamicFieldDto, HttpSession httpSession){
         Boolean isSaved = dynamicFieldValueService.saveDynamicFieldsValueFromDto(dynamicFieldDto);
@@ -93,6 +138,13 @@ public class DynamicFieldsController {
         }
         return redirect;
     }
+    /**
+     * Deletes a dynamic value identified by the provided ID and processes the user's session accordingly.
+     *
+     * @param id the ID of the dynamic value to be deleted
+     * @param httpSession the current HTTP session containing session attributes
+     * @return a redirection string to navigate to the appropriate page based on the operation's success or failure
+     */
     @GetMapping("/delete")
     public String deleteDynamicValue(@RequestParam("id") Integer id, HttpSession httpSession){
         Integer dynamicValueId = (Integer) httpSession.getAttribute("dynamicValueId");

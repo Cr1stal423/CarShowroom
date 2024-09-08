@@ -8,6 +8,11 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+/**
+ * Data Transfer Object for transferring Product information.
+ * Provides essential details about a product including its origin,
+ * brand, model, color, availability status, price, and technical specifications.
+ */
 @Data
 public class ProductDto {
 
