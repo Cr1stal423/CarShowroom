@@ -6,9 +6,11 @@ import com.dealership.car.dynamic.DynamicFieldValue;
 import com.dealership.car.model.OrderEntity;
 import com.dealership.car.model.Person;
 import com.dealership.car.model.Product;
+import com.dealership.car.model.TechnicalData;
 import com.dealership.car.repository.OrderEntityRepository;
 import com.dealership.car.repository.PersonRepository;
 import com.dealership.car.repository.ProductRepository;
+import com.dealership.car.repository.TechnicalDataRepository;
 import com.dealership.car.service.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -37,8 +39,10 @@ public class AnalyticsController {
     private final DynamicFieldValueService dynamicFieldValueService;
     private final PersonRepository personRepository;
     private final PersonService personService;
+    private final TechnicalDataService technicalDataService;
+    private final TechnicalDataRepository technicalDataRepository;
 
-    public AnalyticsController(AnalyticsService analyticsService, OrderService orderService, OrderEntityRepository orderEntityRepository, ProductRepository productRepository, ProductService productService, HttpSession httpSession, DynamicFieldValueService dynamicFieldValueService, PersonRepository personRepository, PersonService personService) {
+    public AnalyticsController(AnalyticsService analyticsService, OrderService orderService, OrderEntityRepository orderEntityRepository, ProductRepository productRepository, ProductService productService, HttpSession httpSession, DynamicFieldValueService dynamicFieldValueService, PersonRepository personRepository, PersonService personService, TechnicalDataService technicalDataService, TechnicalDataRepository technicalDataRepository) {
         this.analyticsService = analyticsService;
         this.orderService = orderService;
         this.orderEntityRepository = orderEntityRepository;
@@ -48,6 +52,8 @@ public class AnalyticsController {
         this.dynamicFieldValueService = dynamicFieldValueService;
         this.personRepository = personRepository;
         this.personService = personService;
+        this.technicalDataService = technicalDataService;
+        this.technicalDataRepository = technicalDataRepository;
     }
 
     @GetMapping("/mainPage")
@@ -139,6 +145,22 @@ public class AnalyticsController {
         model.addAttribute("personDto", new PersonDto());
         return "userAnalytics.html";
     }
-
+    @GetMapping("/technicalModel")
+    public String showTechDataByModel(Model model, HttpSession http) {
+        List<TechnicalData> technicalDataList = technicalDataRepository.findAll();
+        Map<TechnicalData,List<DynamicFieldValue>> technicalDataMap = technicalDataService.getDynamicFieldsForAllTechnicalData(technicalDataList);
+        List<String> models = analyticsService.getAllUniqueModel();
+        model.addAttribute("models", models);
+        http.setAttribute("entityType", "TechnicalData");
+        model.addAttribute("technicalDataMap", technicalDataMap);
+        return "technicalModel.html";
+    }
+    @PostMapping("/filterByModel")
+    public String findTechDataByModel(@RequestParam("model") String carModel,Model model){
+        List<TechnicalData> technicalDataList = technicalDataService.getTechnicalDataByModel(carModel);
+        Map<TechnicalData,List<DynamicFieldValue>> technicalDataMap = technicalDataService.getDynamicFieldsForAllTechnicalData(technicalDataList);
+            model.addAttribute("technicalDataMap", technicalDataMap);
+        return "technicalModel.html";
+    }
 
 }
