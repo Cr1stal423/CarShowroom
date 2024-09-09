@@ -205,22 +205,39 @@ public class AnalyticsController {
             model.addAttribute("technicalDataMap", technicalDataMap);
         return "technicalModel.html";
     }
+//    @GetMapping("/paymentAnalytics")
+//    public ModelAndView showPaymentAnalytics() {
+//        ModelAndView modelAndView = new ModelAndView("paymentAnalytics.html");
+//        Map<Integer,Integer> personandProductMap = analyticsService.personAndProductByPaymentType(String.valueOf(Constants.PAYMENT_TYPES.get(0)));
+//        List<String> paymentTypes = orderEntityRepository.findAllUniquePaymentTypes();
+//        modelAndView.addObject("personAndProductMap", personandProductMap);
+//        modelAndView.addObject("paymentTypes", paymentTypes);
+//        return modelAndView;
+//    }
+//    @PostMapping("/filterByPaymentType")
+//    public String findByPaymentType(@RequestParam("paymentType") String paymentType, Model model) {
+//        Map<Integer,Integer> persnoAndProductMap = analyticsService.personAndProductByPaymentType(String.valueOf(OrderEntity.PaymentType.valueOf(paymentType)));
+//        List<String> paymentTypes = orderEntityRepository.findAllUniquePaymentTypes();
+//        model.addAttribute("personAndProductMap", persnoAndProductMap);
+//        model.addAttribute("paymentTypes", paymentTypes);
+//        return "paymentAnalytics.html";
+//    }
+
     @GetMapping("/paymentAnalytics")
     public ModelAndView showPaymentAnalytics() {
         ModelAndView modelAndView = new ModelAndView("paymentAnalytics.html");
-        Map<Integer,Integer> personandProductMap = analyticsService.personAndProductByPaymentType(String.valueOf(Constants.PAYMENT_TYPES.get(0)));
+        Map<Map<Person,List<DynamicFieldValue>>,Map<Product,List<DynamicFieldValue>>> paymentMap = analyticsService.personAndProductByPaymentType(String.valueOf(Constants.PAYMENT_TYPES.get(0)));
         List<String> paymentTypes = orderEntityRepository.findAllUniquePaymentTypes();
-        modelAndView.addObject("personAndProductMap", personandProductMap);
+        modelAndView.addObject("paymentMap", paymentMap);
         modelAndView.addObject("paymentTypes", paymentTypes);
         return modelAndView;
     }
     @PostMapping("/filterByPaymentType")
     public String findByPaymentType(@RequestParam("paymentType") String paymentType, Model model) {
-        Map<Integer,Integer> persnoAndProductMap = analyticsService.personAndProductByPaymentType(String.valueOf(OrderEntity.PaymentType.valueOf(paymentType)));
+        Map<Map<Person,List<DynamicFieldValue>>,Map<Product,List<DynamicFieldValue>>> paymentMap = analyticsService.personAndProductByPaymentType(String.valueOf(OrderEntity.PaymentType.valueOf(paymentType)));
         List<String> paymentTypes = orderEntityRepository.findAllUniquePaymentTypes();
-        model.addAttribute("personAndProductMap", persnoAndProductMap);
+        model.addAttribute("paymentMap", paymentMap);
         model.addAttribute("paymentTypes", paymentTypes);
         return "paymentAnalytics.html";
     }
-
 }

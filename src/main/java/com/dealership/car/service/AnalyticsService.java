@@ -1,5 +1,6 @@
 package com.dealership.car.service;
 
+import com.dealership.car.dynamic.DynamicFieldValue;
 import com.dealership.car.model.OrderEntity;
 import com.dealership.car.model.Person;
 import com.dealership.car.model.Product;
@@ -18,6 +19,8 @@ public class AnalyticsService {
     private final ProductRepository productRepository;
     private final OrderEntityRepository orderEntityRepository;
     private final OrderService orderService;
+    private final PersonService personService;
+    private final ProductService productService;
 
     /**
      * Constructs an AnalyticsService instance with the specified dependencies.
@@ -26,10 +29,12 @@ public class AnalyticsService {
      * @param orderEntityRepository     Repository for performing CRUD operations on OrderEntity entities.
      * @param orderService              Service for handling operations related to orders.
      */
-    public AnalyticsService(ProductRepository productRepository, OrderEntityRepository orderEntityRepository, OrderService orderService) {
+    public AnalyticsService(ProductRepository productRepository, OrderEntityRepository orderEntityRepository, OrderService orderService, PersonService personService, ProductService productService) {
         this.productRepository = productRepository;
         this.orderEntityRepository = orderEntityRepository;
         this.orderService = orderService;
+        this.personService = personService;
+        this.productService = productService;
     }
 
     /**
@@ -114,22 +119,32 @@ public class AnalyticsService {
         }
         return persons;
     }
-    public Map<Integer, Integer> personAndProductByPaymentType(String paymentType) {
-        Map<Integer, Integer> personAndProductMap = new HashMap<>();
+//    public Map<Integer, Integer> personAndProductByPaymentType(String paymentType) {
+//        Map<Integer, Integer> personAndProductMap = new HashMap<>();
+//        List<Person> personList = findUserByPaymentType(paymentType);
+//        List<Product> productList = findProductByPaymentType(paymentType);
+//
+//        if (personList == null || productList == null) {
+//            throw new IllegalStateException("Person list or product list is null");
+//        }
+//
+//        int i = 0;
+//        while (productList.size() > i && personList.size() > i) {
+//            int personId = personList.get(i).getId();
+//            int productId = productList.get(i).getId();
+//            personAndProductMap.put(personId, productId);
+//            i++;
+//        }
+//
+//        return personAndProductMap;
+//    }
+    public Map<Map<Person,List<DynamicFieldValue>>,Map<Product,List<DynamicFieldValue>>> personAndProductByPaymentType(String paymentType) {
+        Map<Map<Person,List<DynamicFieldValue>>,Map<Product,List<DynamicFieldValue>>> personAndProductMap = new HashMap<>();
         List<Person> personList = findUserByPaymentType(paymentType);
         List<Product> productList = findProductByPaymentType(paymentType);
-
-        if (personList == null || productList == null) {
-            throw new IllegalStateException("Person list or product list is null");
-        }
-
-        int i = 0;
-        while (productList.size() > i && personList.size() > i) {
-            int personId = personList.get(i).getId();
-            int productId = productList.get(i).getId();
-            personAndProductMap.put(personId, productId);
-            i++;
-        }
+        Map<Person,List<DynamicFieldValue>> personMap = personService.getDynamicFieldsForAllPerson(personList);
+        Map<Product,List<DynamicFieldValue>> productMap = productService.getDynamicFieldsForAllProduct(productList);
+        personAndProductMap.put(personMap,productMap);
 
         return personAndProductMap;
     }
