@@ -1,5 +1,6 @@
 package com.dealership.car.service;
 
+import com.dealership.car.constants.Constants;
 import com.dealership.car.dynamic.DynamicFieldValue;
 import com.dealership.car.model.OrderEntity;
 import com.dealership.car.model.Person;
@@ -158,5 +159,54 @@ public class AnalyticsService {
             }
         }
         return orderEntityList;
+    }
+
+    public Integer totalAvailableCar(){
+        List<Product> products = productRepository.findByAvailabilityStatusEquals(Constants.AVAILABILITY_STATUSES.get(0));
+        return products.size();
+    }
+    public Map<String,Integer> totalAvailableCarByBrand(){
+        Map<String,Integer> resultMap = new HashMap<>();
+        List<Product> products = productRepository.findByAvailabilityStatusEquals(Constants.AVAILABILITY_STATUSES.get(0));
+        for (Product product : products) {
+            String brand = product.getBrand();
+            if (resultMap.containsKey(brand)){
+                resultMap.put(brand,resultMap.get(brand)+1);
+            }else{
+                resultMap.put(brand,1);
+            }
+        }
+        return resultMap;
+    }
+    public Map<String,Integer> findLowStockCar(Map<String,Integer> totalAvailableCarByBrand){
+        Map<String,Integer> resultMap = new HashMap<>();
+        Integer totalAvailableCar = totalAvailableCar();
+        List<String> allBrand = findAllUniqueBrand();
+        Integer midCount = totalAvailableCar/allBrand.size();
+        for (Map.Entry<String,Integer> entry : totalAvailableCarByBrand.entrySet()){
+            if (entry.getValue()<midCount){
+                resultMap.put(entry.getKey(),entry.getValue());
+            }
+        }
+        return resultMap;
+    }
+    public Map<String, Integer> findLowStockCarByModel(List<String> carModels) {
+        Map<String, Integer> modelCountMap = new HashMap<>();
+        int totalCarForSelectedModels = 0;
+        for (String carModel : carModels) {
+            List<Product> products = productRepository.findByModel(carModel);
+            int productCount = products.size();
+            modelCountMap.put(carModel, productCount);
+            totalCarForSelectedModels += productCount;
+        }
+        int averageCount = totalCarForSelectedModels / carModels.size();
+        Map<String, Integer> resultMap = new HashMap<>();
+        for (Map.Entry<String, Integer> entry : modelCountMap.entrySet()) {
+            if (entry.getValue() < averageCount) {
+                resultMap.put(entry.getKey(), entry.getValue());
+            }
+        }
+
+        return resultMap;
     }
 }

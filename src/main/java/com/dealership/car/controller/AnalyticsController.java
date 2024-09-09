@@ -21,10 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -119,7 +116,7 @@ public class AnalyticsController {
         modelAndView.addObject("map", carsMap);
         modelAndView.addObject("models", models);
         modelAndView.addObject("brands", brands);
-        httpSession.setAttribute("entityType","Product");
+        httpSession.setAttribute("entityType", "Product");
         return modelAndView;
     }
 
@@ -129,9 +126,9 @@ public class AnalyticsController {
      * relevant cars from the repository, fetches their dynamic fields,
      * and adds them to the model for rendering.
      *
-     * @param brand the brand of the car to filter by, can be null
+     * @param brand    the brand of the car to filter by, can be null
      * @param carModel the model of the car to filter by, can be null
-     * @param model the model object used for adding attributes required for rendering the view
+     * @param model    the model object used for adding attributes required for rendering the view
      * @return the name of the view template to be rendered, "availableCar.html"
      */
     @PostMapping("/filterByBrandAndModel")
@@ -153,6 +150,7 @@ public class AnalyticsController {
         model.addAttribute("map", carsMap);
         return "availableCar.html";
     }
+
     /**
      * Handles the GET request for the user analytics page.
      * It retrieves users with the role of "USER" from the repository,
@@ -164,45 +162,47 @@ public class AnalyticsController {
     @GetMapping("/users")
     public String showUserAnalytics(Model model) {
         List<Person> users = personRepository.findByRoles(Constants.USER_ROLE);
-        Map<Person,List<DynamicFieldValue>> userMap = personService.getDynamicFieldsForAllPerson(users);
+        Map<Person, List<DynamicFieldValue>> userMap = personService.getDynamicFieldsForAllPerson(users);
         model.addAttribute("usersMap", userMap);
         httpSession.setAttribute("entityType", "Person");
         model.addAttribute("personDto", new PersonDto());
         return "userAnalytics.html";
     }
+
     /**
      * Handles the GET request for the technical model page.
      * It retrieves all the technical data along with their dynamic field values, fetches all unique models,
      * and adds these to the provided model for rendering the view.
      *
      * @param model the model object used for adding attributes required for rendering the view
-     * @param http the HTTP session to set session attributes
+     * @param http  the HTTP session to set session attributes
      * @return the name of the view template to be rendered, "technicalModel.html"
      */
     @GetMapping("/technicalModel")
     public String showTechDataByModel(Model model, HttpSession http) {
         List<TechnicalData> technicalDataList = technicalDataRepository.findAll();
-        Map<TechnicalData,List<DynamicFieldValue>> technicalDataMap = technicalDataService.getDynamicFieldsForAllTechnicalData(technicalDataList);
+        Map<TechnicalData, List<DynamicFieldValue>> technicalDataMap = technicalDataService.getDynamicFieldsForAllTechnicalData(technicalDataList);
         List<String> models = analyticsService.getAllUniqueModel();
         model.addAttribute("models", models);
         http.setAttribute("entityType", "TechnicalData");
         model.addAttribute("technicalDataMap", technicalDataMap);
         return "technicalModel.html";
     }
+
     /**
      * Handles the POST request to find technical data by a specific car model.
      * It retrieves technical data for the specified model along with their dynamic field values,
      * and adds these to the provided model for rendering.
      *
      * @param carModel the name of the car model to filter and retrieve the technical data
-     * @param model the model object used for adding attributes required for rendering the view
+     * @param model    the model object used for adding attributes required for rendering the view
      * @return the name of the view template to be rendered, "technicalModel.html"
      */
     @PostMapping("/filterByModel")
-    public String findTechDataByModel(@RequestParam("model") String carModel,Model model){
+    public String findTechDataByModel(@RequestParam("model") String carModel, Model model) {
         List<TechnicalData> technicalDataList = technicalDataService.getTechnicalDataByModel(carModel);
-        Map<TechnicalData,List<DynamicFieldValue>> technicalDataMap = technicalDataService.getDynamicFieldsForAllTechnicalData(technicalDataList);
-            model.addAttribute("technicalDataMap", technicalDataMap);
+        Map<TechnicalData, List<DynamicFieldValue>> technicalDataMap = technicalDataService.getDynamicFieldsForAllTechnicalData(technicalDataList);
+        model.addAttribute("technicalDataMap", technicalDataMap);
         return "technicalModel.html";
     }
 //    @GetMapping("/paymentAnalytics")
@@ -226,28 +226,45 @@ public class AnalyticsController {
     @GetMapping("/paymentAnalytics")
     public ModelAndView showPaymentAnalytics() {
         ModelAndView modelAndView = new ModelAndView("paymentAnalytics.html");
-        Map<Map<Person,List<DynamicFieldValue>>,Map<Product,List<DynamicFieldValue>>> paymentMap = analyticsService.personAndProductByPaymentType(String.valueOf(Constants.PAYMENT_TYPES.get(0)));
+        Map<Map<Person, List<DynamicFieldValue>>, Map<Product, List<DynamicFieldValue>>> paymentMap = analyticsService.personAndProductByPaymentType(String.valueOf(Constants.PAYMENT_TYPES.get(0)));
         List<String> paymentTypes = orderEntityRepository.findAllUniquePaymentTypes();
         modelAndView.addObject("paymentMap", paymentMap);
         modelAndView.addObject("paymentTypes", paymentTypes);
         return modelAndView;
     }
+
     @PostMapping("/filterByPaymentType")
     public String findByPaymentType(@RequestParam("paymentType") String paymentType, Model model) {
-        Map<Map<Person,List<DynamicFieldValue>>,Map<Product,List<DynamicFieldValue>>> paymentMap = analyticsService.personAndProductByPaymentType(String.valueOf(OrderEntity.PaymentType.valueOf(paymentType)));
+        Map<Map<Person, List<DynamicFieldValue>>, Map<Product, List<DynamicFieldValue>>> paymentMap = analyticsService.personAndProductByPaymentType(String.valueOf(OrderEntity.PaymentType.valueOf(paymentType)));
         List<String> paymentTypes = orderEntityRepository.findAllUniquePaymentTypes();
         model.addAttribute("paymentMap", paymentMap);
         model.addAttribute("paymentTypes", paymentTypes);
         return "paymentAnalytics.html";
     }
+
     @GetMapping("/awaitingCustomers")
     public ModelAndView showAwaitingCustomers() {
-    ModelAndView modelAndView = new ModelAndView("awaitingCustomers.html");
-    List<Product> products = productRepository.findByAvailabilityStatusEquals(Constants.AVAILABILITY_STATUSES.get(2));
-    List<OrderEntity> orderList = analyticsService.getOrdersByProduct(products);
-    Integer total = orderList.size();
-    modelAndView.addObject("total", total);
-    modelAndView.addObject("orderList", orderList);
-    return modelAndView;
+        ModelAndView modelAndView = new ModelAndView("awaitingCustomers.html");
+        List<Product> products = productRepository.findByAvailabilityStatusEquals(Constants.AVAILABILITY_STATUSES.get(2));
+        List<OrderEntity> orderList = analyticsService.getOrdersByProduct(products);
+        Integer total = orderList.size();
+        modelAndView.addObject("total", total);
+        modelAndView.addObject("orderList", orderList);
+        return modelAndView;
+    }
+    @GetMapping("/lowStockCar")
+    public ModelAndView showLowStockCar() {
+        ModelAndView modelAndView = new ModelAndView("lowStockCar.html");
+        Map<String,Integer> totalAvailableCarByBrand = analyticsService.totalAvailableCarByBrand();
+        Map<String,Integer> lowStockBrands =  analyticsService.findLowStockCar(totalAvailableCarByBrand);
+        modelAndView.addObject("lowStockBrands", lowStockBrands);
+        return modelAndView;
+    }
+    @PostMapping("/lowStockCarByModel")
+    public String showLowStockCarByModel(@RequestParam("models") String models, Model model) {
+        List<String> carModels = Arrays.asList(models.split("\\s*,\\s*"));
+        Map<String,Integer> lowStockCarByModel = analyticsService.findLowStockCarByModel(carModels);
+        model.addAttribute("lowStockCarByModel", lowStockCarByModel);
+        return "lowStockCar.html";
     }
 }
