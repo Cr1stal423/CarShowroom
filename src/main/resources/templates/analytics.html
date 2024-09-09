@@ -203,12 +203,12 @@
                     </a>
                 </div>
                 <div class="col-auto mx-3" sec:authorize="hasRole('ROLE_OWNER')">
-                    <a th:href="@{/orders/showAll}">
+                    <a th:href="@{/analytics/awaitingCustomers}">
                         <div class="overview-item overview-item--c2">
                             <div class="overview__inner">
                                 <div class="overview-box clearfix">
                                     <div class="text font-large">
-                                        <h2>Orders</h2>
+                                        <h2>Awaiting Customers</h2>
                                     </div>
                                 </div>
                             </div>
@@ -229,7 +229,7 @@
                     </a>
                 </div>
                 <div class="col-auto mx-3" sec:authorize="hasRole('ROLE_OWNER')">
-                    <a th:href="@{/orders/addOrder}">
+                    <a th:href="@{/analytics/addOrder}">
                         <div class="overview-item overview-item--c2">
                             <div class="overview__inner">
                                 <div class="overview-box clearfix">

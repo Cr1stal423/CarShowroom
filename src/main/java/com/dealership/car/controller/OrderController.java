@@ -50,14 +50,14 @@ public class OrderController {
     /**
      * Handles requests to show all orders.
      *
-     * @param model the model to hold order data attributes
+     * @param model       the model to hold order data attributes
      * @param httpSession the HTTP session to set session attributes
      * @return the name of the view to be rendered, "orders.html"
      */
     @GetMapping(value = "/showAll")
-    public String showAllOrders(Model model, HttpSession httpSession){
+    public String showAllOrders(Model model, HttpSession httpSession) {
         List<OrderEntity> orders = orderEntityRepository.findAll();
-        Map<OrderEntity,List<DynamicFieldValue>> orderMap = orderService.getDynamicFieldsForAllOrder(orders);
+        Map<OrderEntity, List<DynamicFieldValue>> orderMap = orderService.getDynamicFieldsForAllOrder(orders);
         model.addAttribute("orderMap", orderMap);
         httpSession.setAttribute("entityType", "OrderEntity");
         return "orders.html";
@@ -66,18 +66,19 @@ public class OrderController {
     /**
      * Retrieves the orders for a specific user by their ID and adds the orders along with their dynamic fields to the model.
      *
-     * @param id   the ID of the user whose orders are to be retrieved
+     * @param id    the ID of the user whose orders are to be retrieved
      * @param model the model to which the order data will be added
      * @return the view name "orders.html"
      */
     @GetMapping("/ordersByUser")
-    public String findOrdersByUser(@RequestParam("id")int id, Model model){
+    public String findOrdersByUser(@RequestParam("id") int id, Model model) {
         Optional<Person> person = personRepository.findById(id);
         List<OrderEntity> orders = orderEntityRepository.findByPerson(person.get());
-        Map<OrderEntity,List<DynamicFieldValue>> orderMap = orderService.getDynamicFieldsForAllOrder(orders);
+        Map<OrderEntity, List<DynamicFieldValue>> orderMap = orderService.getDynamicFieldsForAllOrder(orders);
         model.addAttribute("orderMap", orderMap);
         return "orders.html";
     }
+
     /**
      * Displays the form for adding a new order.
      *
@@ -85,10 +86,10 @@ public class OrderController {
      * @return the name of the view to be rendered
      */
     @GetMapping(value = "/addOrder")
-    public String showForm(Model model){
+    public String showForm(Model model) {
         model.addAttribute("orderDto", new OrderDto());
         model.addAttribute("persons", personService.findAll());
-        model.addAttribute("products", productRepository.findByAvailabilityStatusEquals(Constants.AVAILABILITY_STATUSES.get(0)));
+        model.addAttribute("products", productRepository.findByAvailabilityStatusEqualsOrAvailabilityStatus(Constants.AVAILABILITY_STATUSES.get(0), Constants.AVAILABILITY_STATUSES.get(2)));
         model.addAttribute("paymentTypes", Constants.PAYMENT_TYPES);
         model.addAttribute("paymentMethods", Constants.PAYMENT_METHODS);
         return "order-form.html";
@@ -99,13 +100,13 @@ public class OrderController {
      * If there are validation errors, the user is redirected back to the order form.
      *
      * @param orderDto The data transfer object containing order details.
-     * @param model The model object for passing data to the view.
-     * @param errors The Errors object containing any validation errors.
+     * @param model    The model object for passing data to the view.
+     * @param errors   The Errors object containing any validation errors.
      * @return A string representing the view name to be returned.
      */
     @PostMapping(value = "/makeOrder")
-    public String makeOrder(@Valid@ModelAttribute("orderDto")OrderDto orderDto, Model model, Errors errors){
-        if (errors.hasErrors()){
+    public String makeOrder(@Valid @ModelAttribute("orderDto") OrderDto orderDto, Model model, Errors errors) {
+        if (errors.hasErrors()) {
             return "order-form.html";
         } else {
             Optional<Product> optionalProduct = productRepository.findById(orderDto.getProductId());
@@ -120,7 +121,9 @@ public class OrderController {
                 order.setDelivery(orderDto.getDelivery());
                 order.setPaymentMethod(orderDto.getPaymentMethod());
                 order.setPaymentType(orderDto.getPaymentType());
-                product.setAvailabilityStatus(Constants.AVAILABILITY_STATUSES.get(1));
+                if (product.getAvailabilityStatus().equals(Constants.AVAILABILITY_STATUSES.get(0))) {
+                    product.setAvailabilityStatus(Constants.AVAILABILITY_STATUSES.get(1));
+                }
                 order.setCreatedAt(LocalDateTime.now());
 
                 orderEntityRepository.save(order);
@@ -130,24 +133,26 @@ public class OrderController {
             return "redirect:/orders/addOrder";
         }
     }
+
     /**
      * Displays order details by order ID.
      *
-     * @param id the identifier of the order to be displayed
+     * @param id    the identifier of the order to be displayed
      * @param model the model object to pass attributes to the view
      * @return the name of the view to render, in this case "orders.html"
      */
     @GetMapping("/searchById")
-    public String showOrderById(@RequestParam("id")Integer id,Model model){
+    public String showOrderById(@RequestParam("id") Integer id, Model model) {
         List<OrderEntity> orderEntityList = new ArrayList<>();
         Optional<OrderEntity> optionalOrder = orderEntityRepository.findById(id);
-        if (optionalOrder.isPresent()){
+        if (optionalOrder.isPresent()) {
             orderEntityList.add(optionalOrder.get());
         }
-        Map<OrderEntity,List<DynamicFieldValue>> orderMap = orderService.getDynamicFieldsForAllOrder(orderEntityList);
-        model.addAttribute("orderMap",orderMap);
+        Map<OrderEntity, List<DynamicFieldValue>> orderMap = orderService.getDynamicFieldsForAllOrder(orderEntityList);
+        model.addAttribute("orderMap", orderMap);
         return "orders.html";
     }
+
     /**
      * Deletes an order by its ID and redirects to the appropriate page based on the outcome.
      *
@@ -155,9 +160,9 @@ public class OrderController {
      * @return a redirection string to the appropriate view
      */
     @GetMapping("/deleteOrder")
-    public String deleteOrder(@RequestParam("id")Integer id){
+    public String deleteOrder(@RequestParam("id") Integer id) {
         Boolean isDeleted = orderService.deleteOrder(id);
-        if (isDeleted){
+        if (isDeleted) {
             return "redirect:/orders/showAll";
         }
         return "dashboard.html";

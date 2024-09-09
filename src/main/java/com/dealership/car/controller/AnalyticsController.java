@@ -240,4 +240,14 @@ public class AnalyticsController {
         model.addAttribute("paymentTypes", paymentTypes);
         return "paymentAnalytics.html";
     }
+    @GetMapping("/awaitingCustomers")
+    public ModelAndView showAwaitingCustomers() {
+    ModelAndView modelAndView = new ModelAndView("awaitingCustomers.html");
+    List<Product> products = productRepository.findByAvailabilityStatusEquals(Constants.AVAILABILITY_STATUSES.get(2));
+    List<OrderEntity> orderList = analyticsService.getOrdersByProduct(products);
+    Integer total = orderList.size();
+    modelAndView.addObject("total", total);
+    modelAndView.addObject("orderList", orderList);
+    return modelAndView;
+    }
 }

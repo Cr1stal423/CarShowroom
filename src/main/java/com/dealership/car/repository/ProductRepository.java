@@ -19,6 +19,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     List<Product> findByAvailabilityStatusEquals(Product.AvailabilityStatus availabilityStatus);
 
+    List<Product> findByAvailabilityStatusEqualsOrAvailabilityStatus(Product.AvailabilityStatus availabilityStatus1, Product.AvailabilityStatus availabilityStatus2);
+
     List<Product> findByModel(String model);
 
     List<Product> findByBrandAndModel(String brand,String model);

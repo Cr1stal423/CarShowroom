@@ -148,4 +148,15 @@ public class AnalyticsService {
 
         return personAndProductMap;
     }
+
+    public List<OrderEntity> getOrdersByProduct(List<Product> products){
+        List<OrderEntity> orderEntityList = new ArrayList<>();
+        for (Product product : products) {
+            Optional<OrderEntity> tempProduct = orderEntityRepository.findByProduct(product);
+            if (!tempProduct.isEmpty()) {
+                orderEntityList.add(tempProduct.get());
+            }
+        }
+        return orderEntityList;
+    }
 }
