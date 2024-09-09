@@ -19,7 +19,7 @@ public interface OrderEntityRepository extends JpaRepository<OrderEntity, Intege
 
     public List<OrderEntity> findByPerson_Username(String username);
 
-    public List<OrderEntity> findByPaymentType(String paymentType);
+    public List<OrderEntity> findByPaymentType(OrderEntity.PaymentType paymentType);
     @Query("SELECT DISTINCT o.paymentType FROM OrderEntity o")
     public List<String> findAllUniquePaymentTypes();
 }

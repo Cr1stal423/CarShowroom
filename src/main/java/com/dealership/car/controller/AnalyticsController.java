@@ -217,7 +217,9 @@ public class AnalyticsController {
     @PostMapping("/filterByPaymentType")
     public String findByPaymentType(@RequestParam("paymentType") String paymentType, Model model) {
         Map<Integer,Integer> persnoAndProductMap = analyticsService.personAndProductByPaymentType(String.valueOf(OrderEntity.PaymentType.valueOf(paymentType)));
+        List<String> paymentTypes = orderEntityRepository.findAllUniquePaymentTypes();
         model.addAttribute("personAndProductMap", persnoAndProductMap);
+        model.addAttribute("paymentTypes", paymentTypes);
         return "paymentAnalytics.html";
     }
 

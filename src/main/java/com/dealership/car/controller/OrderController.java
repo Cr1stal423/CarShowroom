@@ -88,7 +88,7 @@ public class OrderController {
     public String showForm(Model model){
         model.addAttribute("orderDto", new OrderDto());
         model.addAttribute("persons", personService.findAll());
-        model.addAttribute("products", productService.findAll());
+        model.addAttribute("products", productRepository.findByAvailabilityStatusEquals(Constants.AVAILABILITY_STATUSES.get(0)));
         model.addAttribute("paymentTypes", Constants.PAYMENT_TYPES);
         model.addAttribute("paymentMethods", Constants.PAYMENT_METHODS);
         return "order-form.html";

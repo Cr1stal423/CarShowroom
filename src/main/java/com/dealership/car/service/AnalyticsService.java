@@ -100,7 +100,7 @@ public class AnalyticsService {
 
     public List<Product> findProductByPaymentType(String paymentType){
         List<Product> products = new ArrayList<>();
-        List<OrderEntity> orderEntityList = orderEntityRepository.findByPaymentType(paymentType);
+        List<OrderEntity> orderEntityList = orderEntityRepository.findByPaymentType(OrderEntity.PaymentType.valueOf(paymentType));
         for (OrderEntity orderEntity : orderEntityList){
             products.add(orderEntity.getProduct());
         }
@@ -108,7 +108,7 @@ public class AnalyticsService {
     }
     public List<Person> findUserByPaymentType(String paymentType){
         List<Person> persons = new ArrayList<>();
-        List<OrderEntity> orderEntityList = orderEntityRepository.findByPaymentType(paymentType);
+        List<OrderEntity> orderEntityList = orderEntityRepository.findByPaymentType(OrderEntity.PaymentType.valueOf(paymentType));
         for (OrderEntity orderEntity : orderEntityList){
             persons.add(orderEntity.getPerson());
         }

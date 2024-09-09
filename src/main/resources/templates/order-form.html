@@ -169,7 +169,7 @@
                         <div class="col-md-6">
                             <div  class="form-group">
                                 <label for="productId">Product:</label>
-                                <select th:field="*{productId}" id="productId" name="productId" required>
+                                <select th:field="${orderDto.productId}" id="productId" name="productId" required>
                                     <option value="" disabled selected>Select a product</option>
                                     <option th:each="product : ${products}" th:value="${product.productId}"
                                             th:text="${product.productId + '-' + product.brand + '-' + product.model}"></option>
@@ -179,7 +179,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="personId">Client:</label>
-                                <select th:field="*{personId}" id="personId" name="personId" required>
+                                <select th:field="${orderDto.personId}" id="personId" name="personId" required>
                                     <option value="" disabled selected>Select a client</option>
                                     <option th:each="person : ${persons}" th:value="${person.personId}"
                                             th:text="${person.personId + '-' + person.firstName + '-' + person.lastName}"></option>
@@ -189,14 +189,14 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="delivery">Delivery:</label>
-                                <input type="checkbox" id="delivery" name="delivery" th:field="*{delivery}"/>
+                                <input type="checkbox" id="delivery" name="delivery" th:field="${orderDto.delivery}"/>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
 <!--                                payment type-->
                                 <label for="paymentType">Payment Type:</label>
-                                <select th:field="*{paymentType}" id="paymentType" required>
+                                <select th:field="${orderDto.paymentType}" id="paymentType" required>
                                     <option value="" disabled selected>Select a payment type</option>
                                     <option th:each="paymentType : ${paymentTypes}"
                                             th:value="${paymentType}"
@@ -209,7 +209,7 @@
                             <div class="form-group">
 <!--                                payment method-->
                                 <label for="paymentMethod">Payment Method:</label>
-                                <select th:field="*{paymentMethod}" id="paymentMethod" required>
+                                <select th:field="${orderDto.paymentMethod}" id="paymentMethod" required>
                                     <option value="" disabled selected>Select a payment method</option>
                                     <option th:each="paymentMethod : ${paymentMethods}"
                                             th:value="${paymentMethod}"

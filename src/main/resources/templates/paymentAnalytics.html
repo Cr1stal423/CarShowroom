@@ -129,8 +129,8 @@
             </thead>
             <tbody>
             <tr th:each="entry: ${personAndProductMap}">
-                    <td ><a th:value="${entry.key}" name="technicalId"></a></td>
-                    <td ><a th:value="${entry.value}" name="bodyType"></a></td>
+                    <td ><a th:text="${entry.key}" name="technicalId"></a></td>
+                    <td ><a th:text="${entry.value}" name="bodyType"></a></td>
             </tr>
             </tbody>
         </table>
