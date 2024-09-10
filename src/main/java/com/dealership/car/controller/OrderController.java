@@ -124,7 +124,6 @@ public class OrderController {
                 if (product.getAvailabilityStatus().equals(Constants.AVAILABILITY_STATUSES.get(0))) {
                     product.setAvailabilityStatus(Constants.AVAILABILITY_STATUSES.get(1));
                 }
-                order.setCreatedAt(LocalDateTime.now());
 
                 orderEntityRepository.save(order);
                 productRepository.save(product);

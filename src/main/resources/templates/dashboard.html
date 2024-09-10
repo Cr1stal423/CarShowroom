@@ -243,6 +243,45 @@
                     </a>
                 </div>
                 <div class="col-auto mx-3" sec:authorize="hasRole('ROLE_OWNER')">
+                    <a th:href="@{/supplier/supplierForm}">
+                        <div class="overview-item overview-item--c2">
+                            <div class="overview__inner">
+                                <div class="overview-box clearfix">
+                                    <div class="text font-large">
+                                        <h2>Add Supplier</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-auto mx-3" sec:authorize="hasRole('ROLE_OWNER')">
+                    <a th:href="@{/supplier/supplierOrderForm}">
+                        <div class="overview-item overview-item--c2">
+                            <div class="overview__inner">
+                                <div class="overview-box clearfix">
+                                    <div class="text font-large">
+                                        <h2>Add supplier to order</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-auto mx-3" sec:authorize="hasRole('ROLE_OWNER')">
+                    <a th:href="@{/supplier/listSuppliersSoon}">
+                        <div class="overview-item overview-item--c2">
+                            <div class="overview__inner">
+                                <div class="overview-box clearfix">
+                                    <div class="text font-large">
+                                        <h2>Сar Suppliers To Deliver</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-auto mx-3" sec:authorize="hasRole('ROLE_OWNER')">
                     <a th:href="@{/contact/showMessages}">
                         <div class="overview-item overview-item--c2">
                             <div class="overview__inner">

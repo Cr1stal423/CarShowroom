@@ -4,11 +4,15 @@ import com.dealership.car.dynamic.IdentifiableEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import lombok.*;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 @Entity
-@Data
+@Getter
+@Setter
+@RequiredArgsConstructor
+
 public class OrderEntity extends BaseEntity implements IdentifiableEntity {
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
@@ -19,6 +23,10 @@ public class OrderEntity extends BaseEntity implements IdentifiableEntity {
     @ManyToOne
     @JoinColumn(name = "person_id")
     private Person person;
+    @ManyToOne
+    @JoinColumn(name = "supplier_id")
+    @ToString.Exclude
+    private Supplier supplier;
     //TODO: need to remove because i have created at
     private LocalDateTime orderTime;
     @NotNull(message = "delivery is required")
