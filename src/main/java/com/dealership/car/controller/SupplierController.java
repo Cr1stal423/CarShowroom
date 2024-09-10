@@ -1,10 +1,8 @@
 package com.dealership.car.controller;
 
 import com.dealership.car.DTO.SupplierDto;
-import com.dealership.car.constants.Constants;
 import com.dealership.car.dynamic.DynamicFieldValue;
 import com.dealership.car.model.OrderEntity;
-import com.dealership.car.model.Product;
 import com.dealership.car.model.Supplier;
 import com.dealership.car.repository.OrderEntityRepository;
 import com.dealership.car.repository.ProductRepository;
@@ -12,15 +10,12 @@ import com.dealership.car.repository.SupplierRepository;
 import com.dealership.car.service.AnalyticsService;
 import com.dealership.car.service.SupplierService;
 import jakarta.validation.Valid;
-import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-import org.w3c.dom.ls.LSInput;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
