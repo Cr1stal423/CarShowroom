@@ -177,7 +177,7 @@
                         </div>
                     </a>
                 </div>
-                <div class="col-auto mx-3" sec:authorize="hasRole('ROLE_OWNER')">
+                <div class="col-auto mx-3" sec:authorize="hasAnyRole('ROLE_OWNER','ROLE_ADMIN','ROLE_OPERATOR')">
                     <a th:href="@{/product/showAllProduct}">
                         <div class="overview-item overview-item--c2">
                             <div class="overview__inner">
@@ -190,7 +190,7 @@
                         </div>
                     </a>
                 </div>
-                <div class="col-auto mx-3" sec:authorize="hasRole('ROLE_OWNER')">
+                <div class="col-auto mx-3" sec:authorize="hasAnyRole('ROLE_OWNER','ROLE_ADMIN','ROLE_OPERATOR')">
                     <a th:href="@{/analytics/mainPage}">
                         <div class="overview-item overview-item--c2">
                             <div class="overview__inner">
@@ -203,7 +203,7 @@
                         </div>
                     </a>
                 </div>
-                <div class="col-auto mx-3" sec:authorize="hasRole('ROLE_OWNER')">
+                <div class="col-auto mx-3" sec:authorize="hasAnyRole('ROLE_OWNER','ROLE_ADMIN','ROLE_OPERATOR')">
                     <a th:href="@{/orders/showAll}">
                         <div class="overview-item overview-item--c2">
                             <div class="overview__inner">
@@ -216,7 +216,7 @@
                         </div>
                     </a>
                 </div>
-                <div class="col-auto mx-3" sec:authorize="hasRole('ROLE_OWNER')">
+                <div class="col-auto mx-3" sec:authorize="hasAnyRole('ROLE_OWNER','ROLE_ADMIN','ROLE_OPERATOR')">
                     <a th:href="@{/product/addProduct}">
                         <div class="overview-item overview-item--c2">
                             <div class="overview__inner">
@@ -229,7 +229,7 @@
                         </div>
                     </a>
                 </div>
-                <div class="col-auto mx-3" sec:authorize="hasRole('ROLE_OWNER')">
+                <div class="col-auto mx-3" sec:authorize="hasAnyRole('ROLE_OWNER','ROLE_ADMIN','ROLE_OPERATOR')">
                     <a th:href="@{/orders/addOrder}">
                         <div class="overview-item overview-item--c2">
                             <div class="overview__inner">
@@ -242,7 +242,46 @@
                         </div>
                     </a>
                 </div>
-                <div class="col-auto mx-3" sec:authorize="hasRole('ROLE_OWNER')">
+                <div class="col-auto mx-3" sec:authorize="hasRole('ROLE_OWNER') or hasRole('ROLE_ADMIN')">
+                    <a th:href="@{/supplier/supplierForm}">
+                        <div class="overview-item overview-item--c2">
+                            <div class="overview__inner">
+                                <div class="overview-box clearfix">
+                                    <div class="text font-large">
+                                        <h2>Add Supplier</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-auto mx-3" sec:authorize="hasAnyRole('ROLE_OWNER','ROLE_ADMIN','ROLE_OPERATOR')">
+                    <a th:href="@{/supplier/supplierOrderForm}">
+                        <div class="overview-item overview-item--c2">
+                            <div class="overview__inner">
+                                <div class="overview-box clearfix">
+                                    <div class="text font-large">
+                                        <h2>Add supplier to order</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-auto mx-3" sec:authorize="hasAnyRole('ROLE_OWNER','ROLE_ADMIN','ROLE_OPERATOR')">
+                    <a th:href="@{/supplier/listSuppliersSoon}">
+                        <div class="overview-item overview-item--c2">
+                            <div class="overview__inner">
+                                <div class="overview-box clearfix">
+                                    <div class="text font-large">
+                                        <h2>Сar Suppliers To Deliver</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-auto mx-3" sec:authorize="hasAnyRole('ROLE_OWNER','ROLE_ADMIN','ROLE_OPERATOR')">
                     <a th:href="@{/contact/showMessages}">
                         <div class="overview-item overview-item--c2">
                             <div class="overview__inner">
@@ -255,7 +294,7 @@
                         </div>
                     </a>
                 </div>
-                <div class="col-auto mx-3" sec:authorize="hasRole('ROLE_OWNER')">
+                <div class="col-auto mx-3" sec:authorize="hasRole('ROLE_OWNER') or hasRole('ROLE_ADMIN')">
                     <a th:href="@{/custom/query}">
                         <div class="overview-item overview-item--c2">
                             <div class="overview__inner">
@@ -268,7 +307,7 @@
                         </div>
                     </a>
                 </div>
-                <div class="col-auto mx-3" sec:authorize="hasRole('ROLE_USER')">
+                <div class="col-auto mx-3" sec:authorize="hasAnyRole('ROLE_OWNER','ROLE_ADMIN','ROLE_OPERATOR','ROLE_USER')">
                     <a th:href="@{/user/displayOrders}">
                         <div class="overview-item overview-item--c2">
                             <div class="overview__inner">

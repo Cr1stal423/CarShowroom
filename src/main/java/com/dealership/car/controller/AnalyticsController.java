@@ -3,14 +3,8 @@ package com.dealership.car.controller;
 import com.dealership.car.DTO.PersonDto;
 import com.dealership.car.constants.Constants;
 import com.dealership.car.dynamic.DynamicFieldValue;
-import com.dealership.car.model.OrderEntity;
-import com.dealership.car.model.Person;
-import com.dealership.car.model.Product;
-import com.dealership.car.model.TechnicalData;
-import com.dealership.car.repository.OrderEntityRepository;
-import com.dealership.car.repository.PersonRepository;
-import com.dealership.car.repository.ProductRepository;
-import com.dealership.car.repository.TechnicalDataRepository;
+import com.dealership.car.model.*;
+import com.dealership.car.repository.*;
 import com.dealership.car.service.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -44,8 +38,10 @@ public class AnalyticsController {
     private final PersonService personService;
     private final TechnicalDataService technicalDataService;
     private final TechnicalDataRepository technicalDataRepository;
+    private final SupplierService supplierService;
+    private final SupplierRepository supplierRepository;
 
-    public AnalyticsController(AnalyticsService analyticsService, OrderService orderService, OrderEntityRepository orderEntityRepository, ProductRepository productRepository, ProductService productService, HttpSession httpSession, DynamicFieldValueService dynamicFieldValueService, PersonRepository personRepository, PersonService personService, TechnicalDataService technicalDataService, TechnicalDataRepository technicalDataRepository) {
+    public AnalyticsController(AnalyticsService analyticsService, OrderService orderService, OrderEntityRepository orderEntityRepository, ProductRepository productRepository, ProductService productService, HttpSession httpSession, DynamicFieldValueService dynamicFieldValueService, PersonRepository personRepository, PersonService personService, TechnicalDataService technicalDataService, TechnicalDataRepository technicalDataRepository, SupplierService supplierService, SupplierRepository supplierRepository) {
         this.analyticsService = analyticsService;
         this.orderService = orderService;
         this.orderEntityRepository = orderEntityRepository;
@@ -57,6 +53,8 @@ public class AnalyticsController {
         this.personService = personService;
         this.technicalDataService = technicalDataService;
         this.technicalDataRepository = technicalDataRepository;
+        this.supplierService = supplierService;
+        this.supplierRepository = supplierRepository;
     }
 
     @GetMapping("/mainPage")
@@ -223,6 +221,15 @@ public class AnalyticsController {
 //        return "paymentAnalytics.html";
 //    }
 
+    /**
+     * Handles the GET request to display payment analytics.
+     * It retrieves a map of persons and products categorized by payment type
+     * and a list of unique payment types. These are then added to the model
+     * for rendering the view.
+     *
+     * @return a ModelAndView object containing the view template "paymentAnalytics.html"
+     *         and the necessary model attributes for rendering the payment analytics page.
+     */
     @GetMapping("/paymentAnalytics")
     public ModelAndView showPaymentAnalytics() {
         ModelAndView modelAndView = new ModelAndView("paymentAnalytics.html");
@@ -233,6 +240,15 @@ public class AnalyticsController {
         return modelAndView;
     }
 
+    /**
+     * Handles the POST request to filter analytics data by the given payment type.
+     * Fetches the person and product data associated with the payment type,
+     * retrieves all unique payment types, and adds the results to the model.
+     *
+     * @param paymentType the type of payment to filter the analytics data by
+     * @param model the model object used for adding attributes required for rendering the view
+     * @return the name of the view template to be rendered, "paymentAnalytics.html"
+     */
     @PostMapping("/filterByPaymentType")
     public String findByPaymentType(@RequestParam("paymentType") String paymentType, Model model) {
         Map<Map<Person, List<DynamicFieldValue>>, Map<Product, List<DynamicFieldValue>>> paymentMap = analyticsService.personAndProductByPaymentType(String.valueOf(OrderEntity.PaymentType.valueOf(paymentType)));
@@ -242,6 +258,15 @@ public class AnalyticsController {
         return "paymentAnalytics.html";
     }
 
+    /**
+     * Handles the GET request to show awaiting customers.
+     * This method retrieves the products with the "COMING_SOON" availability status,
+     * fetches orders related to these products, calculates the total number of such orders,
+     * and adds these details to the model.
+     *
+     * @return a ModelAndView object that holds the view name "awaitingCustomers.html" along with
+     *         the order list and the total count of orders related to products that are "COMING_SOON".
+     */
     @GetMapping("/awaitingCustomers")
     public ModelAndView showAwaitingCustomers() {
         ModelAndView modelAndView = new ModelAndView("awaitingCustomers.html");
@@ -252,6 +277,13 @@ public class AnalyticsController {
         modelAndView.addObject("orderList", orderList);
         return modelAndView;
     }
+    /**
+     * Handles the GET request to display the low stock car page.
+     * It retrieves the total availability of cars by brand, calculates which brands have low stock,
+     * and adds the result to the model for rendering the view.
+     *
+     * @return ModelAndView object pointing to "lowStockCar.html" with an attribute "lowStockBrands" containing the list of brands with low stock.
+     */
     @GetMapping("/lowStockCar")
     public ModelAndView showLowStockCar() {
         ModelAndView modelAndView = new ModelAndView("lowStockCar.html");
@@ -260,11 +292,28 @@ public class AnalyticsController {
         modelAndView.addObject("lowStockBrands", lowStockBrands);
         return modelAndView;
     }
+    /**
+     * Handles the POST request to display cars with low stock by their models.
+     * Based on the provided car model names, it retrieves the low stock information
+     * and adds it to the model object for rendering the view.
+     *
+     * @param models a comma-separated string of car model names to check for low stock
+     * @param model  the model object used to add attributes required for rendering the view
+     * @return the name of the view template to be rendered, "lowStockCar.html"
+     */
     @PostMapping("/lowStockCarByModel")
     public String showLowStockCarByModel(@RequestParam("models") String models, Model model) {
         List<String> carModels = Arrays.asList(models.split("\\s*,\\s*"));
         Map<String,Integer> lowStockCarByModel = analyticsService.findLowStockCarByModel(carModels);
         model.addAttribute("lowStockCarByModel", lowStockCarByModel);
         return "lowStockCar.html";
+    }
+    //TODO can be improved to display how long the supplier is delayed(create Map<Map<Suppliers,Delay time>,List<dynamicFieldValue>>)
+    @GetMapping("/delayedSuppliers")
+    public String showDelayedSuppliers(Model model) {
+        List<Supplier> supplierList = supplierRepository.findByIsDelayed(true);
+        Map<Supplier,List<DynamicFieldValue>> supplierMap= supplierService.getAllDynamicFieldsForSupplier(supplierList);
+        model.addAttribute("supplierMap", supplierMap);
+        return "delayedSuppliers.html";
     }
 }
