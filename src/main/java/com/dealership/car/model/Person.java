@@ -6,10 +6,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -18,6 +15,7 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString(exclude = {"orders", "keys"})
+@EqualsAndHashCode
 public class Person extends BaseEntity implements IdentifiableEntity {
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
@@ -63,4 +61,6 @@ public class Person extends BaseEntity implements IdentifiableEntity {
     public Integer getId() {
         return personId;
     }
+
+
 }

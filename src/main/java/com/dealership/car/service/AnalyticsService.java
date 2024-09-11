@@ -7,6 +7,7 @@ import com.dealership.car.model.Person;
 import com.dealership.car.model.Product;
 import com.dealership.car.repository.OrderEntityRepository;
 import com.dealership.car.repository.ProductRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -209,4 +210,43 @@ public class AnalyticsService {
 
         return resultMap;
     }
+    public Map<Person,List<OrderEntity>> getOrdersByWorker(List<Person> workers){
+        Map<Person,List<OrderEntity>> orderEntityMap = new HashMap<>();
+        for (Person worker : workers) {
+            List<OrderEntity> orderEntityList = orderEntityRepository.findByPerson(worker);
+            Integer orderCount = orderEntityList.size();
+            orderEntityMap.put(worker,orderEntityList);
+        }
+        return orderEntityMap;
+    }
+    @Transactional
+    public Map<Person, Integer> countOrdersByWorker(List<Person> workers) {
+        Map<Person, Integer> orderEntityMap = new HashMap<>();
+        for (Person worker : workers) {
+            List<OrderEntity> orderEntityList = orderEntityRepository.findByCreatedBy(worker.getUsername());
+            Integer orderCount = orderEntityList.size();
+            orderEntityMap.put(worker, orderCount);
+        }
+        return orderEntityMap;
+    }
+//public Map<Person, Integer> countOrdersByWorker(List<Person> workers) {
+//    if (workers == null) {
+//        throw new IllegalArgumentException("Worker list cannot be null");
+//    }
+//
+//    Map<Person, Integer> orderEntityMap = new HashMap<>();
+//
+//    // Optimize database call to fetch all orders in one go
+//    List<OrderEntity> allOrders = orderEntityRepository.findAllByPersonIn(workers);
+//
+//    // Count orders for each worker
+//    for (Person worker : workers) {
+//        long orderCount = allOrders.stream()
+//                .filter(order -> order.getPerson().equals(worker))
+//                .count();
+//        orderEntityMap.put(worker, (int) orderCount);
+//    }
+//
+//    return orderEntityMap;
+//}
 }

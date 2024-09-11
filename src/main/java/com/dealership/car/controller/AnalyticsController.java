@@ -316,4 +316,17 @@ public class AnalyticsController {
         model.addAttribute("supplierMap", supplierMap);
         return "delayedSuppliers.html";
     }
+    @GetMapping("/contractPerDealer")
+    public String showContractPerDealer(Model model) {
+        List<String> roles = Arrays.asList(
+                Constants.OPERATOR_ROLE,
+                Constants.ADMIN_ROLE,
+                Constants.OWNER_ROLE
+        );
+        List<Person> staff = personRepository.findByRoles(roles);
+        Map<Person,List<OrderEntity>> resultMap = analyticsService.getOrdersByWorker(staff);
+        Map<Person,Integer> countOrdersMap = analyticsService.countOrdersByWorker(staff);
+        model.addAttribute("countOrderMap", countOrdersMap);
+        return "contractPerDealer.html";
+    }
 }
