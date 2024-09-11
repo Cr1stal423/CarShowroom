@@ -293,12 +293,12 @@ public class AnalyticsController {
         return modelAndView;
     }
     /**
-     * Handles the POST request to display cars with low stock by their models.
-     * Based on the provided car model names, it retrieves the low stock information
-     * and adds it to the model object for rendering the view.
+     * Handles the POST request to display cars with low stock based on the specified models.
+     * This method processes the input models, retrieves low stock data for those models,
+     * and adds the results to the given Model object for rendering the view.
      *
-     * @param models a comma-separated string of car model names to check for low stock
-     * @param model  the model object used to add attributes required for rendering the view
+     * @param models a comma-separated string of car models to be evaluated for low stock
+     * @param model the model object used for adding attributes required for rendering the view
      * @return the name of the view template to be rendered, "lowStockCar.html"
      */
     @PostMapping("/lowStockCarByModel")
@@ -308,6 +308,15 @@ public class AnalyticsController {
         model.addAttribute("lowStockCarByModel", lowStockCarByModel);
         return "lowStockCar.html";
     }
+    /**
+     * Handles the GET request to display delayed suppliers.
+     * This method retrieves the list of suppliers who are marked as delayed,
+     * fetches their associated dynamic field values, and adds these details to the model
+     * for rendering the relevant view.
+     *
+     * @param model the model object used for adding attributes required for rendering the view
+     * @return the name of the view template to be rendered, "delayedSuppliers.html"
+     */
     //TODO can be improved to display how long the supplier is delayed(create Map<Map<Suppliers,Delay time>,List<dynamicFieldValue>>)
     @GetMapping("/delayedSuppliers")
     public String showDelayedSuppliers(Model model) {
@@ -316,6 +325,14 @@ public class AnalyticsController {
         model.addAttribute("supplierMap", supplierMap);
         return "delayedSuppliers.html";
     }
+    /**
+     * Handles the GET request to display contracts per dealer.
+     * Retrieves staff members with specific roles, their corresponding orders, and the count of orders.
+     * Adds these details to the model for rendering the view.
+     *
+     * @param model the model object used for adding attributes required for rendering the view
+     * @return the name of the view template to be rendered, "contractPerDealer.html"
+     */
     @GetMapping("/contractPerDealer")
     public String showContractPerDealer(Model model) {
         List<String> roles = Arrays.asList(
@@ -328,5 +345,19 @@ public class AnalyticsController {
         Map<Person,Integer> countOrdersMap = analyticsService.countOrdersByWorker(staff);
         model.addAttribute("countOrderMap", countOrdersMap);
         return "contractPerDealer.html";
+    }
+    /**
+     * Handles the GET request to display the top-selling cars per quarter.
+     * This method retrieves the top-selling cars for each quarter,
+     * adds the results to the model, and returns the view template name.
+     *
+     * @param model the model object used to add attributes required for rendering the view
+     * @return the name of the view template to be rendered, "topSellingcarsPerQuarter.html"
+     */
+    @GetMapping("/topSellingCarsPerQuarter")
+    public String showTopSellingcarsPerQuarter(Model model) {
+        List<Object[]> topSellingCars = orderService.getTopSellingCarsPerQuarter();
+        model.addAttribute("topSellingCars", topSellingCars);
+        return "topSellingcarsPerQuarter.html";
     }
 }

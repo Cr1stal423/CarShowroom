@@ -255,25 +255,12 @@
                     </a>
                 </div>
                 <div class="col-auto mx-3" sec:authorize="hasRole('ROLE_OWNER')">
-                    <a th:href="@{/custom/query}">
+                    <a th:href="@{/analytics/topSellingCarsPerQuarter}">
                         <div class="overview-item overview-item--c2">
                             <div class="overview__inner">
                                 <div class="overview-box clearfix">
                                     <div class="text font-large">
-                                        <h2>Custom query</h2>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-auto mx-3" sec:authorize="hasRole('ROLE_USER')">
-                    <a th:href="@{/user/displayOrders}">
-                        <div class="overview-item overview-item--c2">
-                            <div class="overview__inner">
-                                <div class="overview-box clearfix">
-                                    <div class="text font-large">
-                                        <h2>My orders</h2>
+                                        <h2>Top Selling car</h2>
                                     </div>
                                 </div>
                             </div>
