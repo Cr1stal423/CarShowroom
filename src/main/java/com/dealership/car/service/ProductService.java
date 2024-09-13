@@ -1,8 +1,10 @@
 package com.dealership.car.service;
 
 import com.dealership.car.DTO.ProductDto;
+import com.dealership.car.constants.Constants;
 import com.dealership.car.dynamic.DynamicFieldValue;
 import com.dealership.car.mapper.ProductMapper;
+import com.dealership.car.model.OrderEntity;
 import com.dealership.car.model.Person;
 import com.dealership.car.model.Product;
 import com.dealership.car.model.TechnicalData;
@@ -174,5 +176,7 @@ public class ProductService {
         List<Product> productByBrandList = productRepository.findByBrand(brand);
         return productByBrandList;
     }
+
+
 
 }

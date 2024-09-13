@@ -37,6 +37,8 @@ public class OrderEntity extends BaseEntity implements IdentifiableEntity {
 //    @NotBlank(message = "payment method is required")
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
+    @Column(nullable = true)
+    private boolean flag;
 
     @Override
     public Integer getId() {
@@ -50,5 +52,8 @@ public class OrderEntity extends BaseEntity implements IdentifiableEntity {
     public enum PaymentType{
         CREDIT,
         BUY
+    }
+    public boolean isFlag() {
+        return flag;
     }
 }

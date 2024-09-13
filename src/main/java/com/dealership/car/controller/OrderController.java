@@ -15,13 +15,11 @@ import com.dealership.car.service.ProductService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -89,7 +87,9 @@ public class OrderController {
     public String showForm(Model model) {
         model.addAttribute("orderDto", new OrderDto());
         model.addAttribute("persons", personService.findAll());
-        model.addAttribute("products", productRepository.findByAvailabilityStatusEqualsOrAvailabilityStatus(Constants.AVAILABILITY_STATUSES.get(0), Constants.AVAILABILITY_STATUSES.get(2)));
+        orderService.setFlag();
+//        model.addAttribute("products", productRepository.findByAvailabilityStatusEqualsOrAvailabilityStatus(Constants.AVAILABILITY_STATUSES.get(0), Constants.AVAILABILITY_STATUSES.get(2)));
+        model.addAttribute("products", orderService.saveMethodFindProductByAvailbilityStats());
         model.addAttribute("paymentTypes", Constants.PAYMENT_TYPES);
         model.addAttribute("paymentMethods", Constants.PAYMENT_METHODS);
         return "order-form.html";
@@ -114,6 +114,8 @@ public class OrderController {
             if (optionalProduct.isPresent() && optionalPerson.isPresent()) {
                 Product product = optionalProduct.get();
                 Person person = optionalPerson.get();
+
+
 
                 OrderEntity order = new OrderEntity();
                 order.setPerson(person);

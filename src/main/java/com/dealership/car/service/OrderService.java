@@ -1,28 +1,31 @@
 package com.dealership.car.service;
 
+import com.dealership.car.constants.Constants;
 import com.dealership.car.dynamic.DynamicFieldValue;
 import com.dealership.car.model.OrderEntity;
 import com.dealership.car.model.Product;
 import com.dealership.car.repository.OrderEntityRepository;
+import com.dealership.car.repository.ProductRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * The OrderService class provides various services related to orders.
  * It interacts with DynamicFieldValueService, OrderEntityRepository, and ProductService to manage orders and their associated dynamic fields.
  */
 @Service
+@AllArgsConstructor
 public class OrderService {
     private final DynamicFieldValueService dynamicFieldValueService;
     private final OrderEntityRepository orderEntityRepository;
     private final ProductService productService;
+    private final ProductRepository productRepository;
 
-    public OrderService(DynamicFieldValueService dynamicFieldValueService, OrderEntityRepository orderEntityRepository, ProductService productService) {
-        this.dynamicFieldValueService = dynamicFieldValueService;
-        this.orderEntityRepository = orderEntityRepository;
-        this.productService = productService;
-    }
+
+
 
     /**
      * Retrieves dynamic field values for all orders in the given list.
@@ -103,6 +106,29 @@ public class OrderService {
         return orderEntityRepository.findTopSellingCarsPerQuarter();
     }
 
+    public List<Product> saveMethodFindProductByAvailbilityStats(){
+        List<Product> products = productRepository.findByAvailabilityStatusEqualsOrAvailabilityStatus(
+                Constants.AVAILABILITY_STATUSES.get(0),
+                Constants.AVAILABILITY_STATUSES.get(2)
+        );
 
+        List<Product> filteredProducts = products.stream()
+                .filter(product -> orderEntityRepository.findByProduct(product).stream()
+                        .noneMatch(OrderEntity::isFlag))
+                .collect(Collectors.toList());
+        return filteredProducts;
+
+    }
+
+    public void setFlag(){
+        List<OrderEntity> orderEntityList = orderEntityRepository.findAll();
+        for (OrderEntity orderEntity : orderEntityList){
+            Product product = orderEntity.getProduct();
+            if (product.getAvailabilityStatus().equals(Constants.AVAILABILITY_STATUSES.get(2))){
+                orderEntity.setFlag(true);
+                orderEntityRepository.save(orderEntity);
+            }
+        }
+    }
 
 }
