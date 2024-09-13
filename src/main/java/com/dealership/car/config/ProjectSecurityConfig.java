@@ -34,7 +34,7 @@ public class ProjectSecurityConfig {
                         .requestMatchers("/analytics/**").hasAnyRole(Constants.OWNER_ROLE,Constants.ADMIN_ROLE, Constants.OPERATOR_ROLE)
                         .requestMatchers("/contact/closeMsg", "contact/showMessages").hasAnyRole(Constants.OWNER_ROLE,Constants.ADMIN_ROLE, Constants.OPERATOR_ROLE)
                         .requestMatchers("/dashboard").authenticated()
-                        .requestMatchers("/custom/**").hasRole(Constants.OWNER_ROLE)
+                        .requestMatchers("/custom/**").hasAnyRole(Constants.OWNER_ROLE, Constants.ADMIN_ROLE, Constants.OPERATOR_ROLE)
                         .requestMatchers("/dynamic-fields/**").hasAnyRole(Constants.OWNER_ROLE,Constants.ADMIN_ROLE)
                         .requestMatchers("/deleteOperator","/updateOperator").hasAnyRole(Constants.OWNER_ROLE,Constants.ADMIN_ROLE)
                         .requestMatchers("/turnIntoAdmin").hasRole(Constants.OWNER_ROLE)

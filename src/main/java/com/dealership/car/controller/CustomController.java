@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @AllArgsConstructor
 public class CustomController {
 
-    private final StringHttpMessageConverter stringHttpMessageConverter;
     private QueryService queryService;
 
     /**
