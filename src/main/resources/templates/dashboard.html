@@ -294,7 +294,7 @@
                         </div>
                     </a>
                 </div>
-                <div class="col-auto mx-3" sec:authorize="hasRole('ROLE_OWNER') or hasRole('ROLE_ADMIN')">
+                <div class="col-auto mx-3" sec:authorize="hasRole('ROLE_OWNER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_OPERATOR')">
                     <a th:href="@{/custom/query}">
                         <div class="overview-item overview-item--c2">
                             <div class="overview__inner">
