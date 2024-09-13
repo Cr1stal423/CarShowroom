@@ -117,13 +117,13 @@
             <tr>
                 <form th:action="@{/dynamic-fields/update}" th:object="${dynamicFieldDto}" method="post">
                     <td><input th:field="${dynamicFieldDto.fieldName}" name="fieldName"></td>
-                    <td><input th:field="${dynamicFieldDto.fieldType}" name="fieldType"></td>
-                    <td><input th:field="${dynamicFieldDto.fieldId}" name="fieldId"></td>
+                    <td><input th:field="${dynamicFieldDto.fieldType}" name="fieldType" readonly></td>
+                    <td><input th:field="${dynamicFieldDto.fieldId}" name="fieldId" readonly></td>
                     <td><input th:field="${dynamicFieldDto.entityId}" name="entityId"
-                               th:value="${entityId != null ? entityId : ''}"/></td>
+                               th:value="${entityId != null ? entityId : ''}" readonly/></td>
                     <td><input th:field="${dynamicFieldDto.entityType}" name="entityType"
                                th:value="${entityType != null ? entityType : ''}"
-                               th:required="${entityType != null}"/></td>
+                               th:required="${entityType != null}" readonly/></td>
                     <td><input th:field="${dynamicFieldDto.value}" name="value"></td>
                     <td><button class="btn btn-primary btn-style">Save</button></td>
                 </form>
