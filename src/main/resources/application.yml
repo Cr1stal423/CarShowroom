@@ -1,26 +1,26 @@
 spring:
   application:
-    name: CarDealership
+    name: ${APPLICATION_NAME:CarDealership}
   jpa:
     hibernate:
-      ddl-auto: update
-    show-sql: true
+      ddl-auto: ${JPA_DDL_AUTO:update}
+  show-sql: ${JPA_SHOW_SQL:true}
   datasource:
-    url: jdbc:mysql://localhost:3306/database
-    username: root
-    password: Sqlwer
+    url: jdbc:mysql://${DATABASE_HOST:localhost}:${DATABASE_PORT:3308}/${DATABASE_NAME:database}
+    username: ${MYSQL_USERNAME:root}
+    password: ${MYSQL_PASSWORD:Sqlwer}
 
 logging:
   level:
     org:
       hibernate:
-        SQL: DEBUG
+        SQL: ${LOGGING_LEVEL_HIBERNATE_SQL:DEBUG}
         type:
           descriptor:
             sql:
               BasicBinder: TRACE
       springframework:
-        transaction: DEBUG
+        transaction: ${LOGGING_LEVEL_SPRING_TRANSACTION:DEBUG}
 
 
 
