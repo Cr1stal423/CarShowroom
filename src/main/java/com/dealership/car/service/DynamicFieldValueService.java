@@ -142,10 +142,9 @@ public class DynamicFieldValueService {
     public String getEntityType(Integer entityId, String entityType) {
         String className = "";
         try {
-            // Динамічно завантажуємо клас сутності
+            
             Class<?> entityClass = Class.forName("com.dealership.car.model." + entityType);
 
-            // Виконуємо запит через EntityManager
             Object entity = entityManager.find(entityClass, entityId);
 
             if (entity != null) {

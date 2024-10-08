@@ -5,10 +5,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
@@ -34,10 +30,12 @@ public class ProjectSecurityConfig {
                         .requestMatchers("/analytics/**").hasAnyRole(Constants.OWNER_ROLE,Constants.ADMIN_ROLE, Constants.OPERATOR_ROLE)
                         .requestMatchers("/contact/closeMsg", "contact/showMessages").hasAnyRole(Constants.OWNER_ROLE,Constants.ADMIN_ROLE, Constants.OPERATOR_ROLE)
                         .requestMatchers("/dashboard").authenticated()
+                        .requestMatchers("/user/displayOrders").authenticated()
                         .requestMatchers("/custom/**").hasAnyRole(Constants.OWNER_ROLE, Constants.ADMIN_ROLE, Constants.OPERATOR_ROLE)
                         .requestMatchers("/dynamic-fields/**").hasAnyRole(Constants.OWNER_ROLE,Constants.ADMIN_ROLE)
                         .requestMatchers("/deleteOperator","/updateOperator").hasAnyRole(Constants.OWNER_ROLE,Constants.ADMIN_ROLE)
                         .requestMatchers("/turnIntoAdmin").hasRole(Constants.OWNER_ROLE)
+                        .requestMatchers("/orders/ordersByUser/**").authenticated()
                         .requestMatchers("/orders/**").hasAnyRole(Constants.OWNER_ROLE,Constants.ADMIN_ROLE, Constants.OPERATOR_ROLE)
                         .requestMatchers("/showPwd").authenticated()
                         .requestMatchers("/product/**").hasAnyRole(Constants.OWNER_ROLE,Constants.ADMIN_ROLE, Constants.OPERATOR_ROLE)
