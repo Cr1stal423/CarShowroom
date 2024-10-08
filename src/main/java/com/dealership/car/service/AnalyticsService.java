@@ -183,10 +183,19 @@ public class AnalyticsService {
         Map<String,Integer> resultMap = new HashMap<>();
         Integer totalAvailableCar = totalAvailableCar();
         List<String> allBrand = findAllUniqueBrand();
-        Integer midCount = totalAvailableCar/allBrand.size();
-        for (Map.Entry<String,Integer> entry : totalAvailableCarByBrand.entrySet()){
-            if (entry.getValue()<midCount){
-                resultMap.put(entry.getKey(),entry.getValue());
+        if (allBrand.size() >1){
+            Integer midCount = totalAvailableCar/allBrand.size();
+            for (Map.Entry<String,Integer> entry : totalAvailableCarByBrand.entrySet()){
+                if (entry.getValue()<midCount){
+                    resultMap.put(entry.getKey(),entry.getValue());
+                }
+            }
+        } else {
+            Integer midCount = totalAvailableCar/(1+ allBrand.size());
+            for (Map.Entry<String,Integer> entry : totalAvailableCarByBrand.entrySet()){
+                if (entry.getValue()<midCount){
+                    resultMap.put(entry.getKey(),entry.getValue());
+                }
             }
         }
         return resultMap;
