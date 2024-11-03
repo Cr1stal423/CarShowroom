@@ -18,23 +18,18 @@
         @Id
         @GeneratedValue(strategy =  GenerationType.IDENTITY)
         private Integer productId;
-//        @NotBlank(message = "origin country required")
-//        @Size(min = 2, message = "origin country must have at list 2 char")
+
         private String originCountry;
-//        @NotBlank(message = "brand is required")
-//        @Size(min = 3, message = "brand must have at list 3 char")
+
         private String brand;
-//        @NotBlank(message = "model is required")
-//        @Size(min = 2, message = "model must have at list 2 char")
+
         private String model;
-//        @NotBlank(message = "color is required")
-//        @Size(min = 2, message = "color must have at list 2 char")
+
         private String color;
         @Enumerated(EnumType.STRING)
-//        @NotBlank(message = "Availability Status is required")
+
         private AvailabilityStatus availabilityStatus;
-//        @NotBlank(message = "price is required")
-//        @Size(min = 1, message = "price must have at list 1 digits")
+
         private Long price;
         @OneToOne(cascade = CascadeType.ALL)
         @JoinColumn(name = "technical_id", referencedColumnName = "technicalId")
