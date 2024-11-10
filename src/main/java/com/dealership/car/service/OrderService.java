@@ -52,11 +52,7 @@ public class OrderService {
      */
     public OrderEntity findOrderByProduct(Product product){
         Optional<OrderEntity> order = orderEntityRepository.findByProduct(product);
-        if (!order.isEmpty()){
-            return order.get();
-        } else {
-            return new OrderEntity();
-        }
+        return order.orElse(null);
     }
     /**
      * Retrieves the sales amount for a given brand by counting the number of orders.
@@ -69,7 +65,9 @@ public class OrderService {
         List<OrderEntity> orderEntityList = new ArrayList<>();
         for (Product product: products){
             OrderEntity order = findOrderByProduct(product);
-            orderEntityList.add(order);
+            if (order != null){
+                orderEntityList.add(order);
+            }
         }
         Long result = (long) orderEntityList.size();
         return  result;
