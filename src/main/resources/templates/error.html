@@ -132,9 +132,8 @@
 <section class="py-5" id="global-exception">
     <div class="container py-md-5 py-4">
         <div class="exception-block text-center">
-            <div class="alert alert-danger" role="alert" th:if="${!#strings.isEmpty(errorMessage)}"
-                 th:text="${errorMessage}"></div>
-            <img src="path/to/your/image.png" alt="Error Image" class="img-fluid" style="max-width: 300px; margin-top: 20px;">
+            <div class="alert alert-danger" role="alert" th:if="${!#strings.isEmpty(exception)}"
+                 th:text="${exception}"></div>
         </div>
     </div>
 </section>
