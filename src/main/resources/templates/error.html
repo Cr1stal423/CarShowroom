@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <title>Error Page</title>
+
+    <!-- Meta tag Keywords -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="keywords"
+          content="Auto Car Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design"/>
+    <script type="application/x-javascript"> addEventListener("load", function () {
+        setTimeout(hideURLbar, 0);
+    }, false);
+
+    function hideURLbar() {
+        window.scrollTo(0, 1);
+    } </script>
+    <!--// Meta tag Keywords -->
+
+    <!-- css files -->
+    <link href="/css/bootstrap.css" rel="stylesheet" type="text/css" media="all"/> <!-- Bootstrap-Core-CSS -->
+    <link href="/css/style.css" rel="stylesheet" type="text/css" media="all"/> <!-- Style-CSS -->
+    <link rel="stylesheet" href="/css/font-awesome.css"> <!-- Font-Awesome-Icons-CSS -->
+    <!-- //css files -->
+
+    <!-- online-fonts -->
+    <link href="//fonts.googleapis.com/css?family=Jockey+One&amp;subset=latin-ext" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&amp;subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese"
+          rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Niconne&amp;subset=latin-ext" rel="stylesheet">
+    <!-- //online-fonts -->
+    <style>
+        .login-block {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 13vh;
+            margin-top: 2vh ;
+        }
+
+        .login-center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .login-input {
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 10px;
+        }
+        .btn-style {
+            width: 100%;
+            max-width: 500px;
+            margin-top: 10px;
+        }
+
+        .new-user {
+            display: block;
+            margin-top: 10px;
+        }
+        #InputGrids{
+            width: 400px;
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            flex: 1; /* Allows the container to grow and push footer down */
+        }
+
+        .footer {
+            padding: 20px 0;
+            text-align: center;
+            width: 100%;
+        }
+
+    </style>
+</head>
+
+<body>
+<!-- banner -->
+<div class="banner-2 wthree">
+    <div class="container">
+        <div class="banner_top">
+            <div class="logo wow fadeInLeft animated animated" data-wow-delay=".5s"
+                 style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInLeft;">
+                <h1><a th:href="@{/home}"><span>A</span>uto Car</a></h1>
+            </div>
+            <div class="banner_top_right wow fadeInRight animated animated" data-wow-delay=".5s"
+                 style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInRight;">
+                <nav class="navbar navbar-default">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                                data-target="#bs-example-navbar-collapse-1">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse nav-wil" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav cl-effect-14">
+                            <li ><a th:href="@{/home}">Home</a></li>
+                            <li ><a th:href="@{/about}">About Us</a></li>
+                            <li ><a th:href="@{/contact}" class="active">Contact Us</a></li>
+                            <li sec:authorize="isAuthenticated()"><a th:href="@{/dashboard}">Dashboard</a></li>
+                            <li ><a th:href="@{/login}">LogIn</a></li>
+                            <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
+                        </ul>
+                    </div><!-- /.navbar-collapse -->
+
+                </nav>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <!-- banner -->
+
+    </div>
+</div>
+<!-- //banner -->
+
+<!-- Main -->
+<section class="py-5" id="global-exception">
+    <div class="container py-md-5 py-4">
+        <div class="exception-block text-center">
+            <div class="alert alert-danger" role="alert" th:if="${!#strings.isEmpty(errorMessage)}"
+                 th:text="${errorMessage}"></div>
+            <img src="path/to/your/image.png" alt="Error Image" class="img-fluid" style="max-width: 300px; margin-top: 20px;">
+        </div>
+    </div>
+</section>
+
+<!-- //Main -->
+
+<!-- Footer -->
+<div class="footer w3ls">
+    <div class="container">
+        <div class="footer-main">
+            <div class="footer-top">
+                <div class="col-md-4 ftr-grid fg1">
+                    <h4><a th:href="@{/home}">Auto Car</a></h4>
+                    <p>Lorem ipsum dolor sit amet, consectetur adip magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation</p>
+                    <a href="about.html">Learn More</a>
+                </div>
+                <div class="col-md-4 ftr-grid fg2">
+                    <h3>Our Address</h3>
+                    <div class="ftr-address">
+                        <div class="local">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                        </div>
+                        <div class="ftr-text">
+                            <p>Lorem ipsum dolor sit amet.</p>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="ftr-address">
+                        <div class="local">
+                            <i class="fa fa-phone" aria-hidden="true"></i>
+                        </div>
+                        <div class="ftr-text">
+                            <p>+1 (512) 154 8176</p>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="ftr-address">
+                        <div class="local">
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                        </div>
+                        <div class="ftr-text">
+                            <p><a href="mailto:info@example.com">info@example.com</a></p>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                <div class="col-md-4 ftr-grid fg2">
+                    <h3>Keep In Touch With Us</h3>
+                    <div class="right-w3l">
+                        <ul class="top-links">
+                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="right-w3-2">
+                        <ul class="text-w3">
+                            <li><a href="#">Facebook</a></li>
+                            <li><a href="#">Twitter</a></li>
+                            <li><a href="#">Google</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer -->
+
+<!-- js-scripts -->
+<!-- js -->
+<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.js"></script> <!-- Necessary-JavaScript-File-For-Bootstrap -->
+<!-- //js -->
+<script src="js/jzBox.js"></script>
+<!-- //js-scripts -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+        crossorigin="anonymous"></script>
+</body>
+</html>
