@@ -45,7 +45,7 @@ public class Person extends BaseEntity implements IdentifiableEntity {
     private String address;
 
     private String mobileNumber;
-    @OneToOne(fetch = FetchType.EAGER,cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
+    @ManyToOne(fetch = FetchType.EAGER,cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
     @JoinColumn(name = "role_id", referencedColumnName = "roleId", nullable = false)
     @JsonIgnore
     private Roles roles;
