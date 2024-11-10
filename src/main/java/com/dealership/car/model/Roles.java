@@ -8,6 +8,8 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
+import javax.naming.ldap.PagedResultsControl;
+
 @Entity
 @Data
 public class Roles extends BaseEntity implements IdentifiableEntity {

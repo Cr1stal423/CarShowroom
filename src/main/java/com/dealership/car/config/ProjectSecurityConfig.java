@@ -20,6 +20,7 @@ public class ProjectSecurityConfig {
         httpSecurity.csrf((csrf) -> csrf.disable())
                 .authorizeHttpRequests((request) -> request
                         .requestMatchers("/").permitAll()
+                        .requestMatchers("/error/**").permitAll()
                         .requestMatchers("/public/**").permitAll()
                         .requestMatchers("/home","/analytics/lowStockCar").permitAll()
                         .requestMatchers("/about").permitAll()

@@ -1,5 +1,6 @@
 package com.dealership.car.service;
 
+import com.dealership.car.constants.Constants;
 import com.dealership.car.dynamic.DynamicFieldValue;
 import com.dealership.car.model.OrderEntity;
 import com.dealership.car.model.Product;
@@ -18,10 +19,12 @@ public class OrderService {
     private final OrderEntityRepository orderEntityRepository;
     private final ProductService productService;
 
+
     public OrderService(DynamicFieldValueService dynamicFieldValueService, OrderEntityRepository orderEntityRepository, ProductService productService) {
         this.dynamicFieldValueService = dynamicFieldValueService;
         this.orderEntityRepository = orderEntityRepository;
         this.productService = productService;
+
     }
 
     /**
@@ -52,11 +55,7 @@ public class OrderService {
      */
     public OrderEntity findOrderByProduct(Product product){
         Optional<OrderEntity> order = orderEntityRepository.findByProduct(product);
-        if (!order.isEmpty()){
-            return order.get();
-        } else {
-            return new OrderEntity();
-        }
+        return order.orElse(null);
     }
     /**
      * Retrieves the sales amount for a given brand by counting the number of orders.
@@ -69,7 +68,9 @@ public class OrderService {
         List<OrderEntity> orderEntityList = new ArrayList<>();
         for (Product product: products){
             OrderEntity order = findOrderByProduct(product);
-            orderEntityList.add(order);
+            if (order != null){
+                orderEntityList.add(order);
+            }
         }
         Long result = (long) orderEntityList.size();
         return  result;
@@ -101,6 +102,19 @@ public class OrderService {
     }
     public List<Object[]> getTopSellingCarsPerQuarter() {
         return orderEntityRepository.findTopSellingCarsPerQuarter();
+    }
+
+    public List<Product> findAvailableCar(){
+        List<Product> allProduct = productService.getProductRepository()
+                .findByAvailabilityStatusEqualsOrAvailabilityStatus(Constants.AVAILABILITY_STATUSES.get(0), Constants.AVAILABILITY_STATUSES.get(2));
+        List<Product> finalList = new ArrayList<>();
+        for (Product product: allProduct){
+            Optional<OrderEntity> orderEntity = orderEntityRepository.findByProduct(product);
+            if (orderEntity.isEmpty()){
+                finalList.add(product);
+            }
+        }
+        return finalList;
     }
 
 
