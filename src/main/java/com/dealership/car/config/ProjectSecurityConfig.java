@@ -22,6 +22,7 @@ public class ProjectSecurityConfig {
                 .authorizeHttpRequests((request) -> request
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/css/**", "/js/**", "/images/**","/fonts/**").permitAll()
+                        .requestMatchers("/public/**","/public/forgotPassword/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/**").authenticated()
                         .requestMatchers("/error/**").permitAll()
                         .requestMatchers("/public/**").permitAll()
@@ -29,10 +30,9 @@ public class ProjectSecurityConfig {
                         .requestMatchers("/about").permitAll()
                         .requestMatchers("/services").permitAll()
                         .requestMatchers("/login").permitAll()
-                        .requestMatchers("/public/**","/public/forgotPassword").permitAll()
                         .requestMatchers("/contact", "contact/saveMsg").permitAll()
                         .requestMatchers("/deleteAdmin/**","turnIntoOperator/**","/updateAdmin/**").hasRole(Constants.OWNER_ROLE)
-                        .requestMatchers("/analytics/**","analytics/lowStockCar").hasAnyRole(Constants.OWNER_ROLE,Constants.ADMIN_ROLE, Constants.OPERATOR_ROLE)
+                        .requestMatchers("/analytics/**").hasAnyRole(Constants.OWNER_ROLE,Constants.ADMIN_ROLE, Constants.OPERATOR_ROLE)
                         .requestMatchers("/contact/closeMsg", "contact/showMessages").hasAnyRole(Constants.OWNER_ROLE,Constants.ADMIN_ROLE, Constants.OPERATOR_ROLE)
                         .requestMatchers("/dashboard").authenticated()
                         .requestMatchers("/user/displayOrders").authenticated()
@@ -53,6 +53,7 @@ public class ProjectSecurityConfig {
 
                         .requestMatchers("/technicalData/**").hasAnyRole(Constants.OWNER_ROLE,Constants.ADMIN_ROLE, Constants.OPERATOR_ROLE)
                         .requestMatchers("/deleteUser","/turnUserIntoOperator","/updateUser").hasAnyRole(Constants.OWNER_ROLE,Constants.ADMIN_ROLE)
+
 
 
 

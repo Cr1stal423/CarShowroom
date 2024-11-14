@@ -146,7 +146,7 @@
 
                     <td sec:authorize="hasRole('ROLE_OWNER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_OPERATOR')"><button class="btn btn-primary btn-style">Save</button></td>
                 </form>
-                <td><a th:href="@{/supplier/setDelay(id=${entry.key.id})}">Set a delay</a></td>
+                <td sec:authorize="hasAnyRole('ROLE_OWNER','ROLE_ADMIN','ROLE_OPERATOR')"><a th:href="@{/supplier/setDelay(id=${entry.key.id})}">Set a delay</a></td>
 <!--                <td><a sec:authorize="hasRole('ROLE_OWNER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_OPERATOR')" th:href="@{/product/deleteProduct(id=${entry.key.productId})}" class="btn btn-style btn-style-3">Delete Product</a></td>-->
 <!--                <td><a sec:authorize="hasRole('ROLE_OWNER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_OPERATOR')" th:href="@{/dynamic-fields/showForm(id=${entry.key.productId})}">Add fields</a></td>-->
             </tr>

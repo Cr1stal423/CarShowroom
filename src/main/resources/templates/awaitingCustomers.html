@@ -127,7 +127,7 @@
                     <td>
                         <a th:href="@{/orders/searchById(id=${order.orderId})}">Order</a>
                     </td>
-                    <td><button type="submit">Save</button></td>
+                    <td sec:authorize="hasAnyRole('ROLE_OWNER','ROLE_ADMIN','ROLE_OPERATOR')"><button type="submit">Save</button></td>
                 </tr>
             </form>
             </tbody>

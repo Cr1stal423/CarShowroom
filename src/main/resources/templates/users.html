@@ -140,15 +140,15 @@
               <span>No dynamic fields available</span>
             </div>
           </td>
-          <td><button type="submit" class="btn btn-style btn-style-3">Save</button></td>
+          <td sec:authorize="hasAnyRole('ROLE_OWNER','ROLE_ADMIN','ROLE_OPERATOR')"><button type="submit" class="btn btn-style btn-style-3">Save</button></td>
         </form>
         <td><a sec:authorize="hasRole('ROLE_OWNER') or hasRole('ROLE_ADMIN')" th:href="@{/orders/ordersByUser(id=${entry.key.personId})}"
                class="btn btn-style btn-style-3">User Orders</a></td>
-        <td><a  th:href="@{/turnUserIntoOperator(id=${entry.key.personId})}"
+        <td sec:authorize="hasAnyRole('ROLE_OWNER','ROLE_ADMIN','ROLE_OPERATOR')"><a  th:href="@{/turnUserIntoOperator(id=${entry.key.personId})}"
                 class="btn btn-style btn-style-3">Turn into operator</a></td>
-        <td><a  th:href="@{/deleteUser(id=${entry.key.personId})}"
+        <td sec:authorize="hasAnyRole('ROLE_OWNER','ROLE_ADMIN','ROLE_OPERATOR')"><a  th:href="@{/deleteUser(id=${entry.key.personId})}"
                 class="btn btn-style btn-style-3">Delete user</a></td>
-        <td><a th:href="@{/dynamic-fields/showForm(id=${entry.key.personId})}">Add fields</a></td>
+        <td sec:authorize="hasAnyRole('ROLE_OWNER','ROLE_ADMIN','ROLE_OPERATOR')"><a th:href="@{/dynamic-fields/showForm(id=${entry.key.personId})}">Add fields</a></td>
       </tr>
       </tbody>
     </table>
