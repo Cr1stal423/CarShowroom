@@ -79,7 +79,15 @@
             text-align: center;
             width: 100%;
         }
-
+        .login-title {
+            font-family: 'Roboto', sans-serif;
+            font-size: 36px;
+            color: #4c72af;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        }
     </style>
 </head>
 
@@ -133,9 +141,10 @@
     <div class="container py-md-5 py-4">
         <div class="login-block">
             <div class="col-md-6 login-center">
+                <h2 class="login-title">Login Form</h2>
                 <form th:action="@{/login}" method="post">
                     <div class="input-grids" id="InputGrids">
-                        <div class="alert alert-success" role="alert" th:if="${!#strings.isEmpty(errorMessage)}"
+                        <div class="alert alert-danger" role="alert" th:if="${!#strings.isEmpty(errorMessage)}"
                              th:text="${errorMessage}"></div>
                         <input type="text" name="username" id="username" placeholder="Username" class="form-control login-input" />
                         <input type="password" name="password" id="password" placeholder="Password" class="form-control login-input" />
@@ -148,6 +157,7 @@
                 </form>
             </div>
         </div>
+
     </div>
 </section>
 
