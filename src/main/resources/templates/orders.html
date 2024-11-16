@@ -161,16 +161,16 @@
                         <span>No dynamic fields available</span>
                     </div>
                 </td>
-                <td sec:authorize="hasRole('ROLE_USER')"></td> <!-- Порожня клітинка, якщо користувач не має ролі -->
+                <td sec:authorize="hasRole('ROLE_USER')"></td>
 
                 <td></td>
                 <td>
-                    <a sec:authorize="hasRole('ROLE_OWNER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_OPERATOR')"
+                    <a sec:authorize="hasRole('ROLE_OWNER') or hasRole('ROLE_ADMIN')"
                        th:href="@{deleteOrder(id=${entry.key.orderId})}"
                        class="btn btn-style btn-style-3">Delete Order</a>
                 </td>
                 <td>
-                    <a sec:authorize="hasRole('ROLE_OWNER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_OPERATOR')"
+                    <a sec:authorize="hasRole('ROLE_OWNER') or hasRole('ROLE_ADMIN')"
                        th:href="@{/dynamic-fields/showForm(id=${entry.key.orderId})}">Add fields</a>
                 </td>
             </tr>

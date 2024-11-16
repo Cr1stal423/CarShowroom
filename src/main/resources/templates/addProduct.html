@@ -210,7 +210,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label" for="price">Price</label>
-                                <input th:field="*{price}" type="text" id="price" name="price" class="form-control">
+                                <input type="number" th:field="*{price}"  id="price" name="price" class="form-control">
                                 <p class="alert-danger alert-warning mb-1" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></p>
                             </div>
                         </div>
@@ -230,14 +230,14 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label" for="doors">Doors</label>
-                                <input th:field="*{doors}" type="text" id="doors" name="Doors" class="form-control">
+                                <input type="number" th:field="*{doors}"  id="doors" name="Doors" class="form-control">
                                 <p class="alert-danger alert-warning mb-1" th:if="${#fields.hasErrors('doors')}" th:errors="*{doors}"></p>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label" for="seats">Seats</label>
-                                <input th:field="*{seats}" type="text" id="seats" name="seats" class="form-control">
+                                <input type="number" th:field="*{seats}"  id="seats" name="seats" class="form-control">
                                 <p class="alert-danger alert-warning mb-1" th:if="${#fields.hasErrors('seats')}" th:errors="*{seats}"></p>
                             </div>
                         </div>
@@ -270,7 +270,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="engineCapacity">Engine Capacity</label>
-                                <input th:field="*{engineCapacity}" type="text" id="engineCapacity" name="engineCapacity" class="form-control">
+                                <input type="number" step="0.01" th:field="*{engineCapacity}"  id="engineCapacity" name="engineCapacity" class="form-control">
                                 <p class="alert-danger alert-warning mb-1" th:if="${#fields.hasErrors('engineCapacity')}" th:errors="*{engineCapacity}"></p>
                             </div>
                         </div>

@@ -48,10 +48,12 @@ public class PersonService {
      * @return true if the user was successfully created, false otherwise
      */
     public boolean createNewUser(PersonDto personDto) {
+        Person optionalPerson = personRepository.findByMobileNumber(personDto.getMobileNumber());
+        if (optionalPerson != null) {
+            return false;
+        }
         Person person = personMapper.toPerson(personDto);
         Keys password = createPassword(person.getPassword());
-        password.setCreatedAt(LocalDateTime.now());
-        password.setCreatedBy(Constants.USER_ROLE);
 
         keysRepository.save(password);
 

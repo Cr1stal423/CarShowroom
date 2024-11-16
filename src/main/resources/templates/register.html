@@ -57,9 +57,14 @@
             margin-top: 10px;
         }
 
-        .new-user {
-            display: block;
-            margin-top: 10px;
+        .login-title {
+            font-family: 'Roboto', sans-serif;
+            font-size: 36px;
+            color: #4c72af;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
         }
         #InputGrids{
             width: 400px;
@@ -117,6 +122,7 @@
     <div class="container py-md-5 py-4">
         <div class="login-block">
             <div class="col-md-6 login-center">
+                <h2 class="login-title">Register form</h2>
                 <form th:action="@{/public/createUser}" method="post" class="signin-form" th:object="${person}">
                     <div class="input-grids" id="InputGrids">
                         <div class="alert alert-success" role="alert" th:if="${!#strings.isEmpty(errorMessage)}"

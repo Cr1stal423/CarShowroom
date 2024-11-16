@@ -142,13 +142,13 @@
                             <span>No dynamic fields available</span>
                         </div>
                     </td>
-                    <td><button type="submit" class="btn btn-style btn-style-3">Save</button></td>
+                    <td sec:authorize="hasAnyRole('ROLE_OWNER','ROLE_ADMIN','ROLE_OPERATOR')"><button type="submit" class="btn btn-style btn-style-3">Save</button></td>
                 </form>
-                <td><a sec:authorize="hasRole('ROLE_OWNER')" th:href="@{/turnIntoAdmin(id=${entry.key.personId})}"
+                <td sec:authorize="hasAnyRole('ROLE_OWNER','ROLE_ADMIN')"><a sec:authorize="hasRole('ROLE_OWNER')" th:href="@{/turnIntoAdmin(id=${entry.key.personId})}"
                        class="btn btn-style btn-style-3">Turn into admin</a></td>
-                <td><a th:href="@{/deleteOperator(id=${entry.key.personId})}"
+                <td sec:authorize="hasAnyRole('ROLE_OWNER','ROLE_ADMIN')"><a th:href="@{/deleteOperator(id=${entry.key.personId})}"
                        class="btn btn-style btn-style-3">Delete</a></td>
-                <td><a th:href="@{/dynamic-fields/showForm(id=${entry.key.personId})}">Add fields</a></td>
+                <td sec:authorize="hasAnyRole('ROLE_OWNER','ROLE_ADMIN')"><a th:href="@{/dynamic-fields/showForm(id=${entry.key.personId})}">Add fields</a></td>
             </tr>
             </tbody>
         </table>

@@ -251,7 +251,7 @@
                         </div>
                     </td>
                     <td></td>
-                    <td><a th:href="@{/dynamic-fields/showForm(id=${entry.key.orderId})}">Add fields</a></td>
+                    <td sec:authorize="hasAnyRole('ROLE_OWNER','ROLE_ADMIN')"><a th:href="@{/dynamic-fields/showForm(id=${entry.key.orderId})}">Add fields</a></td>
                 </tr>
                 </tbody>
             </table>
@@ -267,7 +267,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="entry : ${salesCountByBrandMap}">
+                    <tr th:each="entry : ${salesCFountByBrandMap}">
                         <td th:text="${entry.key}"></td>
                         <td th:text="${entry.value}"></td>
                     </tr>

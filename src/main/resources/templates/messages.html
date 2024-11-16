@@ -138,9 +138,9 @@
                         <span>No dynamic fields available</span>
                     </div>
                 </td>
-                <td><a  th:href="@{/contact/closeMsg(id=${entry.key.id})}"
+                <td sec:authorize="hasAnyRole('ROLE_OWNER','ROLE_ADMIN','ROLE_OPERATOR')"><a  th:href="@{/contact/closeMsg(id=${entry.key.id})}"
                         class="btn btn-style btn-style-3">Close Message</a></td>
-                <td><a th:href="@{/dynamic-fields/showForm(id=${entry.key.Id})}">Add fields</a></td>
+                <td sec:authorize="hasAnyRole('ROLE_OWNER','ROLE_ADMIN')"><a th:href="@{/dynamic-fields/showForm(id=${entry.key.Id})}">Add fields</a></td>
 
             </tr>
             </tbody>

@@ -164,9 +164,9 @@
                 </form>
                 <td><a  th:href="@{/product/showProductById(id=${entry.key.technicalId})}"
                         class="btn btn-style btn-style-3">Product</a></td>
-                <td sec:authorize="hasRole('ROLE_OWNER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_OPERATOR')"><a  th:href="@{/deleteProduct(id=${entry.key.technicalId})}"
+                <td sec:authorize="hasRole('ROLE_OWNER') or hasRole('ROLE_ADMIN')"><a  th:href="@{/deleteProduct(id=${entry.key.technicalId})}"
                                                                                                                    class="btn btn-style btn-style-3">Delete Product</a></td>
-                <td sec:authorize="hasRole('ROLE_OWNER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_OPERATOR')"> <a th:href="@{/dynamic-fields/showForm(id=${entry.key.technicalId})}">Add fields</a></td>
+                <td sec:authorize="hasRole('ROLE_OWNER') or hasRole('ROLE_ADMIN')"> <a th:href="@{/dynamic-fields/showForm(id=${entry.key.technicalId})}">Add fields</a></td>
             </tr>
             </tbody>
         </table>

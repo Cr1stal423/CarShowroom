@@ -161,14 +161,14 @@
     <div class="container">
         <div class="row">
             <div class="col-md-4" id="label">
-                <h2 class="heading-21921">Add order form</h2>
+                <h2 class="heading-21921">Add supplier to order</h2>
             </div>
             <div class="col-md-12 mb-4">
                 <form th:action="@{/supplier/addSupplierToOrder}" method="post" class="form-inline">
                     <div class="row">
                         <div class="col-md-6">
                             <div  class="form-group">
-                                <label for="supplierId">Product:</label>
+                                <label for="supplierId">Supplier:</label>
                                 <select id="supplierId" name="supplierId" required>
                                     <option value="" disabled selected>Select a supplier</option>
                                     <option th:each="supplier : ${supplierList}" th:value="${supplier.Id}"
@@ -178,7 +178,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="orderId">Client:</label>
+                                <label for="orderId">Order:</label>
                                 <select id="orderId" name="orderId" required>
                                     <option value="" disabled selected>Select a order</option>
                                     <option th:each="order : ${orderList}" th:value="${order.orderId}"

@@ -121,7 +121,7 @@
             <tbody>
             <tr th:each="entry: ${usersMap}">
                 <form th:action="@{/updateUserA}" method="post">
-                    <td><input readonly type="text" name="id" th:value="${entry.key.personId}"></td>
+                    <td><input type="text" name="id" th:value="${entry.key.personId}"></td>
                     <td><input type="text" name="username" th:value="${entry.key.username}" ></td>
                     <td><input type="text" name="firstName" th:value="${entry.key.firstName}" ></td>
                     <td><input type="text" name="lastName" th:value="${entry.key.lastName}" ></td>
@@ -149,11 +149,11 @@
                             <span>No dynamic fields available</span>
                         </div>
                     </td>
-                    <td><button type="submit" class="btn btn-style btn-style-3">Save</button></td>
+                    <td sec:authorize="hasAnyRole('ROLE_OWNER','ROLE_ADMIN','ROLE_OPERATOR')"><button type="submit" class="btn btn-style btn-style-3">Save</button></td>
                 </form>
-                <td><a  th:href="@{/deleteUser(id=${entry.key.personId})}"
+                <td sec:authorize="hasAnyRole('ROLE_OWNER','ROLE_ADMIN','ROLE_OPERATOR')"><a  th:href="@{/deleteUser(id=${entry.key.personId})}"
                         class="btn btn-style btn-style-3">Delete user</a></td>
-                <td><a th:href="@{/dynamic-fields/showForm(id=${entry.key.personId})}">Add fields</a></td>
+                <td sec:authorize="hasAnyRole('ROLE_OWNER','ROLE_ADMIN','ROLE_OPERATOR')"><a th:href="@{/dynamic-fields/showForm(id=${entry.key.personId})}">Add fields</a></td>
             </tr>
             </tbody>
         </table>

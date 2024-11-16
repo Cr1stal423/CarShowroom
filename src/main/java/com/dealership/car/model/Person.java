@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -21,7 +22,7 @@ public class Person extends BaseEntity implements IdentifiableEntity {
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private Integer personId;
 
-    @OneToMany(mappedBy = "person")
+    @OneToMany(mappedBy = "person",cascade = CascadeType.ALL)
     private Set<OrderEntity> orders = new HashSet<>();
 
     private String username;

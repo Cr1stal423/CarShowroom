@@ -53,6 +53,7 @@ public class PublicController {
         if(isSaved){
             return "redirect:/login?register=true";
         } else {
+            errors.rejectValue("mobileNumber", "mobileNumber.unique", "This mobile number is already taken.");
             return "register.html";
         }
     }

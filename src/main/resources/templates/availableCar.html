@@ -175,11 +175,11 @@
                         </div>
                     </td>
 
-                    <td><button class="btn btn-primary btn-style">Save</button></td>
+                    <td sec:authorize="hasAnyRole('ROLE_OWNER','ROLE_ADMIN','ROLE_OPERATOR')"><button class="btn btn-primary btn-style">Save</button></td>
                 </form>
                 <td><a th:href="@{/technicalData/forProduct(id=${entry.key.productId})}" class="btn btn-style btn-style-3">Technical Data</a></td>
-                <td><a th:href="@{/product/deleteProduct(id=${entry.key.productId})}" class="btn btn-style btn-style-3">Delete Product</a></td>
-                <td><a th:href="@{/dynamic-fields/showForm(id=${entry.key.productId})}">Add fields</a></td>
+                <td sec:authorize="hasAnyRole('ROLE_OWNER','ROLE_ADMIN','ROLE_OPERATOR')"><a th:href="@{/product/deleteProduct(id=${entry.key.productId})}" class="btn btn-style btn-style-3">Delete Product</a></td>
+                <td sec:authorize="hasAnyRole('ROLE_OWNER','ROLE_ADMIN','ROLE_OPERATOR')"><a th:href="@{/dynamic-fields/showForm(id=${entry.key.productId})}">Add fields</a></td>
             </tr>
             </tbody>
 
