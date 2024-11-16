@@ -246,9 +246,11 @@ public class PersonService {
      * @param passportNumber the new passport number of the person
      * @return true if the user's details were successfully updated; false otherwise
      */
+    @Transactional
     public boolean updateroleA(Integer id, String username, String firstName, String lastName, String address, String mobileNumber, String passportSeries, String passportNumber) {
         Boolean isUpdated = false;
         Optional<Person> optionalPerson = personRepository.findById(id);
+        System.out.println("Before update: " + optionalPerson.get());
         if (optionalPerson.isPresent()) {
             isUpdated = true;
             Person person = optionalPerson.get();
@@ -260,6 +262,7 @@ public class PersonService {
             person.setPassportSeries(passportSeries);
             person.setPassportNumber(passportNumber);
             personRepository.save(person);
+            System.out.println("After update: " + person);
         } else {
             System.out.printf("Can't find person \n");
         }

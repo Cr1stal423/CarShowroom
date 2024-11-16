@@ -34,7 +34,7 @@ public class ProductDto {
 
     @NotNull(message = "price is required")
     @Digits(integer = 12, fraction = 0, message = "The number must be between 3 and 12 digits.")
-    @Min(value = 100, message = "The number must be at least 3 digits long.")
+    @Min(value = 10, message = "The number must be at least 3 digits long.")
     @Max(value = 999999999999L, message = "The number must be at most 12 digits long.")
     private Long price;
 

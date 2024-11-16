@@ -16,17 +16,17 @@ public class LoginController {
     /**
      * Displays the login page and handles errors or registration success messages.
      *
-     * @param error Optional request parameter indicating an error has occurred.
+     * @param error    Optional request parameter indicating an error has occurred.
      * @param register Optional request parameter indicating successful registration.
-     * @param model Interface to pass attributes to the view.
+     * @param model    Interface to pass attributes to the view.
      * @return The login page view name.
      */
-    @RequestMapping(value ="/login",method = { RequestMethod.GET, RequestMethod.POST })
-    public String displayLoginPage(@RequestParam(value = "error", required = false)String error,
-                                   @RequestParam(value = "register", required = false)String register,
-                                   Model model){
+    @RequestMapping(value = "/login", method = {RequestMethod.GET, RequestMethod.POST})
+    public String displayLoginPage(@RequestParam(value = "error", required = false) String error,
+                                   @RequestParam(value = "register", required = false) String register,
+                                   Model model) {
         String errorMessage = null;
-        if (error != null){
+        if (error != null) {
             errorMessage = "Username or Password is incorrect";
         } else if (register != null) {
             errorMessage = "You registration successful. Login with registered credentials !!";

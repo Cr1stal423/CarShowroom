@@ -64,7 +64,7 @@ public class QueryService {
                 return results;
             }
         } else {
-            if (isAdmin || isOwner) {
+            if (isOwner) {
                 Query query = entityManager.createNativeQuery(queryStr);
                 int result = query.executeUpdate();
                 return result;

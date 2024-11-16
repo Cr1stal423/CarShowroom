@@ -122,7 +122,7 @@ public class UsersController {
 //        }
 //        return "redirect:/staff/users";
 //    }
-    @PostMapping(value = "updateUserA")
+    @PostMapping(value = "/updateUserA")
     public String updateUserA(@RequestParam("id")Integer id, @RequestParam("username")String username,
                               @RequestParam("firstName")String firstName,@RequestParam("lastName")String lastName,
                               @RequestParam("address")String address, @RequestParam("mobileNumber")String mobileNumber,

@@ -9,9 +9,9 @@ import org.springframework.web.servlet.ModelAndView;
 public class GlobalExceptionController {
     @ExceptionHandler(Exception.class)
     public ModelAndView handleGlobalException(Exception ex) {
-        if (ex instanceof jakarta.validation.UnexpectedTypeException || ex instanceof MethodArgumentNotValidException) {
-            return null;
-        }
+//        if (ex instanceof jakarta.validation.UnexpectedTypeException || ex instanceof MethodArgumentNotValidException) {
+//            return null;
+//        }
 
         ModelAndView modelAndView = new ModelAndView("error.html");
         modelAndView.addObject("exception", ex);

@@ -23,7 +23,7 @@ public class Keys extends BaseEntity implements IdentifiableEntity {
     @Size(min = 3, message = "password must be at list 3 char")
     private String password;
     @OneToOne(mappedBy = "keys", cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
-    @JsonIgnore // Ігнорує це поле при серіалізації в JSON
+    @JsonIgnore
     private Person person;
 
     @Override
