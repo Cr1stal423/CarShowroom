@@ -23,7 +23,7 @@ public class ProjectSecurityConfig {
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/css/**", "/js/**", "/images/**","/fonts/**").permitAll()
                         .requestMatchers("/public/**","/public/forgotPassword/**").permitAll()
-                        .requestMatchers("/contact", "contact/saveMsg").permitAll()
+                        .requestMatchers("/contact", "contact/saveMsg", "/home").permitAll()
                         .requestMatchers(HttpMethod.GET, "/**").authenticated()
                         .requestMatchers("/error/**").permitAll()
                         .requestMatchers("/public/**").permitAll()
