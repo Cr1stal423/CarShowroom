@@ -216,7 +216,7 @@
                         </div>
                     </a>
                 </div>
-                <div class="col-auto mx-3" sec:authorize="hasAnyRole('ROLE_OWNER','ROLE_ADMIN','ROLE_OPERATOR')">
+                <div class="col-auto mx-3" sec:authorize="hasAnyRole('ROLE_OWNER','ROLE_ADMIN')">
                     <a th:href="@{/product/addProduct}">
                         <div class="overview-item overview-item--c2">
                             <div class="overview__inner">
@@ -229,7 +229,7 @@
                         </div>
                     </a>
                 </div>
-                <div class="col-auto mx-3" sec:authorize="hasAnyRole('ROLE_OWNER','ROLE_ADMIN','ROLE_OPERATOR')">
+                <div class="col-auto mx-3" sec:authorize="hasAnyRole('ROLE_OWNER','ROLE_ADMIN')">
                     <a th:href="@{/orders/addOrder}">
                         <div class="overview-item overview-item--c2">
                             <div class="overview__inner">
@@ -255,7 +255,7 @@
                         </div>
                     </a>
                 </div>
-                <div class="col-auto mx-3" sec:authorize="hasAnyRole('ROLE_OWNER','ROLE_ADMIN','ROLE_OPERATOR')">
+                <div class="col-auto mx-3" sec:authorize="hasAnyRole('ROLE_OWNER','ROLE_ADMIN')">
                     <a th:href="@{/supplier/supplierOrderForm}">
                         <div class="overview-item overview-item--c2">
                             <div class="overview__inner">
@@ -268,7 +268,7 @@
                         </div>
                     </a>
                 </div>
-                <div class="col-auto mx-3" sec:authorize="hasAnyRole('ROLE_OWNER','ROLE_ADMIN','ROLE_OPERATOR','ROLE_USER')">
+                <div class="col-auto mx-3" sec:authorize="hasAnyRole('ROLE_OWNER','ROLE_ADMIN','ROLE_OPERATOR')">
                     <a th:href="@{/supplier/listSuppliersSoon}">
                         <div class="overview-item overview-item--c2">
                             <div class="overview__inner">

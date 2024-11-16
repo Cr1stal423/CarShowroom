@@ -121,7 +121,7 @@
             <tbody>
             <tr th:each="entry: ${usersMap}">
                 <form th:action="@{/updateUserA}" method="post">
-                    <td><input readonly type="text" name="id" th:value="${entry.key.personId}"></td>
+                    <td><input type="text" name="id" th:value="${entry.key.personId}"></td>
                     <td><input type="text" name="username" th:value="${entry.key.username}" ></td>
                     <td><input type="text" name="firstName" th:value="${entry.key.firstName}" ></td>
                     <td><input type="text" name="lastName" th:value="${entry.key.lastName}" ></td>

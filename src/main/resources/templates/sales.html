@@ -251,7 +251,7 @@
                         </div>
                     </td>
                     <td></td>
-                    <td sec:authorize="hasAnyRole('ROLE_OWNER','ROLE_ADMIN','ROLE_OPERATOR')"><a th:href="@{/dynamic-fields/showForm(id=${entry.key.orderId})}">Add fields</a></td>
+                    <td sec:authorize="hasAnyRole('ROLE_OWNER','ROLE_ADMIN')"><a th:href="@{/dynamic-fields/showForm(id=${entry.key.orderId})}">Add fields</a></td>
                 </tr>
                 </tbody>
             </table>
